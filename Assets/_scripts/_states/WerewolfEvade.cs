@@ -10,7 +10,17 @@ public class WereWolfEvade : IAgentState
 	{
 		nextState = this;
 		
-		/// werewolf is not attacked anymore -> attack
+		/// Not attacked, target in range -> Attack
+		if (true) {
+			nextState = new WerewolfAttack ();
+		}
+		
+		/// Not attacked, target not in range -> Charge
+		if (true) {
+			nextState = new WerewolfAttack ();
+		}
+		
+		/// Not attacked, has no target -> Idle
 		if (true) {
 			nextState = new WerewolfAttack ();
 		}
