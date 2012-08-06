@@ -222,4 +222,9 @@ public class Agent : MonoBehaviour
 
         _kinematicInfo.Orientation += acceleration.Angular * Time.deltaTime;
     }
+	
+	public List<Agent> getAgentsInArea(float radius) {
+		return MotionUtils.getAgentsInArea(_kinematicInfo.position, radius);
+	}
+	
 }
