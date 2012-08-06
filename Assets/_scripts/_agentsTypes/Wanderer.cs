@@ -48,7 +48,6 @@ public class Wanderer : MonoBehaviour
         seekSteer.Target.Position = target;
 
         //agent.AddBehaviour("arrive", arriveSteer, 0);
-
         //agent.AddBehaviour("LWYG",new LWYGSteer(),0);
         agent.AddBehaviour("wander", wanderSteer, 0);
         //agent.AddBehaviour("seek", seekSteer, 0);

@@ -7,11 +7,11 @@ using System.Collections;
 
 public class KinematicInfo
 {
-    public Vector2 Velocity = Vector3.zero;
-    public Vector2 Position = Vector3.zero;
+    public Vector2 Velocity = Vector2.zero;
+    public Vector2 Position = Vector2.zero;
 
-    // Unit Vector representing facing direction.
+    // Scalar, anticlockwise representing facing direction in radians.
     public float Orientation = 0.0f;
-    // Scalar, runs it anticlockwise direction.
+    // Scalar, radians per second that orientation is changing
     public float AngularVelocity = 0.0f;
 }

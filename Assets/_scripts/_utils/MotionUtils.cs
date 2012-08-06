@@ -29,8 +29,8 @@ public class MotionUtils
     ///     The 2d orientation vector. Should be a unit vector.
     /// </param>
     /// <returns>
-    ///     The angle between (1.0f,0.0f) and the orientation vector, in 
-    ///     radians. This value ranges from (-PI,PI].
+    ///     The orientation vector, in radians. This value
+    ///     ranges from (-PI,PI].
     /// </returns>
     public static float SetOrientationFromVector(Vector2 orientation2d)
     {

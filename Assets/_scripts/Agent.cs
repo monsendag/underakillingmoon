@@ -5,13 +5,13 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-
 class SteeringPair
 {
     public uint priority;
     public ISteeringBehaviour behaviour;
 }
 
+[RequireComponent(typeof(CharacterController))]
 public class Agent : MonoBehaviour 
 {
     const uint NUM_PRIORITY_LEVELS = 5;
@@ -26,7 +26,10 @@ public class Agent : MonoBehaviour
 
     private KinematicInfo _kinematicInfo;
     private IAgentState _agentState;
-
+	
+	private CharacterController controller;
+	
+	#region varaccess
     public float MaxAcceleration 
     {
         get { return _maxAcceleration; }
@@ -56,6 +59,7 @@ public class Agent : MonoBehaviour
     }
 
     public KinematicInfo KinematicInfo { get { return _kinematicInfo; } }
+	#endregion
 
     public void Start()
     {
@@ -63,8 +67,9 @@ public class Agent : MonoBehaviour
         _kinematicInfo = new KinematicInfo();
         _kinematicInfo.Orientation = 0.0f;
         _kinematicInfo.Position = new Vector2(gameObject.transform.position.x, gameObject.transform.position.z);
-        _kinematicInfo.Velocity = Vector3.zero;
+        _kinematicInfo.Velocity = Vector2.zero;
         _kinematicInfo.AngularVelocity = 0.0f;
+		controller = gameObject.GetComponent<CharacterController>()
     }
 
     /// <summary>
@@ -150,7 +155,10 @@ public class Agent : MonoBehaviour
             AgentState.Update(this, out nextState);
             AgentState = nextState;
         }
-
+	}
+	
+	void FixedUpdate()
+	{
         uint[] priorityCounts = new uint[NUM_PRIORITY_LEVELS];
         Vector2[] linearAccelerations = new Vector2[NUM_PRIORITY_LEVELS];
         float[]  angularAccelerations = new float[NUM_PRIORITY_LEVELS];
@@ -166,7 +174,7 @@ public class Agent : MonoBehaviour
         }
 
         // We step through each behaviour priority value, until an
-        // acceleration greater than epsilon are encountered.
+        // acceleration greater than epsilon is encountered.
         SteeringOutput acceleration = new SteeringOutput();
 
         for (uint i = 0; i < NUM_PRIORITY_LEVELS; ++i)
@@ -201,13 +209,12 @@ public class Agent : MonoBehaviour
         }
 
         
-        // A bit of hight school maths here. Take the starting position u, and the end position as x, then
+        // Take the starting position u, and the end position as x, then
         // x = u + 1/2at^2 + vt where a is acceleration, v is velocity, and t is time.
         Vector3 motion = 
             new Vector3(_kinematicInfo.Velocity.x, 0.0f, _kinematicInfo.Velocity.y) * Time.deltaTime + 
             new Vector3(acceleration.Linear.x, 0.0f, acceleration.Linear.y) * Time.deltaTime * Time.deltaTime * 0.5f;
 
-        CharacterController controller = gameObject.GetComponent<CharacterController>();
         controller.Move(motion);
 
         Vector2 facingVector = MotionUtils.GetOrientationAsVector(_kinematicInfo.Orientation);

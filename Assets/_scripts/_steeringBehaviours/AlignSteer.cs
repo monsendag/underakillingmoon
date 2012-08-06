@@ -21,12 +21,9 @@ public class AlignSteer : ISteeringBehaviour
 
     virtual public SteeringOutput CalculateAcceleration(GameObject agent, KinematicInfo info)
     {
-
         float rotation = Target.Orientation - info.Orientation;
-
         rotation = MotionUtils.MapToRangeRadians(rotation);
         
-
         float rotationSize = Mathf.Abs(rotation);
 
         SteeringOutput steering = new SteeringOutput();
