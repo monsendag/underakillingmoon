@@ -55,7 +55,6 @@
      <Compile Include="Assets\TK2DROOT\tk2d\Sprites\tk2dSpriteCollection.cs" />
      <Compile Include="Assets\TK2DROOT\tk2d\Sprites\tk2dSpriteCollectionData.cs" />
      <Compile Include="Assets\TK2DROOT\tk2d\Sprites\tk2dStaticSpriteBatcher.cs" />
-     <Compile Include="Assets\TK2DROOT\tk2d_demo\tk2dDemoAnimController.cs" />
      <Compile Include="Assets\_scripts\Agent.cs" />
      <Compile Include="Assets\_scripts\AgentStateMachine.cs" />
      <Compile Include="Assets\_scripts\IAgentState.cs" />
@@ -63,6 +62,7 @@
      <Compile Include="Assets\_scripts\KinematicInfo.cs" />
      <Compile Include="Assets\_scripts\PlayerMovement.cs" />
      <Compile Include="Assets\_scripts\SteeringOutput.cs" />
+     <Compile Include="Assets\_scripts\_agentsTypes\Player.cs" />
      <Compile Include="Assets\_scripts\_agentsTypes\Wanderer.cs" />
      <Compile Include="Assets\_scripts\_states\CamperDead.cs" />
      <Compile Include="Assets\_scripts\_states\CamperEvade.cs" />
@@ -84,7 +84,6 @@
      <Compile Include="Assets\_scripts\_utils\Debug.cs" />
      <Compile Include="Assets\_scripts\_utils\MotionUtils.cs" />
      <None Include="Assets\TK2DROOT\tk2d\Shaders\PremulVertexColor.shader" />
-     <None Include="Assets\TK2DROOT\tk2d_demo\demospritecollection\sprites\source.txt" />
      <None Include="Assets\TK2DROOT\tk2d\Shaders\BlendVertexColor.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

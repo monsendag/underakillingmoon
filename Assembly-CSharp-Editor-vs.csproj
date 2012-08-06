@@ -55,8 +55,11 @@
      <Compile Include="Assets\TK2DROOT\tk2d\Sprites\Editor\tk2dSpriteEditor.cs" />
      <Compile Include="Assets\TK2DROOT\tk2d\Sprites\Editor\tk2dStaticSpriteBatcherEditor.cs" />
      <None Include="Assets\TK2DROOT\tk2d\Shaders\PremulVertexColor.shader" />
-     <None Include="Assets\TK2DROOT\tk2d_demo\demospritecollection\sprites\source.txt" />
      <None Include="Assets\TK2DROOT\tk2d\Shaders\BlendVertexColor.shader" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-vs.csproj">
+      <Project>{EEF64341-8FAB-50B8-44C4-639916EDA0D9}</Project>      <Name>Assembly-CSharp-vs</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
