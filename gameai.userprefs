@@ -1,14 +1,6 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\_scripts\_agentsTypes\Wanderer.cs">
-    <Files>
-      <File FileName="..\GameAi\Assets\_scripts\_states\CamperIdle.cs" Line="29" Column="1" />
-      <File FileName="Assets\_scripts\_agentsTypes\Wanderer.cs" Line="9" Column="2" />
-      <File FileName="Assets\_scripts\IAgentState.cs" Line="1" Column="1" />
-      <File FileName="Assets\_scripts\_utils\Debug.cs" Line="1" Column="1" />
-      <File FileName="Assets\_scripts\ISteeringBehaviour.cs" Line="1" Column="1" />
-    </Files>
-  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
