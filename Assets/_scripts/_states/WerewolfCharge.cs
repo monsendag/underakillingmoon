@@ -9,13 +9,10 @@ public class WerewolfCharge : IAgentState
 	
 	public void Update (Agent agent, out IAgentState nextState)
 	{
-		
 		nextState = this;
 		
-		/// 
 		if (true) { //query world nextState)
-			nextState = new SomeAgentState ();
-		
+//			nextState = new SomeAgentState ();
 		}
 		
 	}

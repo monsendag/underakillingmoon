@@ -20,6 +20,7 @@ public class CamperIdle : IAgentState
 		/// camper is close to other campers -> flock
 		if(true) {
 			nextState = new CamperFlock();
+		}
 		
 	}
 	
