@@ -5,6 +5,7 @@ using UnityEngine;
 using System.Collections;
 
 /// <summary>
+/// LWYG look where you're going.
 /// The LWYGSteer behaviour creates the effect of a wandering unit.
 /// </summary>
 public class LWYGSteer : AlignSteer

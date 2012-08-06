@@ -5,6 +5,7 @@ using UnityEngine;
 using System.Collections;
 
 /// <summary>
+/// Steers towards a targets orientation
 /// The AlignSteer behaviour creates the effect of a wandering unit.
 /// </summary>
 public class AlignSteer : ISteeringBehaviour

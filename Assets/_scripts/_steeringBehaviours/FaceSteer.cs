@@ -5,7 +5,7 @@ using UnityEngine;
 using System.Collections;
 
 /// <summary>
-/// The WanderSteer behaviour creates the effect of a wandering unit.
+/// FaceSteer steers towards a target.
 /// </summary>
 public class FaceSteer : AlignSteer
 {
