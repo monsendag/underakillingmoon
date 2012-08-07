@@ -17,10 +17,17 @@ public class CamperFlock : IAgentState
 		
 		}
 		
-		/// camper has no company -> Idle
-		if (true) {
-			nextState = new CamperIdle ();
+		float flockingRadius = 5f; // TODO: move this setting to configuration file
+		List<Agent> agents = agent.getAgentsInArea(flockingRadius);
+		
+		foreach(var a in agents) {
+			if(agenta.type="camper") {
+				return;
+			}
 		}
+
+		/// camper has no company -> Idle
+		nextState = new CamperIdle ();
 	}
 	
 }
