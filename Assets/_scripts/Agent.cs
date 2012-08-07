@@ -69,8 +69,7 @@ public class Agent : MonoBehaviour
         _kinematicInfo.Position = new Vector2(gameObject.transform.position.x, gameObject.transform.position.z);
         _kinematicInfo.Velocity = Vector2.zero;
         _kinematicInfo.AngularVelocity = 0.0f;
-		controller = gameObject.GetComponent<CharacterController>()
-    }
+	}
 
     /// <summary>
     /// Adds a steering behaviour to the steering state.

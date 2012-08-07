@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class WereWolfEvade : IAgentState
+public class WerewolfEvade : IAgentState
 {
-	public WereWolfEvade ()
+	public WerewolfEvade ()
 	{
 	}
 	

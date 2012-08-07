@@ -9,14 +9,7 @@ public class WerewolfIdle : IAgentState
 	
 	public void Update (Agent agent, out IAgentState nextState)
 	{
-		
 		nextState = this;
-		
-		Collider[] colliders = Physics.OverlapSphere ();
-			
-		foreach (var collider in colliders) {
-			Agent agent = collider.GetComponent<Agent> ();
-		}
 		
 		/// Has target, target not in range -> Charge
 		if (true) {

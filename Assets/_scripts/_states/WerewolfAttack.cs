@@ -13,7 +13,7 @@ public class WerewolfAttack : IAgentState
 		
 		/// Attacked -> Evade
 		if (true) { 
-			nextState = new WereWolfEvade ();
+			nextState = new WerewolfEvade ();
 		}
 		
 		//  Not attacked, has no target -> Idle

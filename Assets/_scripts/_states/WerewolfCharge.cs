@@ -18,12 +18,12 @@ public class WerewolfCharge : IAgentState
 		
 		/// Being attacked -> Evade
 		if (true) { 
-			nextState = new SomeAgentState ();
+			nextState = new WerewolfEvade ();
 		}
 		
 		/// Has no target -> Idle
 		if (true) { 
-			nextState = new SomeAgentState ();
+			nextState = new WerewolfIdle ();
 		}
 		
 	}
