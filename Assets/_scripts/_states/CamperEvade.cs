@@ -10,13 +10,18 @@ public class CamperEvade : IAgentState
 	{
 		nextState = this;
 		
-		/// camper is killed
+		/// camper is killed -> Dead
 		if (true) { 
 			nextState = new CamperDead ();
 		
 		}
 		
-		/// camper is not attacked anymore 
+		/// camper is not attacked, has company -> Flock 
+		if (true) {
+			nextState = new CamperFlock ();
+		}
+		
+		/// camper is not attacked, has no company -> Idle 
 		if (true) {
 			nextState = new CamperFlock ();
 		}
