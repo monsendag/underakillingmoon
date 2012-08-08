@@ -61,7 +61,7 @@ public class Agent : MonoBehaviour
     public KinematicInfo KinematicInfo { get { return _kinematicInfo; } }
 	#endregion
 
-    public void Start()
+    public virtual void Start()
     {
         // Initialise KinematicInfo.
         _kinematicInfo = new KinematicInfo();
@@ -69,6 +69,8 @@ public class Agent : MonoBehaviour
         _kinematicInfo.Position = new Vector2(gameObject.transform.position.x, gameObject.transform.position.z);
         _kinematicInfo.Velocity = Vector2.zero;
         _kinematicInfo.AngularVelocity = 0.0f;
+		
+		controller = gameObject.GetComponent<CharacterController>(); 
 	}
 
     /// <summary>
@@ -145,7 +147,7 @@ public class Agent : MonoBehaviour
     }
 
 	// Update is called once per frame
-    void Update()
+    public virtual void Update()
     {
         // Allow the agent state to update.
         if (AgentState != null)
@@ -230,7 +232,7 @@ public class Agent : MonoBehaviour
     }
 	
 	public List<Agent> getAgentsInArea(float radius) {
-		return MotionUtils.getAgentsInArea(_kinematicInfo.position, radius);
+		return MotionUtils.getAgentsInArea(_kinematicInfo.Position, radius);
 	}
 	
 }

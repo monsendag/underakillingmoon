@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class MotionUtils
 {
@@ -81,14 +82,14 @@ public class MotionUtils
 	{
 		Collider[] colliders = Physics.OverlapSphere (position, radius);
 			
-		List<Agent> agents = new List<Agent>();
+		List<Agent> agentList = new List<Agent>();
 		Agent agent;
 		foreach (var collider in colliders) {
 			agent = collider.GetComponent<Agent> ();
 			if(agent != null) {
-				agents.add(agent);
+				agentList.Add(agent);
 			}
 		}
-		return agents;
+		return agentList;
 	}
 }

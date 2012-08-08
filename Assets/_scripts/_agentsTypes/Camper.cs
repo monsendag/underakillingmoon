@@ -3,14 +3,14 @@ using System.Collections;
 
 public class Camper : Agent {
 
-	void Start () {
+	public override void Start () {
 	
 		base.Start ();
 		
 		
 	}
 	
-	void Update () {
+	public override void Update () {
 	
 		base.Update();
 	}

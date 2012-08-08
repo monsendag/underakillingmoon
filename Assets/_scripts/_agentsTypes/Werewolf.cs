@@ -4,13 +4,13 @@ using System.Collections;
 public class Werewolf : Agent
 {
 
-	void Start ()
+	public override void Start ()
 	{
 		base.Start ();
 		
 	}
 	
-	void Update ()
+	public override void Update ()
 	{
 		base.Update ();
 	}

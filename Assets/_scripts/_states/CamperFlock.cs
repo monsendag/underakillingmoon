@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class CamperFlock : IAgentState
 {
@@ -21,7 +22,7 @@ public class CamperFlock : IAgentState
 		List<Agent> agents = agent.getAgentsInArea(flockingRadius);
 		
 		foreach(var a in agents) {
-			if(agenta.type="camper") {
+			if(a.GetType() == typeof(Camper)) {
 				return;
 			}
 		}
