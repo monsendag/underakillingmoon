@@ -27,7 +27,7 @@ public class Agent : MonoBehaviour
     private KinematicInfo _kinematicInfo;
     private IAgentState _agentState;
 	
-	private CharacterController controller;
+	private CharacterController _controller;
 	
 	#region varaccess
     public float MaxAcceleration 
@@ -70,7 +70,7 @@ public class Agent : MonoBehaviour
         _kinematicInfo.Velocity = Vector2.zero;
         _kinematicInfo.AngularVelocity = 0.0f;
 		
-		controller = gameObject.GetComponent<CharacterController>(); 
+		_controller = gameObject.GetComponent<CharacterController>(); 
 	}
 
     /// <summary>
@@ -216,7 +216,7 @@ public class Agent : MonoBehaviour
             new Vector3(_kinematicInfo.Velocity.x, 0.0f, _kinematicInfo.Velocity.y) * Time.deltaTime + 
             new Vector3(acceleration.Linear.x, 0.0f, acceleration.Linear.y) * Time.deltaTime * Time.deltaTime * 0.5f;
 
-        controller.Move(motion);
+        _controller.Move(motion);
 
         Vector2 facingVector = MotionUtils.GetOrientationAsVector(_kinematicInfo.Orientation);
         transform.LookAt(transform.position + new Vector3(facingVector.x,0.0f,facingVector.y));

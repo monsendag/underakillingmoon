@@ -5,6 +5,7 @@
 using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(Agent))]
 public class Wanderer : MonoBehaviour
 {
 	Vector2 target;
@@ -14,7 +15,8 @@ public class Wanderer : MonoBehaviour
 	void Start ()
 	{
 		// Add an agent component.
-		agent = gameObject.AddComponent<Agent> ();
+//		agent = gameObject.AddComponent<Agent> ();
+		agent = gameObject.GetComponent<Agent>();
 		DebugUtil.Assert (agent != null);
 		// And set it up with a wandering state.
 		agent.MaxVelocity = 9.0f;
