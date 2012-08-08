@@ -4,3 +4,5 @@ Library
 *.pidb
 *.csproj
 *.sln
+*.booproj
+*.suo
