@@ -1,5 +1,5 @@
 /**
- * Implements basic wander algorithm.
+ * Implements basic align algorithm.
  **/
 using UnityEngine;
 using System.Collections;
@@ -11,25 +11,24 @@ using System.Collections;
 public class AlignSteer : ISteeringBehaviour
 {
     public KinematicInfo Target = new KinematicInfo();
-    public float MaxAngularAcceleration = 2.0f;
     public float MaxRotation = 7.0f;
     public float TargetRadius = 0.025f;
     public float SlowRadius = 0.05f;
     public float TimeToTarget = 0.1f;
 
-    public AlignSteer() {}
+    public AlignSteer()  {}
 
     virtual public SteeringOutput CalculateAcceleration(GameObject agent, KinematicInfo info)
     {
-
         float rotation = Target.Orientation - info.Orientation;
-
+        
         rotation = MotionUtils.MapToRangeRadians(rotation);
         
 
         float rotationSize = Mathf.Abs(rotation);
 
         SteeringOutput steering = new SteeringOutput();
+        steering.Linear = Vector3.zero;
 
         if (rotationSize < TargetRadius)
         {
@@ -48,15 +47,6 @@ public class AlignSteer : ISteeringBehaviour
 
         steering.Angular = targetRotation - info.AngularVelocity;
         steering.Angular /= TimeToTarget;
-
-        float angularAcceleration = Mathf.Abs(steering.Angular);
-        if (angularAcceleration > MaxAngularAcceleration)
-        {
-            steering.Angular /= angularAcceleration;
-            steering.Angular *= MaxAngularAcceleration;
-        }
-
-        Debug.Log(angularAcceleration + " " + rotation + " " + targetRotation + " " + steering.Angular);
 
         return steering;
     }

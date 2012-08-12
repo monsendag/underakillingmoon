@@ -17,6 +17,7 @@ public class MotionUtils
     {
         Vector2 orientation2;
 
+
         orientation2.x = Mathf.Cos(orientation);
         orientation2.y = Mathf.Sin(orientation);
         return orientation2;
@@ -60,8 +61,12 @@ public class MotionUtils
     public static float MapToRangeRadians(float radians)
     {
 
-        Vector2 orient = GetOrientationAsVector(radians);
-        float value = SetOrientationFromVector(orient);
-        return value;
+        //Vector2 orient = GetOrientationAsVector(radians);
+        //float value = SetOrientationFromVector(orient);
+        //return value;
+        while (radians > Mathf.PI) { radians -= 2 * Mathf.PI;  }
+        while (radians < -Mathf.PI) { radians += 2 * Mathf.PI; }
+
+        return radians;
     }
 }

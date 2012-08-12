@@ -1,90 +1,92 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-	<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-	<ProductVersion>10.0.20506</ProductVersion>
-	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{EEF64341-8FAB-50B8-44C4-639916EDA0D9}</ProjectGuid>
-	<OutputType>Library</OutputType>
-	<AppDesignerFolder>Properties</AppDesignerFolder>
-	<RootNamespace></RootNamespace>
-	<AssemblyName>Assembly-CSharp</AssemblyName>
-	<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-	<FileAlignment>512</FileAlignment>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{52990EAD-A7E0-286C-4D45-7A82973CE720}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>
+    </RootNamespace>
+    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-	<DebugSymbols>true</DebugSymbols>
-	<DebugType>full</DebugType>
-	<Optimize>false</Optimize>
-	<OutputPath>Temp\bin\Debug\</OutputPath>
-	<DefineConstants>DEBUG;TRACE;UNITY_3_5_3;UNITY_3_5;UNITY_EDITOR;ENABLE_PROFILER;UNITY_STANDALONE_WIN;ENABLE_GENERICS;ENABLE_DUCK_TYPING;ENABLE_TERRAIN;ENABLE_MOVIES;ENABLE_WEBCAM;ENABLE_MICROPHONE;ENABLE_NETWORK;ENABLE_CLOTH;ENABLE_WWW;ENABLE_SUBSTANCE</DefineConstants>
-	<ErrorReport>prompt</ErrorReport>
-	<WarningLevel>4</WarningLevel>
-	<NoWarn>0169</NoWarn>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Temp\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;UNITY_3_5_5;UNITY_3_5;UNITY_EDITOR;ENABLE_PROFILER;UNITY_STANDALONE_WIN;ENABLE_GENERICS;ENABLE_DUCK_TYPING;ENABLE_TERRAIN;ENABLE_MOVIES;ENABLE_WEBCAM;ENABLE_MICROPHONE;ENABLE_NETWORK;ENABLE_CLOTH;ENABLE_WWW;ENABLE_SUBSTANCE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>0169</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-	<DebugType>pdbonly</DebugType>
-	<Optimize>true</Optimize>
-	<OutputPath>Temp\bin\Release\</OutputPath>
-	<DefineConstants>TRACE</DefineConstants>
-	<ErrorReport>prompt</ErrorReport>
-	<WarningLevel>4</WarningLevel>
-	<NoWarn>0169</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Temp\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>0169</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-	<Reference Include="System" />
+    <Reference Include="System" />
     <Reference Include="System.XML" />
-	<Reference Include="System.Core" />
-	<Reference Include="UnityEngine">
-	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
-	</Reference>
-	<Reference Include="UnityEditor">
-	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
-	</Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="UnityEngine">
+      <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor">
+      <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\TK2DROOT\tk2d\Fonts\tk2dFont.cs" />
-     <Compile Include="Assets\TK2DROOT\tk2d\Fonts\tk2dFontData.cs" />
-     <Compile Include="Assets\TK2DROOT\tk2d\Fonts\tk2dTextMesh.cs" />
-     <Compile Include="Assets\TK2DROOT\tk2d\Sprites\tk2dAnimatedSprite.cs" />
-     <Compile Include="Assets\TK2DROOT\tk2d\Sprites\tk2dBaseSprite.cs" />
-     <Compile Include="Assets\TK2DROOT\tk2d\Sprites\tk2dPixelPerfectHelper.cs" />
-     <Compile Include="Assets\TK2DROOT\tk2d\Sprites\tk2dSprite.cs" />
-     <Compile Include="Assets\TK2DROOT\tk2d\Sprites\tk2dSpriteAnimation.cs" />
-     <Compile Include="Assets\TK2DROOT\tk2d\Sprites\tk2dSpriteCollection.cs" />
-     <Compile Include="Assets\TK2DROOT\tk2d\Sprites\tk2dSpriteCollectionData.cs" />
-     <Compile Include="Assets\TK2DROOT\tk2d\Sprites\tk2dStaticSpriteBatcher.cs" />
-     <Compile Include="Assets\_scripts\Agent.cs" />
-     <Compile Include="Assets\_scripts\AgentStateMachine.cs" />
-     <Compile Include="Assets\_scripts\IAgentState.cs" />
-     <Compile Include="Assets\_scripts\ISteeringBehaviour.cs" />
-     <Compile Include="Assets\_scripts\KinematicInfo.cs" />
-     <Compile Include="Assets\_scripts\PlayerMovement.cs" />
-     <Compile Include="Assets\_scripts\SteeringOutput.cs" />
-     <Compile Include="Assets\_scripts\_agentsTypes\Player.cs" />
-     <Compile Include="Assets\_scripts\_agentsTypes\Wanderer.cs" />
-     <Compile Include="Assets\_scripts\_states\CamperDead.cs" />
-     <Compile Include="Assets\_scripts\_states\CamperEvade.cs" />
-     <Compile Include="Assets\_scripts\_states\CamperFlock.cs" />
-     <Compile Include="Assets\_scripts\_states\CamperIdle.cs" />
-     <Compile Include="Assets\_scripts\_states\WerewolfAttack.cs" />
-     <Compile Include="Assets\_scripts\_states\WerewolfCharge.cs" />
-     <Compile Include="Assets\_scripts\_states\WerewolfEvade.cs" />
-     <Compile Include="Assets\_scripts\_states\WerewolfIdle.cs" />
-     <Compile Include="Assets\_scripts\_steeringBehaviours\AlignSteer.cs" />
-     <Compile Include="Assets\_scripts\_steeringBehaviours\ArriveSteer.cs" />
-     <Compile Include="Assets\_scripts\_steeringBehaviours\EvadeSteer.cs" />
-     <Compile Include="Assets\_scripts\_steeringBehaviours\FaceSteer.cs" />
-     <Compile Include="Assets\_scripts\_steeringBehaviours\FleeSteer.cs" />
-     <Compile Include="Assets\_scripts\_steeringBehaviours\LWYGSteer.cs" />
-     <Compile Include="Assets\_scripts\_steeringBehaviours\PursueSteer.cs" />
-     <Compile Include="Assets\_scripts\_steeringBehaviours\SeekSteer.cs" />
-     <Compile Include="Assets\_scripts\_steeringBehaviours\WanderSteer.cs" />
-     <Compile Include="Assets\_scripts\_utils\Debug.cs" />
-     <Compile Include="Assets\_scripts\_utils\MotionUtils.cs" />
-     <None Include="Assets\TK2DROOT\tk2d\Shaders\PremulVertexColor.shader" />
-     <None Include="Assets\TK2DROOT\tk2d\Shaders\BlendVertexColor.shader" />
+    <Compile Include="Assets\TK2DROOT\tk2d\Fonts\tk2dFont.cs" />
+    <Compile Include="Assets\TK2DROOT\tk2d\Fonts\tk2dFontData.cs" />
+    <Compile Include="Assets\TK2DROOT\tk2d\Fonts\tk2dTextMesh.cs" />
+    <Compile Include="Assets\TK2DROOT\tk2d\Sprites\tk2dAnimatedSprite.cs" />
+    <Compile Include="Assets\TK2DROOT\tk2d\Sprites\tk2dBaseSprite.cs" />
+    <Compile Include="Assets\TK2DROOT\tk2d\Sprites\tk2dPixelPerfectHelper.cs" />
+    <Compile Include="Assets\TK2DROOT\tk2d\Sprites\tk2dSprite.cs" />
+    <Compile Include="Assets\TK2DROOT\tk2d\Sprites\tk2dSpriteAnimation.cs" />
+    <Compile Include="Assets\TK2DROOT\tk2d\Sprites\tk2dSpriteCollection.cs" />
+    <Compile Include="Assets\TK2DROOT\tk2d\Sprites\tk2dSpriteCollectionData.cs" />
+    <Compile Include="Assets\TK2DROOT\tk2d\Sprites\tk2dStaticSpriteBatcher.cs" />
+    <Compile Include="Assets\_scripts\Agent.cs" />
+    <Compile Include="Assets\_scripts\AgentStateMachine.cs" />
+    <Compile Include="Assets\_scripts\IAgentState.cs" />
+    <Compile Include="Assets\_scripts\ISteeringBehaviour.cs" />
+    <Compile Include="Assets\_scripts\KinematicInfo.cs" />
+    <Compile Include="Assets\_scripts\PlayerMovement.cs" />
+    <Compile Include="Assets\_scripts\SteeringOutput.cs" />
+    <Compile Include="Assets\_scripts\_agentsTypes\Player.cs" />
+    <Compile Include="Assets\_scripts\_agentsTypes\Wanderer.cs" />
+    <Compile Include="Assets\_scripts\_states\CamperDead.cs" />
+    <Compile Include="Assets\_scripts\_states\CamperEvade.cs" />
+    <Compile Include="Assets\_scripts\_states\CamperFlock.cs" />
+    <Compile Include="Assets\_scripts\_states\CamperIdle.cs" />
+    <Compile Include="Assets\_scripts\_states\WerewolfAttack.cs" />
+    <Compile Include="Assets\_scripts\_states\WerewolfCharge.cs" />
+    <Compile Include="Assets\_scripts\_states\WerewolfEvade.cs" />
+    <Compile Include="Assets\_scripts\_states\WerewolfIdle.cs" />
+    <Compile Include="Assets\_scripts\_steeringBehaviours\AlignSteer.cs" />
+    <Compile Include="Assets\_scripts\_steeringBehaviours\ArriveSteer.cs" />
+    <Compile Include="Assets\_scripts\_steeringBehaviours\EvadeSteer.cs" />
+    <Compile Include="Assets\_scripts\_steeringBehaviours\FaceSteer.cs" />
+    <Compile Include="Assets\_scripts\_steeringBehaviours\FleeSteer.cs" />
+    <Compile Include="Assets\_scripts\_steeringBehaviours\FrictionSteer.cs" />
+    <Compile Include="Assets\_scripts\_steeringBehaviours\LWYGSteer.cs" />
+    <Compile Include="Assets\_scripts\_steeringBehaviours\PursueSteer.cs" />
+    <Compile Include="Assets\_scripts\_steeringBehaviours\SeekSteer.cs" />
+    <Compile Include="Assets\_scripts\_steeringBehaviours\WanderSteer.cs" />
+    <Compile Include="Assets\_scripts\_utils\Debug.cs" />
+    <Compile Include="Assets\_scripts\_utils\MotionUtils.cs" />
+    <None Include="Assets\TK2DROOT\tk2d\Shaders\PremulVertexColor.shader" />
+    <None Include="Assets\TK2DROOT\tk2d\Shaders\BlendVertexColor.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -94,5 +96,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  
 </Project>

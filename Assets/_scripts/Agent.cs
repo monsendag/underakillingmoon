@@ -12,10 +12,25 @@ class SteeringPair
     public ISteeringBehaviour behaviour;
 }
 
+/// <summary>
+/// The Agent class has two functions. The first is that is tracks steering
+/// behaviours, and blends between them. It uses a priority system to determine
+/// which behaviours to blend. First, the Agent will get the acceleration outputs
+/// from all the steering behaviours with priority 0. If these don't suggest any
+/// significant output, it then evaluates priority level 1, then 2 and so on. There
+/// are five priority levels. The first priority level it finds with a significant
+/// output will have the output of it's behaviours averaged, then applied to the 
+/// object.
+/// 
+/// The second use of the agent class is to work as a finite state machine for the
+/// agents behaviour. The Agent class has a property called AgentState, which is of type
+/// IAgentState. It's update routine is called every update. See IAgentState for more info.
+/// </summary>
 public class Agent : MonoBehaviour 
 {
     const uint NUM_PRIORITY_LEVELS = 5;
     const float EPSILON = 0.1f;
+    const float EPSILON_ROTATION = 0.01f;
     
     private Dictionary<string,SteeringPair> behaviours = 
         new Dictionary<string,SteeringPair>();
@@ -151,7 +166,10 @@ public class Agent : MonoBehaviour
             AgentState = nextState;
         }
 
-        uint[] priorityCounts = new uint[NUM_PRIORITY_LEVELS];
+        // We keep two sets of priority counts, so we can find an average of
+        // the blended behaviours.
+        uint[] linearPriorityCounts = new uint[NUM_PRIORITY_LEVELS];
+        uint[] angularPriorityCounts = new uint[NUM_PRIORITY_LEVELS];
         Vector2[] linearAccelerations = new Vector2[NUM_PRIORITY_LEVELS];
         float[]  angularAccelerations = new float[NUM_PRIORITY_LEVELS];
      
@@ -160,9 +178,19 @@ public class Agent : MonoBehaviour
         {
             SteeringOutput output =
                 pair.behaviour.CalculateAcceleration(gameObject, KinematicInfo);
-            priorityCounts[pair.priority] += 1;
-            linearAccelerations[pair.priority] += output.Linear;
-            angularAccelerations[pair.priority] += output.Angular;
+            // Only take a steering behaviour into account if their is  significant
+            // movement.
+            if (output.Linear.magnitude > EPSILON)
+            {
+                linearPriorityCounts[pair.priority] += 1;
+                linearAccelerations[pair.priority] += output.Linear;
+            }
+            
+            if (Mathf.Abs(output.Angular) > EPSILON_ROTATION)
+            {
+                angularPriorityCounts[pair.priority] += 1;
+                angularAccelerations[pair.priority] += output.Angular;
+            }
         }
 
         // We step through each behaviour priority value, until an
@@ -171,14 +199,22 @@ public class Agent : MonoBehaviour
 
         for (uint i = 0; i < NUM_PRIORITY_LEVELS; ++i)
         {
-            if (priorityCounts[i] > 0)
+            if (linearPriorityCounts[i] > 0 || angularPriorityCounts[i] > 0)
             {
                 // Blend the accelerations at the current priority level.
-                Vector2 linearAveraged = linearAccelerations[i] / 
-                    priorityCounts[i];
-                float angularAveraged = angularAccelerations[i] / 
-                    priorityCounts[i];
-                if (linearAveraged.magnitude > EPSILON)
+                Vector2 linearAveraged = Vector2.zero;
+                if (linearPriorityCounts[i] > 0)
+                {
+                    linearAveraged = linearAccelerations[i] /
+                    linearPriorityCounts[i];
+                }
+                float angularAveraged = 0.0f;
+                if (angularPriorityCounts[i] > 0) 
+                { 
+                    angularAveraged = angularAccelerations[i] / angularPriorityCounts[i];
+                }
+                if (linearAveraged.magnitude > EPSILON || 
+                    Mathf.Abs(angularAveraged) > EPSILON_ROTATION)
                 {
                     acceleration.Linear = linearAveraged;
                     acceleration.Angular = angularAveraged;
@@ -217,9 +253,16 @@ public class Agent : MonoBehaviour
         _kinematicInfo.Velocity += acceleration.Linear * Time.deltaTime;
         _kinematicInfo.AngularVelocity += acceleration.Angular * Time.deltaTime;
 
+        if (Mathf.Abs(_kinematicInfo.AngularVelocity) > MaxAngularVelocity)
+        {
+            _kinematicInfo.AngularVelocity /= Mathf.Abs(_kinematicInfo.AngularVelocity);
+            _kinematicInfo.AngularVelocity *= MaxAngularVelocity;
+        }
+
         // Update the Orientation and Position values.
         _kinematicInfo.Position = new Vector2(gameObject.transform.position.x, gameObject.transform.position.z);
 
-        _kinematicInfo.Orientation += acceleration.Angular * Time.deltaTime;
+        _kinematicInfo.Orientation += _kinematicInfo.AngularVelocity * Time.deltaTime;
+        _kinematicInfo.Orientation = MotionUtils.MapToRangeRadians(_kinematicInfo.Orientation);
     }
 }

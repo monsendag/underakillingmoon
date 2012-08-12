@@ -14,16 +14,23 @@ public class WanderSteer : FaceSteer
     public float WanderRadius = 0.0f;
     public float MaxOrientationChange = 0.0f;
     public float WanderOrientation = 0.0f;
+    public float MinUpdateTime = 0.1f;
+    private float _minUpdateCounter = 0.0f;
 
     public WanderSteer() {}
 
     override public SteeringOutput CalculateAcceleration(GameObject agent, KinematicInfo info)
     {
         //  Weight the change in orientation  against the angular velocity of info.
-        WanderOrientation += MaxOrientationChange * 
-            MotionUtils.RandomBinomial() - info.AngularVelocity * Random.Range(0.0f,1.0f);
+        _minUpdateCounter += Time.deltaTime;
+        if (_minUpdateCounter > MinUpdateTime)
+        {
+            WanderOrientation += MaxOrientationChange *
+                MotionUtils.RandomBinomial();
+            _minUpdateCounter = 0.0f;
+        }
 
-        float targetOrientation = WanderOrientation + info.Orientation;
+        float targetOrientation = WanderOrientation ;
 
         Vector2 target = info.Position + WanderOffset * 
             MotionUtils.GetOrientationAsVector(info.Orientation);
