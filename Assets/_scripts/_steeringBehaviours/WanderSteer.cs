@@ -9,10 +9,10 @@ using System.Collections;
 /// </summary>
 public class WanderSteer : FaceSteer
 {
-    public float MaxAcceleration = 0.0f;
-    public float WanderOffset = 0.0f;
-    public float WanderRadius = 0.0f;
-    public float MaxOrientationChange = 0.0f;
+    public float MaxAcceleration = 4.0f;
+    public float WanderOffset = 2.9f;
+    public float WanderRadius = 0.75f;
+    public float MaxOrientationChange = Mathf.PI / 4.0f;
     public float WanderOrientation = 0.0f;
     public float MinUpdateTime = 0.1f;
     private float _minUpdateCounter = 0.0f;

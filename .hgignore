@@ -6,3 +6,5 @@ Library
 *.sln
 *.booproj
 *.suo
+*.orig
+*.orig.meta
