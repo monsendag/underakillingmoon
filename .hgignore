@@ -1,3 +1,8 @@
-syntax glob:
+syntax: glob
 Temp
 Library
+*.pidb
+*.csproj
+*.sln
+*.booproj
+*.suo

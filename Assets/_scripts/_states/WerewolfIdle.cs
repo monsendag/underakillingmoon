@@ -9,14 +9,22 @@ public class WerewolfIdle : IAgentState
 	
 	public void Update (Agent agent, out IAgentState nextState)
 	{
-		
 		nextState = this;
 		
-		/// werewolf discovers a prey -> charge
+		/// Has target, target not in range -> Charge
 		if (true) {
 			nextState = new WerewolfCharge ();
 		}
 		
+		/// Attacked -> Evade
+		if (true) {
+			nextState = new WerewolfCharge ();
+		}
+		
+		/// Attacked -> Evade
+		if (true) {
+			nextState = new WerewolfCharge ();
+		}
 	}
 }
 

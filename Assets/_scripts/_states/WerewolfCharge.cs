@@ -11,8 +11,19 @@ public class WerewolfCharge : IAgentState
 	{
 		nextState = this;
 		
-		if (true) { //query world nextState)
-//			nextState = new SomeAgentState ();
+		/// Has target, target in range -> Attack
+		if (true) { 
+			nextState = new WerewolfAttack ();
+		}
+		
+		/// Being attacked -> Evade
+		if (true) { 
+			nextState = new WerewolfEvade ();
+		}
+		
+		/// Has no target -> Idle
+		if (true) { 
+			nextState = new WerewolfIdle ();
 		}
 		
 	}

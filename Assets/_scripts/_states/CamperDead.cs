@@ -15,9 +15,7 @@ public class CamperDead : IAgentState
 		if (true) { 
 			
 		}
-		
 	}
-	
 }
 
 

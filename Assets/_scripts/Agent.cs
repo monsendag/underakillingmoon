@@ -5,14 +5,13 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-
 class SteeringPair
 {
     public uint priority;
     public ISteeringBehaviour behaviour;
 }
 
-/// <summary>
+[RequireComponent(typeof(CharacterController))]
 /// The Agent class has two functions. The first is that is tracks steering
 /// behaviours, and blends between them. It uses a priority system to determine
 /// which behaviours to blend. First, the Agent will get the acceleration outputs
@@ -41,7 +40,10 @@ public class Agent : MonoBehaviour
 
     private KinematicInfo _kinematicInfo;
     private IAgentState _agentState;
-
+	
+	private CharacterController _controller;
+	
+	#region varaccess
     public float MaxAcceleration 
     {
         get { return _maxAcceleration; }
@@ -71,16 +73,19 @@ public class Agent : MonoBehaviour
     }
 
     public KinematicInfo KinematicInfo { get { return _kinematicInfo; } }
+	#endregion
 
-    public void Start()
+    public virtual void Start()
     {
         // Initialise KinematicInfo.
         _kinematicInfo = new KinematicInfo();
         _kinematicInfo.Orientation = 0.0f;
         _kinematicInfo.Position = new Vector2(gameObject.transform.position.x, gameObject.transform.position.z);
-        _kinematicInfo.Velocity = Vector3.zero;
+        _kinematicInfo.Velocity = Vector2.zero;
         _kinematicInfo.AngularVelocity = 0.0f;
-    }
+		
+		_controller = gameObject.GetComponent<CharacterController>(); 
+	}
 
     /// <summary>
     /// Adds a steering behaviour to the steering state.
@@ -156,7 +161,7 @@ public class Agent : MonoBehaviour
     }
 
 	// Update is called once per frame
-    void Update()
+    public virtual void Update()
     {
         // Allow the agent state to update.
         if (AgentState != null)
@@ -165,7 +170,8 @@ public class Agent : MonoBehaviour
             AgentState.Update(this, out nextState);
             AgentState = nextState;
         }
-
+	}
+	
         // We keep two sets of priority counts, so we can find an average of
         // the blended behaviours.
         uint[] linearPriorityCounts = new uint[NUM_PRIORITY_LEVELS];
@@ -194,7 +200,7 @@ public class Agent : MonoBehaviour
         }
 
         // We step through each behaviour priority value, until an
-        // acceleration greater than epsilon are encountered.
+        // acceleration greater than epsilon is encountered.
         SteeringOutput acceleration = new SteeringOutput();
 
         for (uint i = 0; i < NUM_PRIORITY_LEVELS; ++i)
@@ -237,14 +243,13 @@ public class Agent : MonoBehaviour
         }
 
         
-        // A bit of hight school maths here. Take the starting position u, and the end position as x, then
+        // Take the starting position u, and the end position as x, then
         // x = u + 1/2at^2 + vt where a is acceleration, v is velocity, and t is time.
         Vector3 motion = 
             new Vector3(_kinematicInfo.Velocity.x, 0.0f, _kinematicInfo.Velocity.y) * Time.deltaTime + 
             new Vector3(acceleration.Linear.x, 0.0f, acceleration.Linear.y) * Time.deltaTime * Time.deltaTime * 0.5f;
 
-        CharacterController controller = gameObject.GetComponent<CharacterController>();
-        controller.Move(motion);
+        _controller.Move(motion);
 
         Vector2 facingVector = MotionUtils.GetOrientationAsVector(_kinematicInfo.Orientation);
         transform.LookAt(transform.position + new Vector3(facingVector.x,0.0f,facingVector.y));
@@ -265,4 +270,9 @@ public class Agent : MonoBehaviour
         _kinematicInfo.Orientation += _kinematicInfo.AngularVelocity * Time.deltaTime;
         _kinematicInfo.Orientation = MotionUtils.MapToRangeRadians(_kinematicInfo.Orientation);
     }
+	
+	public List<Agent> getAgentsInArea(float radius) {
+		return MotionUtils.getAgentsInArea(_kinematicInfo.Position, radius);
+	}
+	
 }

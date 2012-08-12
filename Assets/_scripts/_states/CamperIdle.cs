@@ -8,22 +8,16 @@ public class CamperIdle : IAgentState
 	
 	public void Update (Agent agent, out IAgentState nextState)
 	{
-		
 		nextState = this;
 		
-		/// camper is attacked
+		/// camper is attacked -> Evade
 		if (true) { 
-			nextState = new CamperEvade();
-		
+			nextState = new CamperEvade ();
 		}
 		
-		/// camper is close to other campers -> flock
-		if(true) {
-			nextState = new CamperFlock();
+		/// camper is close to other campers -> Flock
+		if (true) {
+			nextState = new CamperFlock ();
 		}
-		
 	}
-	
-}
-
-
+} 
