@@ -11,7 +11,7 @@ class SteeringPair
     public ISteeringBehaviour behaviour;
 }
 
-[RequireComponent(typeof(CharacterController))]
+
 /// The Agent class has two functions. The first is that is tracks steering
 /// behaviours, and blends between them. It uses a priority system to determine
 /// which behaviours to blend. First, the Agent will get the acceleration outputs
@@ -24,7 +24,8 @@ class SteeringPair
 /// The second use of the agent class is to work as a finite state machine for the
 /// agents behaviour. The Agent class has a property called AgentState, which is of type
 /// IAgentState. It's update routine is called every update. See IAgentState for more info.
-/// </summary>
+/// </summary> 
+[RequireComponent(typeof(CharacterController))]
 public class Agent : MonoBehaviour 
 {
     const uint NUM_PRIORITY_LEVELS = 5;
@@ -170,7 +171,6 @@ public class Agent : MonoBehaviour
             AgentState.Update(this, out nextState);
             AgentState = nextState;
         }
-	}
 	
         // We keep two sets of priority counts, so we can find an average of
         // the blended behaviours.
@@ -178,7 +178,7 @@ public class Agent : MonoBehaviour
         uint[] angularPriorityCounts = new uint[NUM_PRIORITY_LEVELS];
         Vector2[] linearAccelerations = new Vector2[NUM_PRIORITY_LEVELS];
         float[]  angularAccelerations = new float[NUM_PRIORITY_LEVELS];
-     
+
         // Total up all the influences.
         foreach (var pair in behaviours.Values)
         {
@@ -271,8 +271,8 @@ public class Agent : MonoBehaviour
         _kinematicInfo.Orientation = MotionUtils.MapToRangeRadians(_kinematicInfo.Orientation);
     }
 	
-	public List<Agent> getAgentsInArea(float radius) {
-		return MotionUtils.getAgentsInArea(_kinematicInfo.Position, radius);
+	public List<Agent> GetAgentsInArea(float radius) {
+		return MotionUtils.GetAgentsInArea(transform.position, radius);
 	}
 	
 }

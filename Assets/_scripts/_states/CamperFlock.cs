@@ -20,7 +20,8 @@ public class CamperFlock : IAgentState
 		}
 		
 		float flockingRadius = 5f; // TODO: move this setting to configuration file
-		List<Agent> agents = agent.getAgentsInArea(flockingRadius).Where(a => a is Camper);
+
+		var agents = agent.GetAgentsInArea(flockingRadius).Where(a => a is Camper);
 		
 		/*foreach(var a in agents) {
 			if(a is Camper) {

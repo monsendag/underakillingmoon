@@ -53,25 +53,5 @@ public class Wanderer : MonoBehaviour
         //agent.AddBehaviour("seek", seekSteer, 0);
         
 	}
-	
-	// Update is called once per frame
-	void Update() 
-    {
-        Vector2 dif = agent.KinematicInfo.Position - target;
-        if (dif.magnitude < 1.0f)
-        {
-            target.x = Random.Range(-48.0f, 48.0f);
-            target.y = Random.Range(-48.0f, 48.0f);
-         
-  //          ArriveSteer arriveSteer = (ArriveSteer) agent.GetBehaviour("arrive");
-  //          arriveSteer.Target.Position = target;
-        }
-	}
 
-    void OnDrawGizmos()
-    {
-        Vector3 targetActual = new Vector3(target.x, 0.0f, target.y);
-        Gizmos.color = Color.blue;
-        Gizmos.DrawSphere(targetActual, 1.0f);
-    }
 }

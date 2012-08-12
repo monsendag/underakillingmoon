@@ -78,7 +78,7 @@ public class MotionUtils
 	/// <param name='radius'>
 	/// Radius.
 	/// </param>
-	public static List<Agent> getAgentsInArea (Vector3 position, float radius)
+	public static List<Agent> GetAgentsInArea(Vector3 position, float radius)
 	{
 		Collider[] colliders = Physics.OverlapSphere (position, radius);
 			
