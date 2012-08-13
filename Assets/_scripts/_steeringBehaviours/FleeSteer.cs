@@ -10,19 +10,21 @@ using System.Collections;
 /// </summary>
 public class FleeSteer : ISteeringBehaviour
 {
-    public KinematicInfo Target = new KinematicInfo();
-    public float MaxAcceleration;
+	public KinematicInfo Target = new KinematicInfo();
+	public float MaxAcceleration;
 
-    public FleeSteer() {}
+	public FleeSteer()
+	{
+	}
 
-    virtual public SteeringOutput CalculateAcceleration(GameObject agent, KinematicInfo info)
-    {
-        SteeringOutput steering = new SteeringOutput();
+	virtual public SteeringOutput CalculateAcceleration(GameObject agent, KinematicInfo info)
+	{
+		SteeringOutput steering = new SteeringOutput();
 
-        steering.Linear = info.Position - Target.Position;
-        steering.Linear.Normalize();
-        steering.Linear *= MaxAcceleration;
+		steering.Linear = info.Position - Target.Position;
+		steering.Linear.Normalize();
+		steering.Linear *= MaxAcceleration;
 
-        return steering;
-    }
+		return steering;
+	}
 }

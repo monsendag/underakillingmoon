@@ -4,14 +4,14 @@ using System.Collections;
 public class AgentStateMachine
 {
 	// Use this for initialization
-	void Start () 
-    {
+	void Start()
+	{
 	
 	}
 	
 	// Update is called once per frame
-	void Update () 
-    {
+	void Update()
+	{
     
 	}
 }

@@ -14,12 +14,12 @@ public class MotionUtils
 	///     A unit vector representing that angle. An orientation of 0 
 	///     corresponds to a unit vector of (1.0f,0.0f)
 	/// </returns>
-	public static Vector2 GetOrientationAsVector (float orientation)
+	public static Vector2 GetOrientationAsVector(float orientation)
 	{
 		Vector2 orientation2;
 
-		orientation2.x = Mathf.Cos (orientation);
-		orientation2.y = Mathf.Sin (orientation);
+		orientation2.x = Mathf.Cos(orientation);
+		orientation2.y = Mathf.Sin(orientation);
 		return orientation2;
 	}
 
@@ -30,13 +30,13 @@ public class MotionUtils
 	///     The 2d orientation vector. Should be a unit vector.
 	/// </param>
 	/// <returns>
-    ///     The angle between (1.0f,0.0f) and the orientation vector, in 
-    ///     radians. This value ranges from (-PI,PI].
+	///     The angle between (1.0f,0.0f) and the orientation vector, in 
+	///     radians. This value ranges from (-PI,PI].
 	/// </returns>
-	public static float SetOrientationFromVector (Vector2 orientation2d)
+	public static float SetOrientationFromVector(Vector2 orientation2d)
 	{
-		orientation2d.Normalize ();
-		float orientation = Mathf.Atan2 (orientation2d.y, orientation2d.x);
+		orientation2d.Normalize();
+		float orientation = Mathf.Atan2(orientation2d.y, orientation2d.x);
 		return orientation;
 	}
 
@@ -44,9 +44,9 @@ public class MotionUtils
 	/// Produces a random number in the range -1 to 1, with a binomial 
 	/// distribution, (eg, values around 0 are more likely).
 	/// </summary>
-	public static float RandomBinomial ()
+	public static float RandomBinomial()
 	{
-		return Random.Range (0.0f, 1.0f) - Random.Range (0.0f, 1.0f);
+		return Random.Range(0.0f, 1.0f) - Random.Range(0.0f, 1.0f);
 	}
 
 	/// <summary>
@@ -58,11 +58,11 @@ public class MotionUtils
 	/// <returns>
 	///     A radian value with the range (-PI,PI].
 	/// </returns>
-	public static float MapToRangeRadians (float radians)
+	public static float MapToRangeRadians(float radians)
 	{
 
-		Vector2 orient = GetOrientationAsVector (radians);
-		float value = SetOrientationFromVector (orient);
+		Vector2 orient = GetOrientationAsVector(radians);
+		float value = SetOrientationFromVector(orient);
 		return value;
 	}
 	
@@ -80,13 +80,13 @@ public class MotionUtils
 	/// </param>
 	public static List<Agent> GetAgentsInArea(Vector3 position, float radius)
 	{
-		Collider[] colliders = Physics.OverlapSphere (position, radius);
+		Collider[] colliders = Physics.OverlapSphere(position, radius);
 			
 		List<Agent> agentList = new List<Agent>();
 		Agent agent;
 		foreach (var collider in colliders) {
-			agent = collider.GetComponent<Agent> ();
-			if(agent != null) {
+			agent = collider.GetComponent<Agent>();
+			if (agent != null) {
 				agentList.Add(agent);
 			}
 		}

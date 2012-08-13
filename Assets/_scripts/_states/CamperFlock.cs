@@ -5,7 +5,6 @@ using System.Linq;
 public class CamperFlock : IAgentState
 {
 	private bool initialised = false;
-
 	private WanderSteer wander = new WanderSteer();
 	private CollisionAvoidanceSteer avoid = new CollisionAvoidanceSteer();
 	private SeperationSteer seperation = new SeperationSteer();

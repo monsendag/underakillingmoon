@@ -2,22 +2,22 @@ using UnityEngine;
 
 public class CamperIdle : IAgentState
 {
-	public CamperIdle ()
+	public CamperIdle()
 	{
 	}
 	
-	public void Update (Agent agent, out IAgentState nextState)
+	public void Update(Agent agent, out IAgentState nextState)
 	{
 		nextState = this;
 		
 		/// camper is attacked -> Evade
 		if (true) { 
-			nextState = new CamperEvade ();
+			nextState = new CamperEvade();
 		}
 		
 		/// camper is close to other campers -> Flock
 		if (true) {
-			nextState = new CamperFlock ();
+			nextState = new CamperFlock();
 		}
 	}
 } 

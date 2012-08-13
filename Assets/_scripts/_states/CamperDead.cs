@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class CamperDead : IAgentState
 {
-	public CamperDead ()
+	public CamperDead()
 	{
 		
 	}
 	
-	public void Update (Agent agent, out IAgentState nextState)
+	public void Update(Agent agent, out IAgentState nextState)
 	{
 		nextState = this;
 		

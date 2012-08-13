@@ -7,6 +7,6 @@ using System.Collections;
 
 public struct SteeringOutput
 {
-    public Vector2 Linear; // Linear acceleration.
-    public float Angular; // Angular Rotation in radians.
+	public Vector2 Linear; // Linear acceleration.
+	public float Angular; // Angular Rotation in radians.
 }

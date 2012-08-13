@@ -9,48 +9,45 @@ using System.Collections;
 /// </summary>
 public class ArriveSteer : ISteeringBehaviour
 {
-    public KinematicInfo Target = new KinematicInfo();
-    public float MaxAcceleration;
-    public float TargetRadius;
-    public float MaxVelocity;
-    public float SlowRadius = 0.5f;
-    public float TimeToTarget = 0.1f;
+	public KinematicInfo Target = new KinematicInfo();
+	public float MaxAcceleration;
+	public float TargetRadius;
+	public float MaxVelocity;
+	public float SlowRadius = 0.5f;
+	public float TimeToTarget = 0.1f;
 
-    public ArriveSteer() {}
+	public ArriveSteer()
+	{
+	}
 
-    virtual public SteeringOutput CalculateAcceleration(GameObject agent, KinematicInfo info)
-    {
-        SteeringOutput steering = new SteeringOutput();
+	virtual public SteeringOutput CalculateAcceleration(GameObject agent, KinematicInfo info)
+	{
+		SteeringOutput steering = new SteeringOutput();
 
-        Vector2 direction = Target.Position - info.Position;
-        float distance = direction.magnitude;
-        if (distance < TargetRadius)
-        {
-            return steering;
-        }
+		Vector2 direction = Target.Position - info.Position;
+		float distance = direction.magnitude;
+		if (distance < TargetRadius) {
+			return steering;
+		}
         
-        float targetSpeed = 0.0f;
-        if (distance > SlowRadius)
-        {
-            targetSpeed = MaxVelocity;
-        }
-        else
-        {
-            targetSpeed = MaxVelocity * distance / SlowRadius;
-        }
+		float targetSpeed = 0.0f;
+		if (distance > SlowRadius) {
+			targetSpeed = MaxVelocity;
+		} else {
+			targetSpeed = MaxVelocity * distance / SlowRadius;
+		}
 
-        Vector2 targetVelocity = direction;
-        targetVelocity.Normalize();
-        targetVelocity *= targetSpeed;
-        steering.Linear = targetVelocity - info.Velocity;
-        steering.Linear /= TimeToTarget;
+		Vector2 targetVelocity = direction;
+		targetVelocity.Normalize();
+		targetVelocity *= targetSpeed;
+		steering.Linear = targetVelocity - info.Velocity;
+		steering.Linear /= TimeToTarget;
 
-        if (steering.Linear.magnitude > MaxAcceleration)
-        {
-            steering.Linear.Normalize();
-            steering.Linear *= MaxAcceleration;
-        }
+		if (steering.Linear.magnitude > MaxAcceleration) {
+			steering.Linear.Normalize();
+			steering.Linear *= MaxAcceleration;
+		}
 
-        return steering;
-    }
+		return steering;
+	}
 }
