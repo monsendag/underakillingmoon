@@ -7,4 +7,5 @@ Library
 *.booproj
 *.suo
 *.orig
+*.swp
 *.orig.meta
