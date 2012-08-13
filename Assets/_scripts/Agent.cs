@@ -4,6 +4,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 
 class SteeringPair
 {
@@ -275,4 +276,16 @@ public class Agent : MonoBehaviour
 		return MotionUtils.GetAgentsInArea(transform.position, radius);
 	}
 	
+	public float distanceTo(Agent other)
+	{
+		return Vector2.Distance(KinematicInfo.Position, other.KinematicInfo.Position);
+	}
+
+	public void sendStateMessage(string functionName, object[] args)
+	{
+		MethodInfo callback = _agentState.GetType().GetMethod(functionName);
+		if (callback != null) {
+			callback.Invoke(_agentState, args);
+		}
+	}
 }
