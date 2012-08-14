@@ -9,18 +9,20 @@ using System.Collections;
 /// </summary>
 public class FrictionSteer : ISteeringBehaviour
 {
-    // This variable represents the rate of inertia
-    public float VelocityFrictionPercentage = 0.1f;
-    public float AngularVelocityFrictionPercentage = 0.1f;
+	// This variable represents the rate of inertia
+	public float VelocityFrictionPercentage = 0.1f;
+	public float AngularVelocityFrictionPercentage = 0.1f;
 
-    public FrictionSteer() { }
+	public FrictionSteer()
+	{
+	}
 
-    public SteeringOutput CalculateAcceleration(GameObject agent, KinematicInfo info)
-    {
-        SteeringOutput output = new SteeringOutput();
-        output.Linear = info.Velocity * (-VelocityFrictionPercentage);
-        output.Angular = info.AngularVelocity * (-VelocityFrictionPercentage);
+	public SteeringOutput CalculateAcceleration(GameObject agent, KinematicInfo info)
+	{
+		SteeringOutput output = new SteeringOutput();
+		output.Linear = info.Velocity * (-VelocityFrictionPercentage);
+		output.Angular = info.AngularVelocity * (-VelocityFrictionPercentage);
 
-        return output;
-    }
+		return output;
+	}
 }

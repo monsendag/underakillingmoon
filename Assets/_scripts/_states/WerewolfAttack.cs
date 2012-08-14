@@ -4,6 +4,7 @@ public class WerewolfAttack : AgentStateMachine
 {
 	Agent target;
 	Agent attacker;
+
 	public void initAction()
 	{
 
@@ -13,8 +14,6 @@ public class WerewolfAttack : AgentStateMachine
 	{
 
 	}
-
-
 	
 	public new void Update(out AgentStateMachine nextState)
 	{

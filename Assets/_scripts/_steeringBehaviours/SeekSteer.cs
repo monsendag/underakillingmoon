@@ -9,18 +9,20 @@ using System.Collections;
 /// </summary>
 public class SeekSteer : ISteeringBehaviour
 {
-    public KinematicInfo Target = new KinematicInfo();
-    public float MaxAcceleration;
+	public KinematicInfo Target = new KinematicInfo();
+	public float MaxAcceleration;
 
-    public SeekSteer() {}
+	public SeekSteer()
+	{
+	}
 
-    virtual public SteeringOutput CalculateAcceleration(GameObject agent, KinematicInfo info)
-    {
-        SteeringOutput steering = new SteeringOutput();
-        steering.Linear = Target.Position - info.Position;
-        steering.Linear.Normalize();
-        steering.Linear *= MaxAcceleration;
-        Debug.Log(steering.Linear);
-        return steering;
-    }
+	virtual public SteeringOutput CalculateAcceleration(GameObject agent, KinematicInfo info)
+	{
+		SteeringOutput steering = new SteeringOutput();
+		steering.Linear = Target.Position - info.Position;
+		steering.Linear.Normalize();
+		steering.Linear *= MaxAcceleration;
+		Debug.Log(steering.Linear);
+		return steering;
+	}
 }

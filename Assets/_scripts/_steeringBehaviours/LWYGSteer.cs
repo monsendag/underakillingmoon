@@ -10,18 +10,19 @@ using System.Collections;
 /// </summary>
 public class LWYGSteer : AlignSteer
 {
-    public LWYGSteer() {}
+	public LWYGSteer()
+	{
+	}
 
-    override public SteeringOutput CalculateAcceleration(GameObject agent, KinematicInfo info)
-    {
+	override public SteeringOutput CalculateAcceleration(GameObject agent, KinematicInfo info)
+	{
 
-        if (info.Velocity.magnitude == 0)
-        {
-            return new SteeringOutput();
-        }
+		if (info.Velocity.magnitude == 0) {
+			return new SteeringOutput();
+		}
 
-        Target.Orientation = MotionUtils.SetOrientationFromVector(info.Velocity);
+		Target.Orientation = MotionUtils.SetOrientationFromVector(info.Velocity);
 
-        return base.CalculateAcceleration(agent, info);
-    }
+		return base.CalculateAcceleration(agent, info);
+	}
 }

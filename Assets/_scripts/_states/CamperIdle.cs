@@ -12,7 +12,6 @@ public class CamperIdle : AgentStateMachine
 
 	}
 
-
 	public new void Update(out AgentStateMachine nextState)
 	{
 		nextState = this;

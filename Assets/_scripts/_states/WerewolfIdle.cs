@@ -11,7 +11,6 @@ public class WerewolfIdle : AgentStateMachine
 	{
 
 	}
-
 	
 	public new void Update(out AgentStateMachine nextState)
 	{

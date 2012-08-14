@@ -12,7 +12,6 @@ public class CamperEvade : AgentStateMachine
 
 	}
 
-
 	public new void Update(out AgentStateMachine nextState)
 	{
 		nextState = this;

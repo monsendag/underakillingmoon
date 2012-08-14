@@ -19,7 +19,6 @@ public class WerewolfHunt : AgentStateMachine
 	{
 
 	}
-
 	
 	public new void Update(out AgentStateMachine nextState)
 	{

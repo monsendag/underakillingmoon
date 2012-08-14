@@ -10,44 +10,45 @@ using System.Collections;
 /// </summary>
 public class AlignSteer : ISteeringBehaviour
 {
-    public KinematicInfo Target = new KinematicInfo();
-    public float MaxRotation = 7.0f;
-    public float TargetRadius = 0.025f;
-    public float SlowRadius = 0.05f;
-    public float TimeToTarget = 0.1f;
+	public KinematicInfo Target = new KinematicInfo();
+	public float MaxRotation = 7.0f;
+	public float TargetRadius = 0.025f;
+	public float SlowRadius = 0.05f;
+	public float TimeToTarget = 0.1f;
 
-    public AlignSteer()  {}
+	public AlignSteer()
+	{
+	}
 
-    virtual public SteeringOutput CalculateAcceleration(GameObject agent, KinematicInfo info)
-    {
-        float rotation = Target.Orientation - info.Orientation;
+	virtual public SteeringOutput CalculateAcceleration(GameObject agent, KinematicInfo info)
+	{
+		float rotation = Target.Orientation - info.Orientation;
         
-        rotation = MotionUtils.MapToRangeRadians(rotation);
+		rotation = MotionUtils.MapToRangeRadians(rotation);
         
 
-        float rotationSize = Mathf.Abs(rotation);
+		float rotationSize = Mathf.Abs(rotation);
 
-        SteeringOutput steering = new SteeringOutput();
-        steering.Linear = Vector3.zero;
+		SteeringOutput steering = new SteeringOutput();
+		steering.Linear = Vector3.zero;
 
-        if (rotationSize < TargetRadius)
-        {
-            return steering;
-        }
+		if (rotationSize < TargetRadius) {
+			return steering;
+		}
 
-        float targetRotation = 0.0f;
+		float targetRotation = 0.0f;
 
-        if (rotationSize > SlowRadius) { targetRotation = MaxRotation; }
-        else
-        {
-            targetRotation = MaxRotation * rotationSize / SlowRadius;
-        }
+		if (rotationSize > SlowRadius) {
+			targetRotation = MaxRotation;
+		} else {
+			targetRotation = MaxRotation * rotationSize / SlowRadius;
+		}
 
-        targetRotation *= rotation / rotationSize;
+		targetRotation *= rotation / rotationSize;
 
-        steering.Angular = targetRotation - info.AngularVelocity;
-        steering.Angular /= TimeToTarget;
+		steering.Angular = targetRotation - info.AngularVelocity;
+		steering.Angular /= TimeToTarget;
 
-        return steering;
-    }
+		return steering;
+	}
 }
