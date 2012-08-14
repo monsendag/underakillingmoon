@@ -1,12 +1,19 @@
 using UnityEngine;
 
-public class CamperIdle : IAgentState
+public class CamperIdle : AgentStateMachine
 {
-	public CamperIdle()
+	public void initAction()
 	{
+
 	}
-	
-	public void Update(Agent agent, out IAgentState nextState)
+
+	public void exitAction()
+	{
+
+	}
+
+
+	public new void Update(out AgentStateMachine nextState)
 	{
 		nextState = this;
 		

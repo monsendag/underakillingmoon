@@ -1,19 +1,25 @@
 using UnityEngine;
 
-public class CamperEvade : IAgentState
+public class CamperEvade : AgentStateMachine
 {
-	public CamperEvade()
+	public void initAction()
 	{
+
 	}
-	
-	public void Update(Agent agent, out IAgentState nextState)
+
+	public void exitAction()
+	{
+
+	}
+
+
+	public new void Update(out AgentStateMachine nextState)
 	{
 		nextState = this;
 		
 		/// camper is killed -> Dead
-		if (true) { 
+		if (agent.Health == 0) { 
 			nextState = new CamperDead();
-		
 		}
 		
 		/// camper is not attacked, has company -> Flock 

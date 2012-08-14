@@ -1,22 +1,28 @@
 using UnityEngine;
 
-public class WerewolfAttack : IAgentState
+public class WerewolfAttack : AgentStateMachine
 {
 	Agent target;
 	Agent attacker;
-	
-	public WerewolfAttack(Agent target)
+	public void initAction()
 	{
-		this.target = target;
+
 	}
+
+	public void exitAction()
+	{
+
+	}
+
+
 	
-	public void Update(Agent agent, out IAgentState nextState)
+	public new void Update(out AgentStateMachine nextState)
 	{
 		nextState = this;
 		 
 		/// Attacked -> Evade
 		if (attacker != null) {
-			nextState = new WerewolfEvade(attacker);
+			nextState = new WerewolfEvade();
 		}
 		
 		//  no attacker, no target -> Idle
@@ -25,9 +31,8 @@ public class WerewolfAttack : IAgentState
 		}
 		
 		//  Has target, target not in range -> Charge
-		// TODO: move distance setting to configuration
-		if (target != null && agent.distanceTo(target) > 5) {
-			nextState = new WerewolfCharge(target);
+		if (target != null && agent.distanceTo(target) > Config.WerewolfChargeRange) {
+			nextState = new WerewolfCharge();
 		}
 	}
 }

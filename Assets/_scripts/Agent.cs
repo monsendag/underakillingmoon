@@ -39,11 +39,13 @@ public class Agent : MonoBehaviour
     private float _maxAcceleration = 1.0f;
     private float _maxVelocity = 1.0f;
     private float _maxAngularVelocity = 1.0f;
+	private uint _health;
 
     private KinematicInfo _kinematicInfo;
-    private IAgentState _agentState;
 	
 	private CharacterController _controller;
+
+	public AgentStateMachine StateMachine;
 	
 	#region varaccess
     public float MaxAcceleration 
@@ -64,15 +66,13 @@ public class Agent : MonoBehaviour
         set { _maxAngularVelocity = value; }
     }
 
-    public IAgentState AgentState
-    {
-        get { return _agentState; }
-        set
-        {
-            DebugUtil.Assert(value != null);
-            _agentState = value;
-        }
-    }
+	public uint Health {
+		get { return _health; }
+		set { 
+			DebugUtil.Assert(value >= 0);
+			_health = value;
+		}
+	}
 
     public KinematicInfo KinematicInfo { get { return _kinematicInfo; } }
 	#endregion
@@ -163,15 +163,9 @@ public class Agent : MonoBehaviour
     }
 
 	// Update is called once per frame
-    public virtual void Update()
-    {
-        // Allow the agent state to update.
-        if (AgentState != null)
-        {
-            IAgentState nextState;
-            AgentState.Update(this, out nextState);
-            AgentState = nextState;
-        }
+	public virtual void Update()
+	{
+		// Allow the agent state to update.
 	
         // We keep two sets of priority counts, so we can find an average of
         // the blended behaviours.
@@ -281,11 +275,4 @@ public class Agent : MonoBehaviour
 		return Vector2.Distance(KinematicInfo.Position, other.KinematicInfo.Position);
 	}
 
-	public void sendStateMessage(string functionName, object[] args)
-	{
-		MethodInfo callback = _agentState.GetType().GetMethod(functionName);
-		if (callback != null) {
-			callback.Invoke(_agentState, args);
-		}
-	}
 }

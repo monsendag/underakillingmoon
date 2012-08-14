@@ -2,25 +2,14 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 
-public class CamperFlock : IAgentState
+public class CamperFlock : AgentStateMachine
 {
-	private bool initialised = false;
 	private WanderSteer wander = new WanderSteer();
 	private CollisionAvoidanceSteer avoid = new CollisionAvoidanceSteer();
 	private SeperationSteer seperation = new SeperationSteer();
 
-	public CamperFlock()
+	public void InitAction()
 	{
-	}
-
-	private void Initialise(Agent agent)
-	{
-		if (initialised) {
-			return;
-		} 
-		initialised = true;
-
-
 		agent.ClearBehaviours();
 		agent.AddBehaviour("wander", wander, 2);
 		agent.AddBehaviour("avoid", avoid, 0);
@@ -34,31 +23,24 @@ public class CamperFlock : IAgentState
 
 		wander.WanderOrientation = Random.Range(-Mathf.PI, Mathf.PI);
 	}
-	
-	public void Update(Agent agent, out IAgentState nextState)
+
+	public void exitAction()
 	{
-		Initialise(agent);
 
+	}
+	
+	public new void Update(out AgentStateMachine nextState)
+	{
 		nextState = this;
+	
+		int numAgents = agent.GetAgentsInArea(Config.CamperFlockRadius).
+			Where(a => a is Camper).Count(); 
 		
-		/// camper is attacked -> Evade
-		//if (true) { 
-		nextState = new CamperEvade(); 
-		//} 
-		 
-		float flockingRadius = 5f; // TODO: move this setting to configuration file
+		if (numAgents == 0) {
+			/// camper has no company -> Idle
+			nextState = new CamperIdle();
+		}
 
-		// TODO refactor. Can i use LINQ here?
-		var agents = agent.GetAgentsInArea(flockingRadius).Where(a => a is Camper); 
-		
-		/*foreach(var a in agents) {
-			if(a is Camper) {
-				return;
-			}
-		}*/
-
-		/// camper has no company -> Idle
-		nextState = new CamperIdle();
 	}
 }
 

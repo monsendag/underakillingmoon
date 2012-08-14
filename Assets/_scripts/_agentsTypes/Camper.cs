@@ -1,15 +1,17 @@
 using UnityEngine;
 using System.Collections;
 
-public class Camper : Agent {
+public class Camper : Agent
+{
+	public override void Start()
+	{
+		base.Start();
 
-	public override void Start () {
-		base.Start ();
-
-        AgentState = new CamperFlock();
+		StateMachine = new AgentStateMachine(this, new CamperIdle());
 	}
 	
-	public override void Update () {
+	public override void Update()
+	{
 		base.Update();
 	}
 }
