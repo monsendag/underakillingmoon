@@ -8,10 +8,9 @@ using UnityEngine;
 /// </summary>
 class SeperationSteer : ISteeringBehaviour
 {
-    public float LookAhead = 4.0f;
-    public float DecayCoefficient = 1.0f;
+    public float DecayCoefficient = 4.0f;
     public float MaxAcceleration = 4.0f;
-    public float Threshold = 0.75f;
+    public float Threshold = 0.95f;
     public SeperationSteer()  {}
 
     virtual public SteeringOutput CalculateAcceleration(GameObject agent, KinematicInfo info)
@@ -20,7 +19,7 @@ class SeperationSteer : ISteeringBehaviour
         output.Linear = Vector2.zero;
         output.Angular = 0.0f;
         
-        var agentList = agent.GetComponent<Agent>().GetAgentsInArea(LookAhead);
+        var agentList = agent.GetComponent<Agent>().GetAgentsInArea(Threshold);
 
         foreach(var a in agentList)
         {
