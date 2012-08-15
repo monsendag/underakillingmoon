@@ -56,7 +56,9 @@ public class AgentStateMachine
 				SendStateMessage("ExitAction", null);
 			}
 
+
 			DebugUtil.Assert(value != null);
+            value._agent = agent;
 
 			_currentState = value;
 

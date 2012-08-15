@@ -7,7 +7,7 @@ public class Camper : Agent
 	{
 		base.Start();
 
-		StateMachine = new AgentStateMachine(this, new CamperIdle());
+		StateMachine = new AgentStateMachine(this, new CamperFlock());
 	}
 	
 	public override void Update()
