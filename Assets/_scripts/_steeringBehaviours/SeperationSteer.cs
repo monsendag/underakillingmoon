@@ -8,35 +8,33 @@ using UnityEngine;
 /// </summary>
 class SeperationSteer : ISteeringBehaviour
 {
-	public float LookAhead = 4.0f;
-	public float DecayCoefficient = 1.0f;
-	public float MaxAcceleration = 4.0f;
-	public float Threshold = 0.75f;
+    public float DecayCoefficient = 4.0f;
+    public float MaxAcceleration = 4.0f;
+    public float Threshold = 0.95f;
+    public SeperationSteer()  {}
 
-	public SeperationSteer()
-	{
-	}
-
-	virtual public SteeringOutput CalculateAcceleration(GameObject agent, KinematicInfo info)
-	{
-		SteeringOutput output = new SteeringOutput();
-		output.Linear = Vector2.zero;
-		output.Angular = 0.0f;
+    virtual public SteeringOutput CalculateAcceleration(GameObject agent, KinematicInfo info)
+    {
+        SteeringOutput output = new SteeringOutput();
+        output.Linear = Vector2.zero;
+        output.Angular = 0.0f;
         
-		var agentList = agent.GetComponent<Agent>().GetAgentsInArea(LookAhead);
+        var agentList = agent.GetComponent<Agent>().GetAgentsInArea(Threshold);
 
-		foreach (var a in agentList) {
-			Vector2 direction = a.KinematicInfo.Position - info.Position;
-			float distance = direction.magnitude;
-			if (distance < Threshold) {
-				float strength = Mathf.Min(DecayCoefficient / (distance * distance), 
+        foreach(var a in agentList)
+        {
+            Vector2 direction = a.KinematicInfo.Position - info.Position;
+            float distance = direction.magnitude;
+            if (distance < Threshold)
+            {
+                float strength = Mathf.Min(DecayCoefficient / (distance * distance), 
                     MaxAcceleration);
 
-				direction.Normalize();
-				output.Linear -= strength * direction;
-			}
-		}
+                direction.Normalize();
+                output.Linear -= strength * direction;
+            }
+        }
 
-		return output;
-	}
+        return output;
+    }
 }
