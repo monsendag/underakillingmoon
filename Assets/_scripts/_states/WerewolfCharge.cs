@@ -20,7 +20,7 @@ public class WerewolfCharge : AgentStateMachine
 
 		/// Has no target -> Idle
 		if (target == null) {
-			nextState = new WerewolfIdle();
+			nextState = new WerewolfPatrol();
 		}
 
 		/// Has target, target in range -> Attack

@@ -26,7 +26,7 @@ public class WerewolfAttack : AgentStateMachine
 		
 		//  no attacker, no target -> Idle
 		if (attacker == null && target == null) {
-			nextState = new WerewolfIdle();
+			nextState = new WerewolfPatrol();
 		}
 		
 		//  Has target, target not in range -> Charge

@@ -13,7 +13,7 @@ public class WerewolfHunt : AgentStateMachine
 	public WerewolfHunt()
 	{
 		// construction phase. All substates are also constructed
-		SetStates(new WerewolfIdle(), 
+		SetStates(new WerewolfPatrol(), 
 		          new WerewolfCharge(), 
 		          new WerewolfAttack());
 	}
@@ -23,7 +23,7 @@ public class WerewolfHunt : AgentStateMachine
 		// add behaviours related to hunt state
 
 
-		SetState(typeof(WerewolfIdle)); // call Init on substate
+		SetState(typeof(WerewolfPatrol)); // call Init on substate
 	}
 
 	public void ExitAction()
