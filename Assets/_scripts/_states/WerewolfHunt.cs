@@ -10,31 +10,35 @@ using UnityEngine;
 public class WerewolfHunt : AgentStateMachine
 {
 
-	public void initAction()
+	public WerewolfHunt()
 	{
-
+		// construction phase. All substates are also constructed
+		SetStates(new WerewolfIdle(), 
+		          new WerewolfCharge(), 
+		          new WerewolfAttack());
 	}
 
-	public void exitAction()
+	public void InitAction()
 	{
+		// add behaviours related to hunt state
+
+
+		SetState(typeof(WerewolfIdle)); // call Init on substate
+	}
+
+	public void ExitAction()
+	{
+		// remove behaviours related to hunt state
 
 	}
 	
-	public new void Update(out AgentStateMachine nextState)
+	public override void Update(out AgentStateMachine nextState)
 	{
 			
 		/// camper is attacked -> Evade
-		//if (true) { 
-		nextState = new CamperEvade(); 
-		//} 
-
-
-		nextState = this;
-		// Allow the agent state to update.
-		if (CurrentState != null) {
-			AgentStateMachine nextSubstate;
-			CurrentState.Update(out nextSubstate);
-			CurrentState = nextSubstate;
+		if (true) { 
+			nextState = new CamperEvade(); 
 		}
-	}	
+		nextState = this;
+	}
 }

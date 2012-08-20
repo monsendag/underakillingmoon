@@ -7,15 +7,17 @@ public class CamperFlock : AgentStateMachine
 	private WanderSteer wander = new WanderSteer();
 	private CollisionAvoidanceSteer avoid = new CollisionAvoidanceSteer();
 	private SeperationSteer seperation = new SeperationSteer();
-    private CohesionSteer cohesionSteer = new CohesionSteer();
+	private CohesionSteer cohesionSteer = new CohesionSteer();
 
 	public void InitAction()
 	{
+
+		Debug.Log("init CamperFlock state");
 		agent.ClearBehaviours();
 		agent.AddBehaviour("wander", wander, 2);
 		agent.AddBehaviour("avoid", avoid, 0);
 		agent.AddBehaviour("seperation", seperation, 0);
-        agent.AddBehaviour("cohesion", cohesionSteer, 1);
+		agent.AddBehaviour("cohesion", cohesionSteer, 1);
 
 		//agent.AddBehaviour("look", new LWYGSteer(), 0); 
 
@@ -26,12 +28,12 @@ public class CamperFlock : AgentStateMachine
 		wander.WanderOrientation = Random.Range(-Mathf.PI, Mathf.PI);
 	}
 
-	public void exitAction()
+	public void ExitAction()
 	{
 
 	}
 	
-	public new void Update(out AgentStateMachine nextState)
+	public override void Update(out AgentStateMachine nextState)
 	{
 		nextState = this;
 	

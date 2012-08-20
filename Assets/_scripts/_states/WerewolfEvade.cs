@@ -4,17 +4,17 @@ public class WerewolfEvade : AgentStateMachine
 {
 	Agent attacker, target;
 
-	public void initAction()
+	public void InitAction()
 	{
 
 	}
 
-	public void exitAction()
+	public void ExitAction()
 	{
 
 	}
 
-	public new void Update(out AgentStateMachine nextState)
+	public override void Update(out AgentStateMachine nextState)
 	{
 		nextState = this;
 
