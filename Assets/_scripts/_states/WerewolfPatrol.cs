@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class WerewolfIdle : AgentStateMachine
+public class WerewolfPatrol : AgentStateMachine
 {
 	public void InitAction()
 	{

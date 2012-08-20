@@ -16,6 +16,28 @@ public class AgentStateMachine
 		get { return _agent;}
 	}
 
+	public AgentStateMachine()
+	{
+
+	}
+
+	public AgentStateMachine(Agent agent)
+	{
+		_agent = agent;
+	}
+
+	public AgentStateMachine CurrentState {
+		get { return _currentState; }
+		set { SetState(value.GetType()); }
+	}
+
+
+	/// <summary>
+	/// Adds the given states to the internal list of states.
+	/// </summary>
+	/// <param name='states'>
+	/// States.
+	/// </param>
 	public void AddStates(params AgentStateMachine[] states)
 	{
 		foreach (AgentStateMachine state in states) {
@@ -23,21 +45,28 @@ public class AgentStateMachine
 		}
 	}
 
+	/// <summary>
+	/// Removes all states, then sets them to the given parameters,
+	/// then sets CurrentState to the first parameter.
+	/// </summary>
+	/// <param name='states'>
+	/// States.
+	/// </param>
 	public void SetStates(params AgentStateMachine[] states)
 	{
-		Debug.Log("" + states);
-
+		States.Clear();
 		foreach (AgentStateMachine state in states) {
-			Debug.Log("" + state);
-			Debug.Log("" + state.GetType());
 			States.Add(state.GetType(), state);
-
-
-			Debug.Log("after");
 		}
 		CurrentState = states.First();
 	}
 
+	/// <summary>
+	/// Sets CurrentState to given state.
+	/// </summary>
+	/// <param name='type'>
+	/// Type.
+	/// </param>
 	public void SetState(Type type)
 	{
 		if (_currentState != null) {
@@ -52,23 +81,15 @@ public class AgentStateMachine
 		SendStateMessage("InitAction", null);
 	}
 
-	public AgentStateMachine()
-	{
-
-	}
-
-	public AgentStateMachine(Agent agent)
-	{
-		_agent = agent;
-	}
 
 	// overridden: this one is called on all active states
 	public virtual void Update(out AgentStateMachine state)
 	{
 		state = null;
 	}
-
-	// Top level update. This is called by the agent
+	/// <summary>
+	/// Top level update. This is called by the agent
+	/// </summary>
 	public void Update()
 	{
 		if (CurrentState != null) {
@@ -78,10 +99,7 @@ public class AgentStateMachine
 		}
 	}
 
-	public AgentStateMachine CurrentState {
-		get { return _currentState; }
-		set { SetState(value.GetType()); }
-	}
+
 
 	public void SendStateMessage(string functionName, object[] args)
 	{
