@@ -184,9 +184,8 @@ public class Agent : MonoBehaviour
 		// We step through each behaviour priority value, until an
 		// acceleration greater than epsilon is encountered.
 		SteeringOutput acceleration = new SteeringOutput();
-
 		for (uint i = 0; i < NUM_PRIORITY_LEVELS; ++i) {
-			if (linearPriorityCounts [i] > 0 || angularPriorityCounts [i] > 0) {
+			if (linearPriorityCounts [i] > 0) {
 				// Blend the accelerations at the current priority level.
 				Vector2 linearAveraged = Vector2.zero;
 				if (linearPriorityCounts [i] > 0) {
@@ -197,14 +196,35 @@ public class Agent : MonoBehaviour
 				if (angularPriorityCounts [i] > 0) { 
 					angularAveraged = angularAccelerations [i] / angularPriorityCounts [i];
 				}
-				if (linearAveraged.magnitude > EPSILON || 
-					Mathf.Abs(angularAveraged) > EPSILON_ROTATION) {
+				if (linearAveraged.magnitude > EPSILON ) 
+                {
 					acceleration.Linear = linearAveraged;
 					acceleration.Angular = angularAveraged;
 					break;
 				} 
 			}
 		}
+
+        /* If we didn't angular acceleration, see if any level will produce an angular acceleration. */
+        if (Mathf.Abs(acceleration.Angular) < EPSILON_ROTATION)
+        {
+            for (uint i = 0; i < NUM_PRIORITY_LEVELS; ++i)
+            {
+                if (angularPriorityCounts[i] > 0)
+                {
+                    float angularAveraged = 0.0f;
+                    if (angularPriorityCounts[i] > 0)
+                    {
+                        angularAveraged = angularAccelerations[i] / angularPriorityCounts[i];
+                    }
+                    if (Mathf.Abs(angularAveraged) > EPSILON_ROTATION)
+                    {
+                        acceleration.Angular = angularAveraged;
+                        break;
+                    }
+                }
+            }
+        }
 
 		// Scale back the acceleration to the maximum.
 		if (acceleration.Linear.magnitude > _maxAcceleration) {
