@@ -1,6 +1,6 @@
-using UnityEngine;
+using System;
 
-public class CamperDead : AgentStateMachine
+public class CamperDead : AgentState
 {
 	public void InitAction()
 	{
@@ -12,10 +12,9 @@ public class CamperDead : AgentStateMachine
 
 	}
 	
-	public override void Update(out AgentStateMachine nextState)
+	public override void Update(out Type nextState)
 	{
-		nextState = this;
-		
+		nextState = GetType();
 		/// timer... wake up as werewolf.. What should happen here?
 		if (true) { 
 			

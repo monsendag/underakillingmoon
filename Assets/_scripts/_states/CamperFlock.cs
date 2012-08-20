@@ -1,8 +1,8 @@
-using UnityEngine;
-using System.Collections.Generic;
+using System;
 using System.Linq;
+using UnityEngine;
 
-public class CamperFlock : AgentStateMachine
+public class CamperFlock : AgentState
 {
 	private WanderSteer wander = new WanderSteer();
 	private CollisionAvoidanceSteer avoid = new CollisionAvoidanceSteer();
@@ -11,9 +11,7 @@ public class CamperFlock : AgentStateMachine
 
 	public void InitAction()
 	{
-
 		Debug.Log("init CamperFlock state");
-		agent.ClearBehaviours();
 		agent.AddBehaviour("wander", wander, 2);
 		agent.AddBehaviour("avoid", avoid, 0);
 		agent.AddBehaviour("seperation", seperation, 0);
@@ -25,24 +23,26 @@ public class CamperFlock : AgentStateMachine
 		agent.MaxAcceleration = 4.0f;
 		agent.MaxAngularVelocity = 2 * Mathf.PI; 
 
-		wander.WanderOrientation = Random.Range(-Mathf.PI, Mathf.PI);
+		wander.WanderOrientation = UnityEngine.Random.Range(-Mathf.PI, Mathf.PI);
 	}
 
 	public void ExitAction()
 	{
+		//TODO: remove all relevant behaviours 
+		agent.RemoveBehaviour("wander");
 
 	}
 	
-	public override void Update(out AgentStateMachine nextState)
+	public override void Update(out Type nextState)
 	{
-		nextState = this;
-	
+		nextState = GetType();
+
 		int numAgents = agent.GetAgentsInArea(Config.CamperFlockRadius).
 			Where(a => a is Camper).Count(); 
 		
 		if (numAgents == 0) {
 			/// camper has no company -> Idle
-			nextState = new CamperIdle();
+			nextState = typeof(CamperIdle);
 		}
 
 	}

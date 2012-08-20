@@ -1,9 +1,8 @@
-using UnityEngine;
+using System;
 
-public class WerewolfAttack : AgentStateMachine
+public class WerewolfAttack : AgentState
 {
-	Agent target;
-	Agent attacker;
+	Agent target = null;
 
 	public void InitAction()
 	{
@@ -15,23 +14,13 @@ public class WerewolfAttack : AgentStateMachine
 
 	}
 	
-	public override void Update(out AgentStateMachine nextState)
+	public override void Update(out Type nextState)
 	{
-		nextState = this;
+		nextState = GetType();
 		 
-		/// Attacked -> Evade
-		if (attacker != null) {
-			nextState = new WerewolfEvade();
-		}
-		
-		//  no attacker, no target -> Idle
-		if (attacker == null && target == null) {
-			nextState = new WerewolfPatrol();
-		}
-		
 		//  Has target, target not in range -> Charge
 		if (target != null && agent.distanceTo(target) > Config.WerewolfChargeRange) {
-			nextState = new WerewolfCharge();
+			nextState = typeof(WerewolfCharge);
 		}
 	}
 }

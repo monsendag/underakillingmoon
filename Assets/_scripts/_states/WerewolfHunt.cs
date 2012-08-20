@@ -1,4 +1,4 @@
-using UnityEngine;
+using System;
 
 /// <summary>
 /// Werewolf hunt.
@@ -10,9 +10,9 @@ using UnityEngine;
 public class WerewolfHunt : AgentStateMachine
 {
 
-	public WerewolfHunt()
+	public WerewolfHunt(Agent agent) : base(agent)
 	{
-		// construction phase. All substates are also constructed
+		// add all substates
 		SetStates(new WerewolfPatrol(), 
 		          new WerewolfCharge(), 
 		          new WerewolfAttack());
@@ -20,25 +20,18 @@ public class WerewolfHunt : AgentStateMachine
 
 	public void InitAction()
 	{
-		// add behaviours related to hunt state
-
-
-		SetState(typeof(WerewolfPatrol)); // call Init on substate
+		// TODO: add relevant behaviours
+		SetState(typeof(WerewolfPatrol)); 
 	}
 
 	public void ExitAction()
 	{
-		// remove behaviours related to hunt state
+		// TODO: remove relevant behaviours
 
 	}
 	
-	public override void Update(out AgentStateMachine nextState)
+	public override void Update(out Type nextState)
 	{
-			
-		/// camper is attacked -> Evade
-		if (true) { 
-			nextState = new CamperEvade(); 
-		}
-		nextState = this;
+		nextState = GetType();
 	}
 }
