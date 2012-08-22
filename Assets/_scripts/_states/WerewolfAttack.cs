@@ -19,7 +19,7 @@ public class WerewolfAttack : AgentState
 		nextState = GetType();
 		 
 		//  Has target, target not in range -> Charge
-		if (target != null && agent.distanceTo(target) > Config.WerewolfChargeRange) {
+		if (target != null && agent.distanceTo(target) > Config.DefaultWerewolfChargeRange) {
 			nextState = typeof(WerewolfCharge);
 		}
 	}

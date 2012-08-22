@@ -55,6 +55,7 @@ public class AgentStateMachine : AgentState
 	{
 		States.Clear();
 		if (states != null) {
+            States.Add(newState.GetType(), newState);
 			foreach (AgentState state in states) {
 				States.Add(state.GetType(), state);
 			}	
@@ -75,7 +76,6 @@ public class AgentStateMachine : AgentState
 		if (_currentState != null) {
 			PostMessage("ExitAction");
 		}
-
 		DebugUtil.Assert(States.ContainsKey(type));
 		AgentState state = States [type];
 
