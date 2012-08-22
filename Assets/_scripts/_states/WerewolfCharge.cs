@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class WerewolfCharge : IAgentState
 {
+	bool underAttack;
+	
 	public WerewolfCharge ()
 	{
 		
@@ -17,7 +19,7 @@ public class WerewolfCharge : IAgentState
 		}
 		
 		/// Being attacked -> Evade
-		if (true) { 
+		if (underAttack) { 
 			nextState = new WerewolfEvade ();
 		}
 		
@@ -26,6 +28,11 @@ public class WerewolfCharge : IAgentState
 			nextState = new WerewolfIdle ();
 		}
 		
+	}
+	
+	public void Trigger (int trigger){
+		if(trigger == (int)Werewolf.triggers.underAttack)
+			underAttack = true;
 	}
 }
 

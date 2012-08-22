@@ -20,7 +20,7 @@ public class SeekSteer : ISteeringBehaviour
         steering.Linear = Target.Position - info.Position;
         steering.Linear.Normalize();
         steering.Linear *= MaxAcceleration;
-        Debug.Log(steering.Linear);
+//        Debug.Log(steering.Linear);
         return steering;
     }
 }

@@ -3,6 +3,10 @@ using System.Collections;
 
 public class Werewolf : Agent
 {
+	
+	public enum triggers{
+		underAttack
+	};
 
 	public override void Start ()
 	{

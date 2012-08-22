@@ -18,6 +18,7 @@ public class Wanderer : MonoBehaviour
 //		agent = gameObject.AddComponent<Agent> ();
 		agent = gameObject.GetComponent<Agent>();
 		DebugUtil.Assert (agent != null);
+		print (agent.GetType().ToString());
 		// And set it up with a wandering state.
 		agent.MaxVelocity = 9.0f;
 		agent.MaxAcceleration = 27.0f;

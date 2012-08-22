@@ -70,7 +70,7 @@ public class Agent : MonoBehaviour
         _kinematicInfo.Velocity = Vector2.zero;
         _kinematicInfo.AngularVelocity = 0.0f;
 		
-		_controller = gameObject.GetComponent<CharacterController>(); 
+	_controller = gameObject.GetComponent<CharacterController>(); 
 	}
 
     /// <summary>
@@ -156,10 +156,10 @@ public class Agent : MonoBehaviour
             AgentState.Update(this, out nextState);
             AgentState = nextState;
         }
-	}
+    }
 	
-	void FixedUpdate()
-	{
+    void FixedUpdate()
+    {
         uint[] priorityCounts = new uint[NUM_PRIORITY_LEVELS];
         Vector2[] linearAccelerations = new Vector2[NUM_PRIORITY_LEVELS];
         float[]  angularAccelerations = new float[NUM_PRIORITY_LEVELS];
@@ -231,8 +231,8 @@ public class Agent : MonoBehaviour
         _kinematicInfo.Orientation += acceleration.Angular * Time.deltaTime;
     }
 	
-	public List<Agent> getAgentsInArea(float radius) {
-		return MotionUtils.getAgentsInArea(_kinematicInfo.Position, radius);
-	}
+    public List<Agent> getAgentsInArea(float radius) {
+	return MotionUtils.getAgentsInArea(_kinematicInfo.Position, radius);
+    }
 	
 }
