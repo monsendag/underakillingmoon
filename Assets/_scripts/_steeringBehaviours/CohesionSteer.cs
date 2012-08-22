@@ -13,7 +13,7 @@ class CohesionSteer : ISteeringBehaviour
 
     public float LookAhead = 9.0f;
     public float Radius = 1.0f;
-    public float MaxAcceleration = 12.0f;
+    public float MaxAcceleration = Config.DefaultMaxAcceleration * 2.0f;
 
     public CohesionSteer() { }
 

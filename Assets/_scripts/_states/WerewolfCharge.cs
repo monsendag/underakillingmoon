@@ -24,7 +24,7 @@ public class WerewolfCharge : AgentStateMachine
 		}
 
 		/// Has target, target in range -> Attack
-		if (target != null && agent.distanceTo(target) < Config.WerewolfAttackRange) {
+		if (target != null && agent.distanceTo(target) < Config.DefaultWerewolfAttackRange) {
 			nextState = new WerewolfAttack();
 
 		}

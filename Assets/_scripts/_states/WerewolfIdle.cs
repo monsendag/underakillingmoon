@@ -20,7 +20,7 @@ public class WerewolfIdle : AgentStateMachine
 
 		uint distance = 5;
 		/// Target in range for charge
-		if (distance < Config.WerewolfChargeRange) {
+		if (distance < Config.DefaultWerewolfChargeRange) {
 			nextState = new WerewolfCharge();
 		}
 	}

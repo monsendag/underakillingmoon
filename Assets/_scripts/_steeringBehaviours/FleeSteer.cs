@@ -11,7 +11,7 @@ using System.Collections;
 public class FleeSteer : ISteeringBehaviour
 {
 	public KinematicInfo Target = new KinematicInfo();
-	public float MaxAcceleration;
+	public float MaxAcceleration = Config.DefaultMaxAcceleration;
 
 	public FleeSteer()
 	{

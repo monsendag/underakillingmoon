@@ -11,10 +11,10 @@ using System.Collections;
 public class AlignSteer : ISteeringBehaviour
 {
 	public KinematicInfo Target = new KinematicInfo();
-	public float MaxRotation = 7.0f;
-	public float TargetRadius = 0.025f;
-	public float SlowRadius = 0.05f;
-	public float TimeToTarget = 0.1f;
+	public float MaxRotation = Config.DefaultMaxRotation;
+	public float TargetRadius = Config.DefaultAlignTargetRadius;
+	public float SlowRadius = Config.DefaultAlignSlowRadius;
+	public float TimeToTarget = Config.DefaultAlignTimeToTarget;
 
 	public AlignSteer()
 	{

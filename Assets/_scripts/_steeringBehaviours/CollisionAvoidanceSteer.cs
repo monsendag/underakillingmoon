@@ -13,7 +13,7 @@ class CollisionAvoidanceSteer : ISteeringBehaviour
 
     public float LookAhead = 4.0f;
     public float Radius = 1.0f;
-    public float MaxAcceleration = 8.0f;
+    public float MaxAcceleration = Config.DefaultMaxAcceleration; /* 8.0f */
 
     public CollisionAvoidanceSteer() {}
 
