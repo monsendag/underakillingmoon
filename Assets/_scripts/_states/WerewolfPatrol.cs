@@ -1,9 +1,7 @@
 using System;
 
-public class WerewolfAttack : AgentState
+public class WerewolfPatrol : AgentState
 {
-	Agent target = null;
-
 	public void InitAction()
 	{
 
@@ -17,10 +15,12 @@ public class WerewolfAttack : AgentState
 	public override void Update(out Type nextState)
 	{
 		nextState = GetType();
-		 
-		//  Has target, target not in range -> Charge
-		if (target != null && agent.distanceTo(target) > Config.WerewolfChargeRange) {
+
+		uint distance = 5;
+		/// Target in range for charge
+		if (distance < Config.WerewolfChargeRange) {
 			nextState = typeof(WerewolfCharge);
 		}
 	}
 }
+

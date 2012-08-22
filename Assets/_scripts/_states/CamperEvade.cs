@@ -1,9 +1,12 @@
-using UnityEngine;
+using System;
 
-public class CamperEvade : AgentStateMachine
+public class CamperEvade : AgentState
 {
+	private bool attacked;
+
 	public void InitAction()
 	{
+		attacked = true;
 
 	}
 
@@ -12,24 +15,25 @@ public class CamperEvade : AgentStateMachine
 
 	}
 
-	public override void Update(out AgentStateMachine nextState)
+	public override void Update(out Type nextState)
 	{
-		nextState = this;
+
+		nextState = GetType();
 		
 		/// camper is killed -> Dead
 		if (agent.Health == 0) { 
-			nextState = new CamperDead();
-		}
-		
-		/// camper is not attacked, has company -> Flock 
-		if (true) {
-			nextState = new CamperFlock();
+			nextState = typeof(CamperDead);
 		}
 		
 		/// camper is not attacked, has no company -> Idle 
-		if (true) {
-			nextState = new CamperFlock();
+		if (!attacked) {
+			nextState = typeof(CamperCamp);
 		}
+	}
+
+	public void AttackStopNotify()
+	{
+		attacked = false;
 	}
 }
 

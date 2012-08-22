@@ -9,8 +9,8 @@ public class Werewolf : Agent
 		base.Start();
 
 		StateMachine = new AgentStateMachine(this);
-		StateMachine.SetStates(new WerewolfHunt(), 
-			          		new WerewolfIdle());
+		StateMachine.SetStates(new WerewolfHunt(this), 
+			          		new WerewolfPatrol());
 	}
 	
 	public override void Update()

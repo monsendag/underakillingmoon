@@ -1,6 +1,6 @@
-using UnityEngine;
+using System;
 
-public class WerewolfEvade : AgentStateMachine
+public class WerewolfEvade : AgentState
 {
 	Agent attacker, target;
 
@@ -14,13 +14,14 @@ public class WerewolfEvade : AgentStateMachine
 
 	}
 
-	public override void Update(out AgentStateMachine nextState)
+	public override void Update(out Type nextState)
 	{
-		nextState = this;
+		
+		nextState = GetType();
 
 		// TODO: implement not being attacked
 		if (true) {
-			nextState = new WerewolfHunt();
+			nextState = typeof(WerewolfHunt);
 		}
 
 	}

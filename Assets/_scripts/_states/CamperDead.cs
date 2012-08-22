@@ -1,6 +1,6 @@
-using UnityEngine;
+using System;
 
-public class CamperDead : AgentStateMachine
+public class CamperDead : AgentState
 {
 	public void InitAction()
 	{
@@ -12,11 +12,15 @@ public class CamperDead : AgentStateMachine
 
 	}
 	
-	public override void Update(out AgentStateMachine nextState)
+	public override void Update(out Type nextState)
 	{
-		nextState = this;
-		
+		nextState = GetType();
 		/// timer... wake up as werewolf.. What should happen here?
+		/// TODO: Remove Camper script component and add a Werewolf component
+		/// to the UnityObject. This would basically result in
+		/// Camper being garbage collected, and a new Werewolf object created.
+		/// TODO: figure out a javascript setTimeout equivalent in C#.
+		/// 
 		if (true) { 
 			
 		}
