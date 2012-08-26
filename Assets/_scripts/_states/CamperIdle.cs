@@ -1,24 +1,30 @@
 using System;
 using System.Linq;
 
+using UnityEngine;
+
 public class CamperIdle : AgentState
 {
 	public void InitAction()
 	{
-		//TODO: add relevant behaviours
+		WanderSteer wanderSteer = new WanderSteer();
+		DebugUtil.Assert(agent != null);
+		agent.AddBehaviour("wanderSteer", wanderSteer, 1);
 	}
 
 	public void ExitAction()
 	{
-		//TODO: remove relevant behaviours
+		agent.RemoveBehaviour("wanderSteer");
 	}
 
 	public override void Update(out Type nextState)
 	{
 		nextState = GetType();
 
-		int numAgents = agent.GetAgentsInArea(Config.DefaultCamperFlockRadius).
+		int numAgents = agent.GetAgentsInArea(Config.CamperFlockRadius).
 			Where(a => a is Camper).Count(); 
+
+		Debug.Log("Camper: nearby campers:" + numAgents);
 		
 		/// camper is close to other campers -> Flock
 		if (numAgents > 0) {

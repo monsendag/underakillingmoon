@@ -2,22 +2,24 @@ using System;
 
 public class CamperEvade : AgentState
 {
-	private bool attacked;
+	private Agent attacker;
 
 	public void InitAction()
 	{
-		attacked = true;
-
+		DebugUtil.Assert(agent != null);
+		ISteeringBehaviour EvadeSteer = new EvadeSteer(agent);
+		agent.AddBehaviour("evadeSteer", EvadeSteer, 0);
 	}
 
 	public void ExitAction()
 	{
-
+		agent.RemoveBehaviour("evadeSteer");
 	}
 
 	public override void Update(out Type nextState)
 	{
 
+		DebugUtil.Assert(GetType() != null);
 		nextState = GetType();
 		
 		/// camper is killed -> Dead
@@ -26,14 +28,9 @@ public class CamperEvade : AgentState
 		}
 		
 		/// camper is not attacked, has no company -> Idle 
-		if (!attacked) {
+		if (!AttackPair.IsTarget(agent)) {
 			nextState = typeof(CamperCamp);
 		}
-	}
-
-	public void AttackStopNotify()
-	{
-		attacked = false;
 	}
 }
 

@@ -3,7 +3,7 @@ using System;
 public class WerewolfCharge : AgentState
 {
 	Agent target;
-	
+
 	public void InitAction()
 	{
 
@@ -18,18 +18,17 @@ public class WerewolfCharge : AgentState
 	{
 		nextState = GetType();
 
-		/// Has no target -> Idle
+		target = AttackPair.GetTargetOrNull(agent);
+
+		/// Has no target -> go back to Patrolling
 		if (target == null) {
 			nextState = typeof(WerewolfPatrol);
 		}
 
-		/// Has target, target in range -> Attack
-		if (target != null && agent.distanceTo(target) < Config.DefaultWerewolfAttackRange) {
+		/// Has target, target in range for Attacking -> Attack
+		if (target != null && agent.distanceTo(target) < Config.WerewolfAttackRange) {
 			nextState = typeof(WerewolfAttack);
-
 		}
-		
 	}
-
 }
 

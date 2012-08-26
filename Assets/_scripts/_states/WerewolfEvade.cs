@@ -2,16 +2,18 @@ using System;
 
 public class WerewolfEvade : AgentState
 {
-	Agent attacker, target;
+	Agent attacker;
 
 	public void InitAction()
 	{
-
+		ISteeringBehaviour EvadeSteer = new EvadeSteer(agent);
+		agent.AddBehaviour("evadeSteer", EvadeSteer, 0);
+		
 	}
 
 	public void ExitAction()
 	{
-
+		agent.RemoveBehaviour("evadeSteer");
 	}
 
 	public override void Update(out Type nextState)
@@ -24,8 +26,11 @@ public class WerewolfEvade : AgentState
 			nextState = typeof(WerewolfHunt);
 		}
 
+		/// camper is being attacked -> Evade
+		if (AttackPair.IsTarget(agent)) { 
+			nextState = typeof(WerewolfEvade);
+		}
 	}
-
 }
 
 

@@ -2,7 +2,7 @@ using System;
 
 public class WerewolfAttack : AgentState
 {
-	Agent target = null;
+	Agent target;
 
 	public void InitAction()
 	{
@@ -11,16 +11,28 @@ public class WerewolfAttack : AgentState
 
 	public void ExitAction()
 	{
-
+		AttackPair.RemoveByAttacker(agent);
 	}
 	
 	public override void Update(out Type nextState)
 	{
 		nextState = GetType();
 		 
-		//  Has target, target not in range -> Charge
-		if (target != null && agent.distanceTo(target) > Config.DefaultWerewolfChargeRange) {
+		target = AttackPair.GetTargetOrNull(agent);
+
+		// has no target -> Patrol
+		if (target == null) {
+			nextState = typeof(WerewolfPatrol);
+		}
+
+		//  Has target, but not in range for attack -> Charge
+		else if (target != null && agent.distanceTo(target) > Config.WerewolfAttackRange) {
 			nextState = typeof(WerewolfCharge);
+		}
+
+		// chew on it
+		else {
+			target.Health -= 1;
 		}
 	}
 }
