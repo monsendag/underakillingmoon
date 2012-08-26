@@ -10,15 +10,27 @@ using System.Collections;
 /// </summary>
 public class PursueSteer : SeekSteer
 {
-	public KinematicInfo LocalTarget = new KinematicInfo();
+	public KinematicInfo LocalTarget;
 	public float MaxPrediction = 3.0f;
 
 	public PursueSteer()
 	{
+		LocalTarget = new KinematicInfo();
 	}
 
-	public override SteeringOutput CalculateAcceleration(GameObject agent, KinematicInfo info)
+	public PursueSteer(KinematicInfo kinematicInfo)
 	{
+		LocalTarget = kinematicInfo;
+	}
+
+	public PursueSteer(Agent agent)
+	{
+		LocalTarget = agent.KinematicInfo;
+	}
+
+	public override SteeringOutput CalculateAcceleration(Agent agent)
+	{
+		KinematicInfo info = agent.KinematicInfo;
 		Vector3 direction = LocalTarget.Position - info.Position;
 		float distance = direction.magnitude;
 		float speed = LocalTarget.Velocity.magnitude;
@@ -34,6 +46,6 @@ public class PursueSteer : SeekSteer
 		base.Target = LocalTarget;
 		base.Target.Position += LocalTarget.Velocity * prediction;
 
-		return base.CalculateAcceleration(agent, info);
+		return base.CalculateAcceleration(agent);
 	}
 }

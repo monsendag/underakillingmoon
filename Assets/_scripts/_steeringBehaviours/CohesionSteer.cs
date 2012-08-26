@@ -11,55 +11,60 @@ using System.Collections;
 class CohesionSteer : ISteeringBehaviour
 {
 
-    public float LookAhead = 9.0f;
-    public float Radius = 1.0f;
-    public float MaxAcceleration = Config.DefaultMaxAcceleration * 2.0f;
+	public float LookAhead = 9.0f;
+	public float Radius = 1.0f;
+	public float MaxAcceleration = 12.0f;
 
-    public CohesionSteer() { }
+	public CohesionSteer()
+	{
+	}
 
-    virtual public SteeringOutput CalculateAcceleration(GameObject agent, KinematicInfo info)
-    {
+	virtual public SteeringOutput CalculateAcceleration(Agent agent)
+	{
+		SteeringOutput output = new SteeringOutput();
+		KinematicInfo info = agent.KinematicInfo;
 
-        SteeringOutput output = new SteeringOutput();
-        output.Angular = 0.0f;
-        output.Linear = Vector2.zero;
+		output.Angular = 0.0f;
+		output.Linear = Vector2.zero;
 
-        var agentList = agent.GetComponent<Agent>().GetAgentsInArea(LookAhead);
+		var agentList = agent.GetAgentsInArea(LookAhead);
 
-        Vector2 average = new Vector2();
-        Vector2 velocityAverage = new Vector2();
-        int num = 0;
+		Vector2 average = new Vector2();
+		Vector2 velocityAverage = new Vector2();
+		int num = 0;
 
-        // Get the average pack location
-        foreach (var a in agentList)
-        {
-            // Check whether we are facing the agent.
-            if (a == agent) { continue; }
+		// Get the average pack location
+		foreach (var a in agentList) {
+			// Check whether we are facing the agent.
+			if (a == agent) {
+				continue;
+			}
 
-            num++;
-            average += a.KinematicInfo.Position;
-            velocityAverage += a.KinematicInfo.Velocity;
-        }
+			num++;
+			average += a.KinematicInfo.Position;
+			velocityAverage += a.KinematicInfo.Velocity;
+		}
 
-        if (num == 0) { return output; }
+		if (num == 0) {
+			return output;
+		}
 
 
-        average /= num;
-        velocityAverage /= num;
+		average /= num;
+		velocityAverage /= num;
 
-        Vector2 positionDif = average - info.Position;
-        Vector2 velocityDif = velocityAverage - info.Velocity;
-        if (velocityDif.magnitude > MaxAcceleration)
-        {
-            velocityDif = velocityDif.normalized * MaxAcceleration;
-        }
+		Vector2 positionDif = average - info.Position;
+		Vector2 velocityDif = velocityAverage - info.Velocity;
+		if (velocityDif.magnitude > MaxAcceleration) {
+			velocityDif = velocityDif.normalized * MaxAcceleration;
+		}
 
-        float strength = positionDif.magnitude / 2 * LookAhead;
+		float strength = positionDif.magnitude / 2 * LookAhead;
 
-        output.Linear += (positionDif.normalized * strength) * MaxAcceleration;
-        output.Linear += velocityDif / 2.0f;
-        return output;
+		output.Linear += (positionDif.normalized * strength) * MaxAcceleration;
+		output.Linear += velocityDif / 2.0f;
+		return output;
 
-    }
+	}
 
 }

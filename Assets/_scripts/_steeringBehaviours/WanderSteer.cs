@@ -9,7 +9,7 @@ using System.Collections;
 /// </summary>
 public class WanderSteer : FaceSteer
 {
-	public float MaxAcceleration = Config.DefaultMaxAcceleration;
+	public float MaxAcceleration = 4.0f;
 	public float WanderOffset = 2.9f;
 	public float WanderRadius = 0.75f;
 	public float MaxOrientationChange = Mathf.PI / 4.0f;
@@ -17,12 +17,14 @@ public class WanderSteer : FaceSteer
 	public float MinUpdateTime = 0.1f;
 	private float _minUpdateCounter = 0.0f;
 
-	public WanderSteer()
+	public WanderSteer() : base()
 	{
 	}
 
-	override public SteeringOutput CalculateAcceleration(GameObject agent, KinematicInfo info)
+	override public SteeringOutput CalculateAcceleration(Agent agent)
 	{
+		KinematicInfo info = agent.KinematicInfo;
+
 		//  Weight the change in orientation  against the angular velocity of info.
 		_minUpdateCounter += Time.deltaTime;
 		if (_minUpdateCounter > MinUpdateTime) {
@@ -45,7 +47,7 @@ public class WanderSteer : FaceSteer
 
 		base.LocalTarget.Position = target;
 
-		SteeringOutput steering = base.CalculateAcceleration(agent, info);
+		SteeringOutput steering = base.CalculateAcceleration(agent);
 
 		steering.Linear = MaxAcceleration * 
 			MotionUtils.GetOrientationAsVector(info.Orientation);

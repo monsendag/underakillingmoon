@@ -17,8 +17,10 @@ public class FrictionSteer : ISteeringBehaviour
 	{
 	}
 
-	public SteeringOutput CalculateAcceleration(GameObject agent, KinematicInfo info)
+	public SteeringOutput CalculateAcceleration(Agent agent)
 	{
+		KinematicInfo info = agent.KinematicInfo;
+
 		SteeringOutput output = new SteeringOutput();
 		output.Linear = info.Velocity * (-VelocityFrictionPercentage);
 		output.Angular = info.AngularVelocity * (-VelocityFrictionPercentage);

@@ -156,7 +156,10 @@ public class Agent : MonoBehaviour
 	public virtual void Update()
 	{
 		// Allow the agent state to update.
-	
+		if (StateMachine != null) {
+			StateMachine.Update();
+		}
+			
 		// We keep two sets of priority counts, so we can find an average of
 		// the blended behaviours.
 		uint[] linearPriorityCounts = new uint[NUM_PRIORITY_LEVELS];
@@ -167,7 +170,7 @@ public class Agent : MonoBehaviour
 		// Total up all the influences.
 		foreach (var pair in behaviours.Values) {
 			SteeringOutput output =
-                pair.behaviour.CalculateAcceleration(gameObject, KinematicInfo);
+                pair.behaviour.CalculateAcceleration(this);
 			// Only take a steering behaviour into account if their is  significant
 			// movement.
 			if (output.Linear.magnitude > EPSILON) {
@@ -196,8 +199,7 @@ public class Agent : MonoBehaviour
 				if (angularPriorityCounts [i] > 0) { 
 					angularAveraged = angularAccelerations [i] / angularPriorityCounts [i];
 				}
-				if (linearAveraged.magnitude > EPSILON ) 
-                {
+				if (linearAveraged.magnitude > EPSILON) {
 					acceleration.Linear = linearAveraged;
 					acceleration.Angular = angularAveraged;
 					break;
@@ -205,26 +207,21 @@ public class Agent : MonoBehaviour
 			}
 		}
 
-        /* If we didn't angular acceleration, see if any level will produce an angular acceleration. */
-        if (Mathf.Abs(acceleration.Angular) < EPSILON_ROTATION)
-        {
-            for (uint i = 0; i < NUM_PRIORITY_LEVELS; ++i)
-            {
-                if (angularPriorityCounts[i] > 0)
-                {
-                    float angularAveraged = 0.0f;
-                    if (angularPriorityCounts[i] > 0)
-                    {
-                        angularAveraged = angularAccelerations[i] / angularPriorityCounts[i];
-                    }
-                    if (Mathf.Abs(angularAveraged) > EPSILON_ROTATION)
-                    {
-                        acceleration.Angular = angularAveraged;
-                        break;
-                    }
-                }
-            }
-        }
+		/* If we didn't angular acceleration, see if any level will produce an angular acceleration. */
+		if (Mathf.Abs(acceleration.Angular) < EPSILON_ROTATION) {
+			for (uint i = 0; i < NUM_PRIORITY_LEVELS; ++i) {
+				if (angularPriorityCounts [i] > 0) {
+					float angularAveraged = 0.0f;
+					if (angularPriorityCounts [i] > 0) {
+						angularAveraged = angularAccelerations [i] / angularPriorityCounts [i];
+					}
+					if (Mathf.Abs(angularAveraged) > EPSILON_ROTATION) {
+						acceleration.Angular = angularAveraged;
+						break;
+					}
+				}
+			}
+		}
 
 		// Scale back the acceleration to the maximum.
 		if (acceleration.Linear.magnitude > _maxAcceleration) {

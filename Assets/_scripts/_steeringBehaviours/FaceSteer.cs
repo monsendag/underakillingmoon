@@ -9,14 +9,27 @@ using System.Collections;
 /// </summary>
 public class FaceSteer : AlignSteer
 {
-	public KinematicInfo LocalTarget = new KinematicInfo();
+	public KinematicInfo LocalTarget;
 
 	public FaceSteer()
 	{
+		LocalTarget = new KinematicInfo();
 	}
 
-	override public SteeringOutput CalculateAcceleration(GameObject agent, KinematicInfo info)
+	public FaceSteer(KinematicInfo kinematicInfo)
 	{
+		LocalTarget = kinematicInfo;
+	}
+
+	public FaceSteer(Agent agent)
+	{
+		LocalTarget = agent.KinematicInfo;
+	}
+
+	override public SteeringOutput CalculateAcceleration(Agent agent)
+	{
+		KinematicInfo info = agent.KinematicInfo;
+
 		//float rotation = Target.Orientation - info.Orientation;
 		SteeringOutput steering = new SteeringOutput();
 		Vector2 direction = (LocalTarget.Position - info.Position);
@@ -26,6 +39,6 @@ public class FaceSteer : AlignSteer
 		base.Target = LocalTarget;
 		base.Target.Orientation = MotionUtils.SetOrientationFromVector(direction.normalized);
 
-		return base.CalculateAcceleration(agent, info);
+		return base.CalculateAcceleration(agent);
 	}
 }

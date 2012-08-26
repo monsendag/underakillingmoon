@@ -15,10 +15,24 @@ public class EvadeSteer : FleeSteer
 
 	public EvadeSteer()
 	{
+		LocalTarget = new KinematicInfo();
 	}
 
-	public override SteeringOutput CalculateAcceleration(GameObject agent, KinematicInfo info)
+	public EvadeSteer(KinematicInfo kinematicInfo)
 	{
+		LocalTarget = kinematicInfo;
+	}
+
+	public EvadeSteer(Agent agent)
+	{
+		LocalTarget = agent.KinematicInfo;
+	}
+
+
+	public override SteeringOutput CalculateAcceleration(Agent agent)
+	{
+		KinematicInfo info = agent.KinematicInfo;
+
 		Vector3 direction = LocalTarget.Position - info.Position;
 		float distance = direction.magnitude;
 		float speed = LocalTarget.Velocity.magnitude;
@@ -34,6 +48,6 @@ public class EvadeSteer : FleeSteer
 		base.Target = LocalTarget;
 		base.Target.Position += LocalTarget.Velocity * prediction;
 
-		return base.CalculateAcceleration(agent, info);
+		return base.CalculateAcceleration(agent);
 	}
 }

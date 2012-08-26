@@ -9,20 +9,33 @@ using System.Collections;
 /// </summary>
 public class ArriveSteer : ISteeringBehaviour
 {
-	public KinematicInfo Target = new KinematicInfo();
-	public float MaxAcceleration = Config.DefaultMaxAcceleration;
-	public float TargetRadius = Config.DefaultTargetRadius;
-	public float MaxVelocity = Config.DefaultMaxVelocity;
+	public KinematicInfo Target;
+	public float MaxAcceleration;
+	public float TargetRadius;
+	public float MaxVelocity;
 	public float SlowRadius = 0.5f;
 	public float TimeToTarget = 0.1f;
 
 	public ArriveSteer()
 	{
+		Target = new KinematicInfo();
 	}
 
-	virtual public SteeringOutput CalculateAcceleration(GameObject agent, KinematicInfo info)
+	public ArriveSteer(KinematicInfo kinematicInfo)
+	{
+		Target = kinematicInfo;
+	}
+
+	public ArriveSteer(Agent agent)
+	{
+		Target = agent.KinematicInfo;
+	}
+
+	virtual public SteeringOutput CalculateAcceleration(Agent agent)
 	{
 		SteeringOutput steering = new SteeringOutput();
+
+		KinematicInfo info = agent.KinematicInfo;
 
 		Vector2 direction = Target.Position - info.Position;
 		float distance = direction.magnitude;

@@ -14,8 +14,9 @@ public class LWYGSteer : AlignSteer
 	{
 	}
 
-	override public SteeringOutput CalculateAcceleration(GameObject agent, KinematicInfo info)
+	override public SteeringOutput CalculateAcceleration(Agent agent)
 	{
+		KinematicInfo info = agent.KinematicInfo;
 
 		if (info.Velocity.magnitude == 0) {
 			return new SteeringOutput();
@@ -23,6 +24,6 @@ public class LWYGSteer : AlignSteer
 
 		Target.Orientation = MotionUtils.SetOrientationFromVector(info.Velocity);
 
-		return base.CalculateAcceleration(agent, info);
+		return base.CalculateAcceleration(agent);
 	}
 }

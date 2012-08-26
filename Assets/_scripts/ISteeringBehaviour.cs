@@ -19,5 +19,5 @@ public interface ISteeringBehaviour
 	///     agent.
 	/// </param>
 	/// <returns></returns> 
-	SteeringOutput CalculateAcceleration(GameObject agent, KinematicInfo info);
+	SteeringOutput CalculateAcceleration(Agent agent);
 }

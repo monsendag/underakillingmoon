@@ -10,14 +10,26 @@ using System.Collections;
 public class SeekSteer : ISteeringBehaviour
 {
 	public KinematicInfo Target = new KinematicInfo();
-	public float MaxAcceleration = Config.DefaultMaxAcceleration;
+	public float MaxAcceleration;
 
 	public SeekSteer()
 	{
+		Target = new KinematicInfo();
 	}
 
-	virtual public SteeringOutput CalculateAcceleration(GameObject agent, KinematicInfo info)
+	public SeekSteer(KinematicInfo kinematicInfo)
 	{
+		Target = kinematicInfo;
+	}
+
+	public SeekSteer(Agent agent)
+	{
+		Target = agent.KinematicInfo;
+	}
+
+	virtual public SteeringOutput CalculateAcceleration(Agent agent)
+	{
+		KinematicInfo info = agent.KinematicInfo;
 		SteeringOutput steering = new SteeringOutput();
 		steering.Linear = Target.Position - info.Position;
 		steering.Linear.Normalize();

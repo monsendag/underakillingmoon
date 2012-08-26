@@ -11,15 +11,17 @@ using System.Collections;
 public class FleeSteer : ISteeringBehaviour
 {
 	public KinematicInfo Target = new KinematicInfo();
-	public float MaxAcceleration = Config.DefaultMaxAcceleration;
+	public float MaxAcceleration;
 
 	public FleeSteer()
 	{
 	}
 
-	virtual public SteeringOutput CalculateAcceleration(GameObject agent, KinematicInfo info)
+	virtual public SteeringOutput CalculateAcceleration(Agent agent)
 	{
 		SteeringOutput steering = new SteeringOutput();
+
+		KinematicInfo info = agent.KinematicInfo;
 
 		steering.Linear = info.Position - Target.Position;
 		steering.Linear.Normalize();

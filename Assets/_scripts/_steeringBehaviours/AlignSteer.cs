@@ -10,18 +10,31 @@ using System.Collections;
 /// </summary>
 public class AlignSteer : ISteeringBehaviour
 {
-	public KinematicInfo Target = new KinematicInfo();
-	public float MaxRotation = Config.DefaultMaxRotation;
-	public float TargetRadius = Config.DefaultAlignTargetRadius;
-	public float SlowRadius = Config.DefaultAlignSlowRadius;
-	public float TimeToTarget = Config.DefaultAlignTimeToTarget;
+	public KinematicInfo Target;
+	public float MaxRotation = 7.0f;
+	public float TargetRadius = 0.025f;
+	public float SlowRadius = 0.05f;
+	public float TimeToTarget = 0.1f;
 
 	public AlignSteer()
 	{
+		Target = new KinematicInfo();
 	}
 
-	virtual public SteeringOutput CalculateAcceleration(GameObject agent, KinematicInfo info)
+	public AlignSteer(KinematicInfo kinematicInfo)
 	{
+		Target = kinematicInfo;
+	}
+
+	public AlignSteer(Agent agent)
+	{
+		Target = agent.KinematicInfo;
+	}
+
+	virtual public SteeringOutput CalculateAcceleration(Agent agent)
+	{
+		KinematicInfo info = agent.KinematicInfo;
+
 		float rotation = Target.Orientation - info.Orientation;
         
 		rotation = MotionUtils.MapToRangeRadians(rotation);
