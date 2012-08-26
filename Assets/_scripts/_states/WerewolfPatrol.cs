@@ -8,7 +8,8 @@ public class WerewolfPatrol : AgentState
 
 	public void InitAction()
 	{
-
+		target = null;
+		AttackPair.RemoveByAttacker(agent);
 	}
 
 	public void ExitAction()
@@ -26,10 +27,8 @@ public class WerewolfPatrol : AgentState
 			.OrderBy(a => agent.distanceTo(a)) // order by distance
 			.FirstOrDefault(); // select closest
 
-
 		// Found a target -> Charge towards it
 		if (target != null) {
-			Debug.Log("Werewolf: found target!");
 			AttackPair.Add(agent, target);
 			nextState = typeof(WerewolfCharge);
 		}

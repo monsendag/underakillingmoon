@@ -37,7 +37,7 @@ public class Agent : MonoBehaviour
 	private float _maxAcceleration = 1.0f;
 	private float _maxVelocity = 1.0f;
 	private float _maxAngularVelocity = 1.0f;
-	private uint _health;
+	private uint _health = 100;
 	private KinematicInfo _kinematicInfo;
 	private CharacterController _controller;
 	public AgentStateMachine StateMachine;

@@ -30,7 +30,7 @@ public class CamperFlock : AgentState
 	{
 		//TODO: remove all relevant behaviours 
 		agent.RemoveBehaviour("wander");
-
+		agent.RemoveBehaviour("cohesion");
 	}
 	
 	public override void Update(out Type nextState)

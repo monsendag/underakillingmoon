@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public class WerewolfAttack : AgentState
 {
@@ -6,7 +7,7 @@ public class WerewolfAttack : AgentState
 
 	public void InitAction()
 	{
-
+		target = AttackPair.GetTargetOrNull(agent);
 	}
 
 	public void ExitAction()
@@ -31,8 +32,10 @@ public class WerewolfAttack : AgentState
 		}
 
 		// chew on it
+		// TODO: Throttle this action
 		else {
 			target.Health -= 1;
+			Debug.Log("Werewolf is chewing on its target.");
 		}
 	}
 }

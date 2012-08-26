@@ -6,7 +6,6 @@ public class CamperEvade : AgentState
 
 	public void InitAction()
 	{
-		DebugUtil.Assert(agent != null);
 		ISteeringBehaviour EvadeSteer = new EvadeSteer(agent);
 		agent.AddBehaviour("evadeSteer", EvadeSteer, 0);
 	}
@@ -18,8 +17,6 @@ public class CamperEvade : AgentState
 
 	public override void Update(out Type nextState)
 	{
-
-		DebugUtil.Assert(GetType() != null);
 		nextState = GetType();
 		
 		/// camper is killed -> Dead

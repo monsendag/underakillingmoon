@@ -19,13 +19,14 @@ public class CamperCamp : AgentStateMachine
 	{
 
 	}
-
+		
 	public override void Update(out Type nextState)
 	{
 		nextState = GetType();
 
 		/// camper is being attacked -> Evade
 		if (AttackPair.IsTarget(agent)) { 
+			Debug.Log("Camper: I'm being attacked. Evade!");
 			nextState = typeof(CamperEvade);
 		}
 	}

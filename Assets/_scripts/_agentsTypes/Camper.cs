@@ -9,7 +9,8 @@ public class Camper : Agent
 
 		StateMachine = new AgentStateMachine(this);
 		StateMachine.SetStates(new CamperCamp(this), 
-		                       new CamperEvade());
+		                       new CamperEvade(),
+		                       new CamperDead());
 	}
 	
 	public override void Update()

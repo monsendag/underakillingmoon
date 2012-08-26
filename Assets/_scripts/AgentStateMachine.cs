@@ -12,7 +12,7 @@ using System.Collections.Generic;
 public class AgentStateMachine : AgentState
 {
 	public Dictionary<Type,AgentState> States = new Dictionary<Type, AgentState>();
-	private Type _currentState = null;
+	Type _currentState = null;
 
 	/// <summary>
 	/// Top level constructor. Always called from the parenting Agent.
@@ -26,18 +26,26 @@ public class AgentStateMachine : AgentState
 	}
 
 	protected Type CurrentState {
+		get { return _currentState; }
 		set {
-			Type type = value.GetType();
-				
+			if (_currentState == value) {
+				return;
+			}
+
 			if (_currentState != null) {
 				PostMessage("ExitAction");
 			}
 
-			DebugUtil.Assert(States.ContainsKey(type));
+			if (!States.ContainsKey(value)) {
+				Debug.Log("States does not exist: " + value);
+			}
 
-			_currentState = type;
+			DebugUtil.Assert(States.ContainsKey(value));
+
+			_currentState = value;
 			PostMessage("InitAction");
 		}
+
 	}
 
 	/// <summary>
@@ -49,10 +57,8 @@ public class AgentStateMachine : AgentState
 	public void AddStateArr(AgentState[] states)
 	{
 		foreach (AgentState state in states) {
-
 			state.agent = agent;
 			States.Add(state.GetType(), state);
-			Debug.Log(GetType() + ": adding " + state.GetType());
 		}
 	}
 
@@ -88,17 +94,13 @@ public class AgentStateMachine : AgentState
 	/// </summary>
 	public void Update()
 	{
-		DebugUtil.Assert(_currentState != null);
+		DebugUtil.Assert(CurrentState != null);
 
-		
-		AgentState agentState = States [_currentState];
+		AgentState agentState = States [CurrentState];
 
-
-		if (_currentState != null) {
-			Type nextState;
-			agentState.Update(out nextState); // do the transition 
-			CurrentState = nextState;
-		}
+		Type nextState;
+		agentState.Update(out nextState); // do the transition 
+		CurrentState = nextState;
 
 		if (agentState is AgentStateMachine) {
 			(agentState as AgentStateMachine).Update();
@@ -116,19 +118,21 @@ public class AgentStateMachine : AgentState
 	/// </param>
 	public void PostMessage(string functionName, params object[] args)
 	{
-		if (_currentState == null) {
+
+		if (CurrentState == null) {
 			return;
 		}
-		
-		MethodInfo callback = _currentState.GetType().GetMethod(functionName);
+
+		AgentState agentState = States [CurrentState];
+
+		MethodInfo callback = CurrentState.GetMethod(functionName);
 		if (callback != null) {
-			callback.Invoke(_currentState, args);
+			callback.Invoke(agentState, args);
 		}
 
-		AgentState agentState = States [_currentState];
 		// recurse the message down the state machine tree
 		if (agentState is AgentStateMachine) {
-			(agentState as AgentStateMachine).PostMessage(functionName, args);
+			(agentState as AgentStateMachine).PostMessage("recursive" + functionName, args);
 		}
 	}
 }
