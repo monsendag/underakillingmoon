@@ -21,7 +21,7 @@ public class WerewolfPatrol : AgentState
 		nextState = GetType();
 
 		// search for nearby campers
-		target = agent.GetAgentsInArea(Config.WerewolfVisionRange) 
+		target = agent.GetAgentsInArea(Config.DefaultWerewolfVIsionRange) 
 			.Where(c => c is Camper) // we only like Camper meat
 			.OrderBy(a => agent.distanceTo(a)) // order by distance
 			.FirstOrDefault(); // select closest

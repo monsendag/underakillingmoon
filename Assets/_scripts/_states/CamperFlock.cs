@@ -37,7 +37,7 @@ public class CamperFlock : AgentState
 	{
 		nextState = GetType();
 
-		int numAgents = agent.GetAgentsInArea(Config.CamperFlockRadius).
+		int numAgents = agent.GetAgentsInArea(Config.DefaultCamperFlockRadius).
 			Where(a => a is Camper).Count(); 
 		
 		if (numAgents == 0) {
