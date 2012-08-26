@@ -2,11 +2,10 @@ using System;
 
 public class AgentState
 {
-	
-	private Agent _agent;
 
 	public Agent agent {
-		get { return _agent;}
+		set;
+		get;
 	}
 
 	public AgentState()
@@ -16,7 +15,7 @@ public class AgentState
 
 	public AgentState(Agent agent)
 	{
-		_agent = agent;
+		this.agent = agent;
 	}
 
 	/// <summary>

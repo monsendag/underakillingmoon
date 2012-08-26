@@ -12,7 +12,7 @@ using System.Collections.Generic;
 public class AgentStateMachine : AgentState
 {
 	public Dictionary<Type,AgentState> States = new Dictionary<Type, AgentState>();
-	private AgentState _currentState = null;
+	private Type _currentState = null;
 
 	/// <summary>
 	/// Top level constructor. Always called from the parenting Agent.
@@ -25,9 +25,35 @@ public class AgentStateMachine : AgentState
 	{
 	}
 
-	public AgentState CurrentState {
-		get { return _currentState; }
-		set { SetState(value.GetType()); }
+	protected Type CurrentState {
+		set {
+			Type type = value.GetType();
+				
+			if (_currentState != null) {
+				PostMessage("ExitAction");
+			}
+
+			DebugUtil.Assert(States.ContainsKey(type));
+
+			_currentState = type;
+			PostMessage("InitAction");
+		}
+	}
+
+	/// <summary>
+	/// Adds the states.
+	/// </summary>
+	/// <param name='states'>
+	/// States.
+
+	public void AddStateArr(AgentState[] states)
+	{
+		foreach (AgentState state in states) {
+
+			state.agent = agent;
+			States.Add(state.GetType(), state);
+			Debug.Log(GetType() + ": adding " + state.GetType());
+		}
 	}
 
 	/// <summary>
@@ -39,9 +65,7 @@ public class AgentStateMachine : AgentState
 	/// </param>
 	public void AddStates(params AgentState[] states)
 	{
-		foreach (AgentState state in states) {
-			States.Add(state.GetType(), state);
-		}
+		AddStateArr(states);
 	}
 
 	/// <summary>
@@ -51,38 +75,12 @@ public class AgentStateMachine : AgentState
 	/// <param name='states'>
 	/// States.
 	/// </param>
-	public void SetStates(AgentState newState, params AgentState[] states)
+	public void SetStates(params AgentState[] states)
 	{
 		States.Clear();
-		if (states != null) {
-            States.Add(newState.GetType(), newState);
-			foreach (AgentState state in states) {
-				States.Add(state.GetType(), state);
-			}	
-		}
-		CurrentState = newState;
+		AddStateArr(states);
+		CurrentState = states.First().GetType();
 	}
-
-	/// <summary>
-	/// Sets CurrentState to given state.
-	/// Calls ExitAction on previous state 
-	/// and InitAction on the new state
-	/// </summary>
-	/// <param name='type'>
-	/// Type.
-	/// </param>
-	public void SetState(Type type)
-	{
-		if (_currentState != null) {
-			PostMessage("ExitAction");
-		}
-		DebugUtil.Assert(States.ContainsKey(type));
-		AgentState state = States [type];
-
-		_currentState = state;
-		PostMessage("InitAction");
-	}
-
 
 
 	/// <summary>
@@ -90,13 +88,20 @@ public class AgentStateMachine : AgentState
 	/// </summary>
 	public void Update()
 	{
-		if (CurrentState != null) {
+		DebugUtil.Assert(_currentState != null);
+
+		
+		AgentState agentState = States [_currentState];
+
+
+		if (_currentState != null) {
 			Type nextState;
-			CurrentState.Update(out nextState); // do the transition 
-			SetState(nextState);
+			agentState.Update(out nextState); // do the transition 
+			CurrentState = nextState;
 		}
-		if (CurrentState is AgentStateMachine) {
-			(CurrentState as AgentStateMachine).Update();
+
+		if (agentState is AgentStateMachine) {
+			(agentState as AgentStateMachine).Update();
 		}
 	}
 
@@ -120,9 +125,10 @@ public class AgentStateMachine : AgentState
 			callback.Invoke(_currentState, args);
 		}
 
-		// recurse the message
-		if (_currentState is AgentStateMachine) {
-			(_currentState as AgentStateMachine).PostMessage(functionName, args);
+		AgentState agentState = States [_currentState];
+		// recurse the message down the state machine tree
+		if (agentState is AgentStateMachine) {
+			(agentState as AgentStateMachine).PostMessage(functionName, args);
 		}
 	}
 }
