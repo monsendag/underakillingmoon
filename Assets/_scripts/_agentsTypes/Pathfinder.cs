@@ -14,15 +14,18 @@ public class Pathfinder : MonoBehaviour
 		Time.timeScale = 0.5f;
 		_agent = gameObject.GetComponent<Agent>();
 		DebugUtil.Assert (_agent != null);
-		_agent.MaxVelocity = 9.0f;
+		_agent.MaxVelocity = 15.0f;
 		_agent.MaxAcceleration = 27.0f;
-		_agent.MaxAngularVelocity = Mathf.PI / 100;
+		_agent.MaxAngularVelocity = Mathf.PI / 4;
 		
 		_pathSteer = new PathSteer ();
 		_pathSteer.MaxAcceleration = 16.0f;
+        _pathSteer.MaxVelocity = 15.0f;
 		_pathSteer.Target.Position = new Vector2(target.position.x, target.position.z);
 		
 		_agent.AddBehaviour("path", _pathSteer, 0);
+        _agent.AddBehaviour("avoid", new ObstacleAvoidSteer(), 0);
+
 	}
 	
 	void OnDrawGizmos()

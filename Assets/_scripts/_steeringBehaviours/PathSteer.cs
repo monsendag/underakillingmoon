@@ -9,9 +9,9 @@ using Pathfinding;
 /// <summary>
 /// The PathSteer behaviour creates the effect of a unit seeking a target.
 /// </summary>
-public class PathSteer : ISteeringBehaviour
+public class PathSteer : ArriveSteer
 {
-	public float MaxAcceleration;
+	/*public float MaxAcceleration;*/
 	public KinematicInfo Target = new KinematicInfo();
 	
 	public Vector2 LocalTarget {
@@ -19,26 +19,28 @@ public class PathSteer : ISteeringBehaviour
 		private set;
 	}
 	
-	public PathSteer()
+	public PathSteer() : base()
 	{
+        base.SlowRadius = 6.0f;
+        base.TargetRadius = 1.0f;
+        base.TimeToTarget = 0.5f;
+        base.MaxVelocity = 8.0f;
 	}
 
-	virtual public SteeringOutput CalculateAcceleration(Agent agent)
+	override public SteeringOutput CalculateAcceleration(Agent agent)
 	{
 		KinematicInfo info = agent.KinematicInfo;
 	
 		AStarUtils.GetPath(info.Position, Target.Position, OnPathCalculated);
-	
-		SteeringOutput steering = new SteeringOutput();
-		steering.Linear = LocalTarget - info.Position;
-		steering.Linear.Normalize();
-		steering.Linear *= MaxAcceleration;
-		return steering;
+
+        base.Target.Position = LocalTarget;
+		return base.CalculateAcceleration(agent);
 	}
 	
 	void OnPathCalculated(Path p)
 	{
-		var path = AStarUtils.FilterPath(p.vectorPath) [1];
+		var path = AStarUtils.FilterPath(p.vectorPath) [2];
 		LocalTarget = new Vector2(path.x, path.z);
+        base.Target.Position = LocalTarget;
 	}
 }
