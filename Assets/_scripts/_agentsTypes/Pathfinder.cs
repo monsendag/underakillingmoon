@@ -30,6 +30,7 @@ public class Pathfinder : MonoBehaviour
 		
 		List<Vector2> waypoints = GameObject.FindGameObjectsWithTag("Campfire")
 			.Select(w => new Vector2(w.transform.position.x, w.transform.position.z))
+			.OrderBy(w => Vector2.Distance(_agent.KinematicInfo.Position, w))
 			.ToList();
 		Debug.Log(waypoints.Count());
 		WaypointSteer waypointSteer = new WaypointSteer(waypoints);
