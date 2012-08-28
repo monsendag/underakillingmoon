@@ -1,20 +1,30 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class WerewolfPatrol : AgentState
 {
 	Agent target;
+	ISteeringBehaviour waypointSteer;
 
 	public void InitAction()
 	{
 		target = null;
 		AttackPair.RemoveByAttacker(agent);
+		
+		List<Vector2> waypoints = GameObject.FindGameObjectsWithTag("Campfire").ToList()
+			.Select(w => new Vector2(w.transform.position.x, w.transform.position.z)) as List<Vector2>;
+		if(waypoints != null){
+			waypointSteer = new WaypointSteer(waypoints);
+			agent.AddBehaviour("waypoint", waypointSteer, 0);
+		}
 	}
 
 	public void ExitAction()
 	{
-
+		if(waypointSteer != null)
+			agent.RemoveBehaviour("waypoint");
 	}
 	
 	public override void Update(out Type nextState)

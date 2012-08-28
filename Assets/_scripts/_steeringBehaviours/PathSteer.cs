@@ -12,22 +12,29 @@ using Pathfinding;
 public class PathSteer : ISteeringBehaviour
 {
 	public float MaxAcceleration;
+	public float TimeBetweenPathUpdate = 0.10f;
 	public KinematicInfo Target = new KinematicInfo();
+	
+	float _nextPathUpdate = 0.0f;
 	
 	public Vector2 LocalTarget {
 		get;
-		private set;
+		protected set;
 	}
 	
 	public PathSteer()
 	{
+		_nextPathUpdate = Time.time;
 	}
 
 	virtual public SteeringOutput CalculateAcceleration(Agent agent)
 	{
 		KinematicInfo info = agent.KinematicInfo;
 	
-		AStarUtils.GetPath(info.Position, Target.Position, OnPathCalculated);
+		if(Time.time > _nextPathUpdate){
+			AStarUtils.GetPath(info.Position, Target.Position, OnPathCalculated);
+			_nextPathUpdate = Time.time + TimeBetweenPathUpdate;
+		}
 	
 		SteeringOutput steering = new SteeringOutput();
 		steering.Linear = LocalTarget - info.Position;

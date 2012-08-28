@@ -22,13 +22,10 @@ public class Pathfinder : MonoBehaviour
 		_pathSteer.MaxAcceleration = 16.0f;
 		_pathSteer.Target.Position = new Vector2(target.position.x, target.position.z);
 		
+		ObstacleAvoidanceSteer oaSteer = new ObstacleAvoidanceSteer();
+		oaSteer.MaxAcceleration = 16.0f;
+		
 		_agent.AddBehaviour("path", _pathSteer, 0);
-	}
-	
-	void OnDrawGizmos()
-	{
-		Gizmos.color = Color.red;
-		if(Application.isPlaying == true) 
-			Gizmos.DrawLine(transform.position, new Vector3(_pathSteer.LocalTarget.x, 0, _pathSteer.LocalTarget.y));
+		_agent.AddBehaviour("obstacleAvoidance", oaSteer, 0);
 	}
 }
