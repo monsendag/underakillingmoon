@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public class WerewolfEvade : AgentState
 {
@@ -8,7 +9,7 @@ public class WerewolfEvade : AgentState
 	{
 		ISteeringBehaviour EvadeSteer = new EvadeSteer(agent);
 		agent.AddBehaviour("evadeSteer", EvadeSteer, 0);
-		
+		throw new System.NotImplementedException ();
 	}
 
 	public void ExitAction()

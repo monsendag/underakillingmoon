@@ -32,10 +32,5 @@ public class WerewolfHunt : AgentStateMachine
 	public override void Update(out Type nextState)
 	{
 		nextState = GetType();
-
-
-
-
-
 	}
 }

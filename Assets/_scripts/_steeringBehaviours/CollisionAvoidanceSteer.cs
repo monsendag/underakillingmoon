@@ -39,7 +39,6 @@ class CollisionAvoidanceSteer : ISteeringBehaviour
 
 		Vector2 forward = MotionUtils.GetOrientationAsVector(info.Orientation);
 
-
 		foreach (var a in agentList) {
 			// Check whether we are facing the agent.
 			if (a == agent) {
