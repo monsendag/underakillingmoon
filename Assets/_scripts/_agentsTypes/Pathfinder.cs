@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 [RequireComponent(typeof(Agent))]
 public class Pathfinder : MonoBehaviour
@@ -7,6 +9,7 @@ public class Pathfinder : MonoBehaviour
 	public Transform target;
 	Agent _agent;
 	PathSteer _pathSteer;
+	
 
 	// Use this for initialization
 	void Start ()
@@ -25,6 +28,14 @@ public class Pathfinder : MonoBehaviour
 		ObstacleAvoidanceSteer oaSteer = new ObstacleAvoidanceSteer();
 		oaSteer.MaxAcceleration = 16.0f;
 		
+		List<Vector2> waypoints = GameObject.FindGameObjectsWithTag("Campfire")
+			.Select(w => new Vector2(w.transform.position.x, w.transform.position.z))
+			.ToList();
+		Debug.Log(waypoints.Count());
+		WaypointSteer waypointSteer = new WaypointSteer(waypoints);
+		waypointSteer.MaxAcceleration = 16.0f;
+		
+//		_agent.AddBehaviour("waypoint", waypointSteer, 0);
 		_agent.AddBehaviour("path", _pathSteer, 0);
 		_agent.AddBehaviour("obstacleAvoidance", oaSteer, 0);
 	}

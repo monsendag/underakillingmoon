@@ -11,7 +11,7 @@ public class WaypointSteer : PathSteer {
 	public WaypointSteer(List<Vector2> _wps) : base(){
 		_waypoints = _wps;
 		_currentWaypoint = 0;
-		LocalTarget = _waypoints[0];
+		Target.Position = _waypoints[0];
 	}
 	
 	public override SteeringOutput CalculateAcceleration (Agent agent)
@@ -19,7 +19,7 @@ public class WaypointSteer : PathSteer {
 		var info = agent.KinematicInfo;
 		if(Vector2.Distance(info.Position, LocalTarget) < ArriveDistance){
 			_currentWaypoint = (_currentWaypoint < _waypoints.Count - 1)? _currentWaypoint + 1 : 0;
-			LocalTarget = _waypoints[_currentWaypoint];
+			Target.Position = _waypoints[_currentWaypoint];
 		}
 		return base.CalculateAcceleration (agent);
 	}

@@ -6,17 +6,19 @@ using UnityEngine;
 public class WerewolfPatrol : AgentState
 {
 	Agent target;
-	ISteeringBehaviour waypointSteer;
+	WaypointSteer waypointSteer;
 
 	public void InitAction()
 	{
 		target = null;
 		AttackPair.RemoveByAttacker(agent);
 		
-		List<Vector2> waypoints = GameObject.FindGameObjectsWithTag("Campfire").ToList()
-			.Select(w => new Vector2(w.transform.position.x, w.transform.position.z)) as List<Vector2>;
+		List<Vector2> waypoints = GameObject.FindGameObjectsWithTag("Campfire")
+			.Select(w => new Vector2(w.transform.position.x, w.transform.position.z))
+			.ToList();
 		if(waypoints != null){
 			waypointSteer = new WaypointSteer(waypoints);
+			waypointSteer.MaxAcceleration = 16.0f;
 			agent.AddBehaviour("waypoint", waypointSteer, 0);
 		}
 	}

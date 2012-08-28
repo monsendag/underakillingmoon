@@ -11,16 +11,13 @@ using Pathfinding;
 /// </summary>
 public class PathSteer : ISteeringBehaviour
 {
-	public float MaxAcceleration;
-	public float TimeBetweenPathUpdate = 0.10f;
+	public float MaxAcceleration = 1.0f;
+	public float TimeBetweenPathUpdate = 0.25f;
 	public KinematicInfo Target = new KinematicInfo();
 	
-	float _nextPathUpdate = 0.0f;
+	protected Vector2 LocalTarget;
 	
-	public Vector2 LocalTarget {
-		get;
-		protected set;
-	}
+	float _nextPathUpdate = 0.0f;
 	
 	public PathSteer()
 	{
