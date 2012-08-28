@@ -15,6 +15,7 @@ public class WerewolfPatrol : AgentState
 		
 		List<Vector2> waypoints = GameObject.FindGameObjectsWithTag("Campfire")
 			.Select(w => new Vector2(w.transform.position.x, w.transform.position.z))
+			.OrderBy(w => Vector2.Distance(agent.KinematicInfo.Position, w))
 			.ToList();
 		if(waypoints != null){
 			waypointSteer = new WaypointSteer(waypoints);

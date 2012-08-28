@@ -27,18 +27,17 @@ public class Pathfinder : MonoBehaviour
 		
 		ObstacleAvoidanceSteer oaSteer = new ObstacleAvoidanceSteer();
 		oaSteer.MaxAcceleration = 16.0f;
-
-        _agent.AddBehaviour("path", _pathSteer, 0);
-        _agent.AddBehaviour("obstacleAvoidance", oaSteer, 0);
-
+		
 		List<Vector2> waypoints = GameObject.FindGameObjectsWithTag("Campfire")
 			.Select(w => new Vector2(w.transform.position.x, w.transform.position.z))
+			.OrderBy(w => Vector2.Distance(_agent.KinematicInfo.Position, w))
 			.ToList();
 		Debug.Log(waypoints.Count());
 		WaypointSteer waypointSteer = new WaypointSteer(waypoints);
 		waypointSteer.MaxAcceleration = 16.0f;
 		
 //		_agent.AddBehaviour("waypoint", waypointSteer, 0);
-
+		_agent.AddBehaviour("path", _pathSteer, 0);
+		_agent.AddBehaviour("obstacleAvoidance", oaSteer, 0);
 	}
 }
