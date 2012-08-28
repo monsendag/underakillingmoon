@@ -241,13 +241,17 @@ public class Agent : MonoBehaviour
             new Vector3(_kinematicInfo.Velocity.x, 0.0f, _kinematicInfo.Velocity.y) * Time.deltaTime + 
 			new Vector3(acceleration.Linear.x, 0.0f, acceleration.Linear.y) * Time.deltaTime * Time.deltaTime * 0.5f;
 
+        // Update the velocity vectors.
+        _kinematicInfo.Velocity += acceleration.Linear * Time.deltaTime;
+
+        // Note that CharacterController.Move can call OnControllerColliderHit, which will change the
+        // velocity.
 		_controller.Move(motion);
 
 		Vector2 facingVector = MotionUtils.GetOrientationAsVector(_kinematicInfo.Orientation);
 		transform.LookAt(transform.position + new Vector3(facingVector.x, 0.0f, facingVector.y));
 
-		// Update the velocity vectors.
-		_kinematicInfo.Velocity += acceleration.Linear * Time.deltaTime;
+
 		_kinematicInfo.AngularVelocity += acceleration.Angular * Time.deltaTime;
 
 		if (Mathf.Abs(_kinematicInfo.AngularVelocity) > MaxAngularVelocity) {
@@ -255,8 +259,10 @@ public class Agent : MonoBehaviour
 			_kinematicInfo.AngularVelocity *= MaxAngularVelocity;
 		}
 
-		// Update the Orientation and Position values.
-		_kinematicInfo.Position = new Vector2(gameObject.transform.position.x, gameObject.transform.position.z);
+        Vector2 newPosition = new Vector2(gameObject.transform.position.x, gameObject.transform.position.z);
+		
+        // Update the Orientation and Position values.
+        _kinematicInfo.Position = newPosition;
 
 		_kinematicInfo.Orientation += _kinematicInfo.AngularVelocity * Time.deltaTime;
 		_kinematicInfo.Orientation = MotionUtils.MapToRangeRadians(_kinematicInfo.Orientation);
@@ -271,5 +277,15 @@ public class Agent : MonoBehaviour
 	{
 		return Vector2.Distance(KinematicInfo.Position, other.KinematicInfo.Position);
 	}
+
+    public void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        // If the agent is moved, but hits a surface like a wall,
+        // we remove the component of their velocity which moved them towards the wall.
+        Vector2 normal = new Vector2(hit.normal.x, hit.normal.z);
+        normal.Normalize();
+        _kinematicInfo.Velocity -= Vector2.Dot(normal, _kinematicInfo.Velocity) * normal;
+ 
+    }
 
 }
