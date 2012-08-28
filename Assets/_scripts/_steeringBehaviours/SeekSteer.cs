@@ -10,7 +10,7 @@ using System.Collections;
 public class SeekSteer : ISteeringBehaviour
 {
 	public KinematicInfo Target = new KinematicInfo();
-	public float MaxAcceleration;
+	public float MaxAcceleration = 4.0f;
 
 	public SeekSteer()
 	{

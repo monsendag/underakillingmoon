@@ -12,8 +12,11 @@ class CohesionSteer : ISteeringBehaviour
 {
 
 	public float LookAhead = 9.0f;
+    public float MinLookAhead = 1.5f;
 	public float Radius = 1.0f;
 	public float MaxAcceleration = 12.0f;
+    public bool FollowPlayer = true;
+    public int PlayerWeight = 18;
 
 	public CohesionSteer()
 	{
@@ -40,9 +43,18 @@ class CohesionSteer : ISteeringBehaviour
 				continue;
 			}
 
-			num++;
-			average += a.KinematicInfo.Position;
-			velocityAverage += a.KinematicInfo.Velocity;
+            if (a.GetComponent<PlayerMovement>() != null && FollowPlayer)
+            {
+                num += PlayerWeight;
+                average += PlayerWeight * a.KinematicInfo.Position;
+                velocityAverage += PlayerWeight * a.KinematicInfo.Velocity;
+            }
+            else
+            {
+                num++;
+                average += a.KinematicInfo.Position;
+                velocityAverage += a.KinematicInfo.Velocity;
+            }
 		}
 
 		if (num == 0) {
@@ -59,10 +71,15 @@ class CohesionSteer : ISteeringBehaviour
 			velocityDif = velocityDif.normalized * MaxAcceleration;
 		}
 
-		float strength = positionDif.magnitude / 2 * LookAhead;
+        if (positionDif.magnitude < MinLookAhead)
+        {
+            return output;
+        }
 
-		output.Linear += (positionDif.normalized * strength) * MaxAcceleration;
-		output.Linear += velocityDif / 2.0f;
+		float strength = (positionDif.magnitude - MinLookAhead) / 2 * (LookAhead - MinLookAhead);
+
+		output.Linear += (positionDif.normalized) * MaxAcceleration;
+		//output.Linear += velocityDif / 2.0f;
 		return output;
 
 	}

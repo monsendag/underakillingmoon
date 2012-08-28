@@ -10,9 +10,9 @@ using System.Collections;
 public class ArriveSteer : ISteeringBehaviour
 {
 	public KinematicInfo Target;
-	public float MaxAcceleration;
-	public float TargetRadius;
-	public float MaxVelocity;
+	public float MaxAcceleration = 4.0f;
+	public float TargetRadius = 2.0f;
+	public float MaxVelocity = 4.0f;
 	public float SlowRadius = 0.5f;
 	public float TimeToTarget = 0.1f;
 
