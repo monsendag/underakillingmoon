@@ -15,22 +15,23 @@ public class PlayerMovement : MonoBehaviour
 	{
 		agent = gameObject.AddComponent<Agent>();
 		DebugUtil.Assert(agent != null);
+        frictionSteer.VelocityFrictionPercentage = 1.0f;
 		
 		agent.AddBehaviour("face", face, 0);
-		agent.AddBehaviour("friction", frictionSteer, 0);
+		//agent.AddBehaviour("friction", frictionSteer, 0);
 		agent.AddBehaviour("arrive", arriveSteer, 0);
 		agent.MaxVelocity = speed;
 		
 		face.SlowRadius = 0.5f;
 		agent.MaxAngularVelocity = 2 * Mathf.PI;
 
-		frictionSteer.VelocityFrictionPercentage = 0.0f;
-		frictionSteer.AngularVelocityFrictionPercentage = 0.99f;
+		frictionSteer.VelocityFrictionPercentage = 1.0f;
+		frictionSteer.AngularVelocityFrictionPercentage = 0.1f;
 
 		arriveSteer.Target = new KinematicInfo();
 		arriveSteer.Target.Position = new Vector2(0.0f, 0.0f);// agent.KinematicInfo.Position;
 		arriveSteer.SlowRadius = 1.5f;
-		arriveSteer.MaxAcceleration = 4.0f;
+		arriveSteer.MaxAcceleration = 8.0f;
 		arriveSteer.MaxVelocity = 4.0f;
 		//controller = gameObject.GetComponent<CharacterController>();
 
@@ -45,7 +46,18 @@ public class PlayerMovement : MonoBehaviour
 		Vector2 mousePosDif = vectorised - agent.KinematicInfo.Position;
 
 		//transform.LookAt(mousePosition);
-		
+        if (Mathf.Abs(Input.GetAxis("Vertical")) < 0.01f &&
+            Mathf.Abs(Input.GetAxis("Horizontal")) < 0.01f)
+        {
+            agent.RemoveBehaviour("arrive");
+            agent.AddBehaviour("friction", frictionSteer, 0);
+        }
+        else
+        {
+            agent.AddBehaviour("arrive", arriveSteer, 0);
+            agent.RemoveBehaviour("friction");
+        }
+
 		float vert = Input.GetAxis("Vertical");
 		if (mousePosDif.magnitude < 1.0f) {
 			vert = Mathf.Min(0.0f, vert);

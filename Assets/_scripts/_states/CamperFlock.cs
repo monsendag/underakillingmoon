@@ -10,6 +10,7 @@ public class CamperFlock : AgentState
 	private CohesionSteer _cohesionSteer = new CohesionSteer();
     private LWYGSteer _look = new LWYGSteer();
     private FrictionSteer _friction = new FrictionSteer();
+    private ObstacleAvoidanceSteer _obstacleAvoid = new ObstacleAvoidanceSteer();
 
 	public void InitAction()
 	{
@@ -20,15 +21,17 @@ public class CamperFlock : AgentState
         _avoid.LookAhead = 1.5f;
         _seperation.Threshold = 1.5f;
         _seperation.DecayCoefficient = 3.0f;
-        _cohesionSteer.MaxAcceleration = 5.0f;
+        _cohesionSteer.MaxAcceleration = 7.0f;
         _cohesionSteer.PlayerWeight = 24;
+        _friction.AngularVelocityFrictionPercentage = 0.0f;
 
-		agent.AddBehaviour("wander", _wander, 2);
-		agent.AddBehaviour("avoid", _avoid, 1);
-		agent.AddBehaviour("seperation", _seperation, 0);
-		agent.AddBehaviour("cohesion", _cohesionSteer, 1);
-        agent.AddBehaviour("friction", _friction, 1);
-		agent.AddBehaviour("look", _look, 0); 
+		//agent.AddBehaviour("wander", _wander, 3);
+		agent.AddBehaviour("avoid", _avoid, 2);
+		agent.AddBehaviour("seperation", _seperation, 2);
+		agent.AddBehaviour("cohesion", _cohesionSteer, 2);
+        agent.AddBehaviour("friction", _friction, 2);
+		agent.AddBehaviour("look", _look, 0);
+        agent.AddBehaviour("obstacleAvoid", _obstacleAvoid, 1);
 
 		agent.MaxVelocity = 4.0f;  
 		agent.MaxAcceleration = 4.0f;
@@ -40,12 +43,13 @@ public class CamperFlock : AgentState
 	public void ExitAction()
 	{
 		//TODO: remove all relevant behaviours 
-		agent.RemoveBehaviour("wander");
+		//agent.RemoveBehaviour("wander");
 		agent.RemoveBehaviour("cohesion");
         agent.RemoveBehaviour("avoid");
         agent.RemoveBehaviour("seperation");
         agent.RemoveBehaviour("look");
         agent.RemoveBehaviour("wander");
+        agent.RemoveBehaviour("obstacleAvoid");
 	}
 	
 	public override void Update(out Type nextState)

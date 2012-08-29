@@ -30,7 +30,7 @@ class SteeringPair
 public class Agent : MonoBehaviour
 {
 	const uint NUM_PRIORITY_LEVELS = 5;
-	const float EPSILON = 0.2f;
+	const float EPSILON = 0.01f;
 	const float EPSILON_ROTATION = 0.01f;
 	private Dictionary<string,SteeringPair> behaviours = 
         new Dictionary<string,SteeringPair>();

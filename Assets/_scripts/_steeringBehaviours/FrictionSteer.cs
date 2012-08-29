@@ -23,8 +23,12 @@ public class FrictionSteer : ISteeringBehaviour
 
 		SteeringOutput output = new SteeringOutput();
 		output.Linear = info.Velocity * (-VelocityFrictionPercentage);
-		output.Angular = info.AngularVelocity * (-VelocityFrictionPercentage);
+		output.Angular = info.AngularVelocity * (-AngularVelocityFrictionPercentage);
+        if (agent.GetComponent<PlayerMovement>() != null)
+        {
 
+            Debug.Log("YELLOW " + info.Velocity + " " + VelocityFrictionPercentage + " "  + output.Linear);
+        }
 		return output;
 	}
 }

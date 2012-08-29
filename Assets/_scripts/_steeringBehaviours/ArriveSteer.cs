@@ -13,8 +13,8 @@ public class ArriveSteer : ISteeringBehaviour
 	public float MaxAcceleration = 4.0f;
 	public float TargetRadius = 0.1f;
 	public float MaxVelocity = 4.0f;
-	public float SlowRadius = 4.5f;
-	public float TimeToTarget = 0.1f;
+	public float SlowRadius = 6.5f;
+	public float TimeToTarget = 1.0f;
 
 	public ArriveSteer()
 	{
