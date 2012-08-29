@@ -12,13 +12,12 @@ public class WaypointSteer : PathSteer {
 		_waypoints = _wps;
 		_currentWaypoint = 0;
 		Target.Position = _waypoints[0];
-		Debug.LogError(Target.Position.ToString());
 	}
 	
 	public override SteeringOutput CalculateAcceleration (Agent agent)
 	{
 		var info = agent.KinematicInfo;
-		if(Vector2.Distance(info.Position, LocalTarget) < ArriveDistance){
+		if(Vector2.Distance(info.Position, Target.Position) < ArriveDistance){
 			_currentWaypoint = (_currentWaypoint < _waypoints.Count - 1)? _currentWaypoint + 1 : 0;
 			Target.Position = _waypoints[_currentWaypoint];
 		}

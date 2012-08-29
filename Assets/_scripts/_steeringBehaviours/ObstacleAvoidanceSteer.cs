@@ -15,21 +15,21 @@ public class ObstacleAvoidanceSteer : ISteeringBehaviour {
 		SteeringOutput steeringOutput = new SteeringOutput();
 		List<Vector3> nearObstacles = (List<Vector3>)GameObject.FindGameObjectsWithTag("Obstacle")
 			.Where (w => Vector2.Distance(info.Position, 
-					new Vector2(w.transform.position.x, w.transform.position.z)) < radius)
+					MotionUtils.Vec3ToVec2(w.transform.position)) < radius)
 			.Select(p => p.transform.position)
 			.ToList();
 //		Debug.Log(nearObstacles.Count());
 		if(nearObstacles == null || nearObstacles.Count == 0) return steeringOutput;
 		
-		Vector2 direction = (new Vector2(nearObstacles[0].x, nearObstacles[0].z) - info.Position).normalized;
+		Vector2 direction = (MotionUtils.Vec3ToVec2(nearObstacles[0]) - info.Position).normalized;
 		for(int i = 1; i < nearObstacles.Count; ++i){
-			var nextDir = (new Vector2(nearObstacles[i].x, nearObstacles[i].z) - info.Position).normalized;
+			var nextDir = (MotionUtils.Vec3ToVec2(nearObstacles[i]) - info.Position).normalized;
 			direction += nextDir;
 		}
 		direction /= nearObstacles.Count;
 		direction.Normalize();
 		
-		steeringOutput.Linear = (-direction.normalized) * MaxAcceleration;
+		steeringOutput.Linear = (-direction) * MaxAcceleration;
 		return steeringOutput;
 	}
 }

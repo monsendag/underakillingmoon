@@ -8,7 +8,7 @@ public static class AStarUtils
 {
 	public static Path GetPath(Vector2 start, Vector2 end, OnPathDelegate pDel = null)
 	{
-		Path p = new Path(new Vector3(start.x, 0, start.y), new Vector3(end.x, 0, end.y), pDel);
+		Path p = new Path(MotionUtils.Vec2ToVec3(start), MotionUtils.Vec2ToVec3(end), pDel);
 		AstarPath.StartPath(p);
 		return p;
 	}
@@ -20,7 +20,7 @@ public static class AStarUtils
 		return p;
 	}	
 	
-	public static Vector3[] FilterPath(Vector3[] p)
+	public static List<Vector2> FilterPathAsList(Vector3[] p)
 	{
 		List<Vector3> list = new List<Vector3>();
 		
@@ -35,6 +35,6 @@ public static class AStarUtils
 		
 		list.Add (p[p.Length - 1]);
 		
-		return list.ToArray();
+		return list.Select(v => MotionUtils.Vec3ToVec2(v)).ToList();
 	}
 }
