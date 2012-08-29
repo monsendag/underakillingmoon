@@ -68,16 +68,19 @@ public class Agent : MonoBehaviour
 
 	public KinematicInfo KinematicInfo { get { return _kinematicInfo; } }
 	#endregion
-
-	public virtual void Start()
+	
+	public virtual void Awake()
 	{
 		// Initialise KinematicInfo.
 		_kinematicInfo = new KinematicInfo();
 		_kinematicInfo.Orientation = 0.0f;
 		_kinematicInfo.Position = new Vector2(gameObject.transform.position.x, gameObject.transform.position.z);
 		_kinematicInfo.Velocity = Vector2.zero;
-		_kinematicInfo.AngularVelocity = 0.0f;
-		
+		_kinematicInfo.AngularVelocity = 0.0f;	
+	}
+
+	public virtual void Start()
+	{		
 		_controller = gameObject.GetComponent<CharacterController>(); 
 	}
 
