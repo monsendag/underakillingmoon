@@ -16,7 +16,7 @@ public class PathSteer : ISteeringBehaviour
 	public float TimeBetweenPathUpdate = 0.25f;
 	public KinematicInfo Target = new KinematicInfo();
 	
-	protected Vector2 _movementDirection;
+	Vector2 _movementDirection;
 	
 	float _nextPathUpdate = 0.0f;
 	
@@ -35,15 +35,13 @@ public class PathSteer : ISteeringBehaviour
 		}
 	
 		SteeringOutput steering = new SteeringOutput();
-		steering.Linear = LocalTarget - info.Position;
-		steering.Linear.Normalize();
-		steering.Linear *= MaxAcceleration;
+		steering.Linear = _movementDirection * MaxAcceleration;
 		return steering;
 	}
 	
 	void OnPathCalculated(Path p)
 	{
-		List<Vector2> path = AStarUtils.GetFilteredPath(p.vectorPath);
-		_movementDirection = (path.Length > 1)?(path[1] - path[0]).normalized : Vector2.zero;
+		List<Vector2> path = AStarUtils.FilterPathAsList(p.vectorPath);
+		_movementDirection = (path.Count > 1)?(path[1] - path[0]).normalized : Vector2.zero;
 	}
 }
