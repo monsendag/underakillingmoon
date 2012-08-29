@@ -20,7 +20,7 @@ public static class AStarUtils
 		return p;
 	}	
 	
-	public static Vector3[] FilterPath(Vector3[] p)
+	public static List<Vector2> GetFilteredPath(Vector3[] p)
 	{
 		List<Vector3> list = new List<Vector3>();
 		
@@ -35,6 +35,6 @@ public static class AStarUtils
 		
 		list.Add (p[p.Length - 1]);
 		
-		return list.ToArray();
+		return list.Select(v => new Vector2(v.x, v.z)).ToList();
 	}
 }

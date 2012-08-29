@@ -12,7 +12,6 @@ public class WaypointSteer : PathSteer {
 		_waypoints = _wps;
 		_currentWaypoint = 0;
 		Target.Position = _waypoints[0];
-		Debug.LogError(Target.Position.ToString());
 	}
 	
 	public override SteeringOutput CalculateAcceleration (Agent agent)
