@@ -4,6 +4,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+//using System.Linq;
 using Pathfinding;
 
 /// <summary>
@@ -15,7 +16,7 @@ public class PathSteer : ISteeringBehaviour
 	public float TimeBetweenPathUpdate = 0.25f;
 	public KinematicInfo Target = new KinematicInfo();
 	
-	protected Vector2 LocalTarget;
+	protected Vector2 _movementDirection;
 	
 	float _nextPathUpdate = 0.0f;
 	
@@ -42,7 +43,7 @@ public class PathSteer : ISteeringBehaviour
 	
 	void OnPathCalculated(Path p)
 	{
-		var path = AStarUtils.FilterPath(p.vectorPath) [1];
-		LocalTarget = new Vector2(path.x, path.z);
+		List<Vector2> path = AStarUtils.GetFilteredPath(p.vectorPath);
+		_movementDirection = (path.Length > 1)?(path[1] - path[0]).normalized : Vector2.zero;
 	}
 }
