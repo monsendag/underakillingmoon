@@ -10,7 +10,7 @@ public class CamperFlock : AgentState
 	private CohesionSteer _cohesionSteer = new CohesionSteer();
     private LWYGSteer _look = new LWYGSteer();
     private FrictionSteer _friction = new FrictionSteer();
-    private ObstacleAvoidanceSteer _obstacleAvoid = new ObstacleAvoidanceSteer();
+    private ObstacleAvoidSteer _obstacleAvoid = new ObstacleAvoidSteer();
 
 	public void InitAction()
 	{
@@ -48,7 +48,7 @@ public class CamperFlock : AgentState
         agent.RemoveBehaviour("avoid");
         agent.RemoveBehaviour("seperation");
         agent.RemoveBehaviour("look");
-        agent.RemoveBehaviour("wander");
+        agent.RemoveBehaviour("friction");
         agent.RemoveBehaviour("obstacleAvoid");
 	}
 	

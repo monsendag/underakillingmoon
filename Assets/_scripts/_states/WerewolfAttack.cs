@@ -7,7 +7,7 @@ public class WerewolfAttack : AgentState
 
     FrictionSteer _friction = new FrictionSteer();
     FaceSteer _face = new FaceSteer();
-    PursueSteer _pursue = new PursueSteer();
+    ArriveSteer _arrive = new ArriveSteer();
 
 	public void InitAction()
 	{
@@ -22,8 +22,13 @@ public class WerewolfAttack : AgentState
         _friction.VelocityFrictionPercentage = 0.3f;
         agent.AddBehaviour("friction", _friction, 0);
         agent.AddBehaviour("face", _face, 0);
+        agent.AddBehaviour("arrive", _arrive, 0);
         //agent.AddBehaviour("pursue", _pursue, 0);
         _face.LocalTarget = target.KinematicInfo;
+        _arrive.Target = target.KinematicInfo;
+        _arrive.SlowRadius = 3.0f;
+        _arrive.TargetRadius = 1.0f;
+
        // _pursue.LocalTarget = target.KinematicInfo;
         //_pursue.MaxAcceleration = 16.0f;
         //_pursue.MaxPrediction = 0.1f;
@@ -34,6 +39,7 @@ public class WerewolfAttack : AgentState
 	{
         agent.RemoveBehaviour("friction");
         agent.RemoveBehaviour("face");
+        agent.RemoveBehaviour("arrive");
         //agent.RemoveBehaviour("pursue");
         //agent.RemoveBehaviour("seek");
 		//AttackPair.RemoveByAttacker(agent);
@@ -59,7 +65,6 @@ public class WerewolfAttack : AgentState
 		// TODO: Throttle this action
 		else {
 			target.Health -= 1;
-			Debug.Log("Werewolf is chewing on its target.");
 		}
 	}
 }

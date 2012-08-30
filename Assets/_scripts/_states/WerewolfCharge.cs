@@ -15,6 +15,7 @@ public class WerewolfCharge : AgentState
         _pursue.Target = target.KinematicInfo;
         _pursue.MaxAcceleration = 16.0f;
         _pursue.MaxPrediction = 0.5f;
+     
         agent.AddBehaviour("pursue", _pursue, 0);
         agent.AddBehaviour("look", _look, 0);
 
@@ -39,7 +40,9 @@ public class WerewolfCharge : AgentState
 		}
 
 		/// Has target, target in range for Attacking -> Attack
-		if (target != null && agent.distanceTo(target) < Config.DefaultWerewolfAttackRange) {
+		if (target != null && agent.distanceTo(target) < 
+            Config.DefaultWerewolfAttackRange) 
+        {
 			nextState = typeof(WerewolfAttack);
             return;
 		}

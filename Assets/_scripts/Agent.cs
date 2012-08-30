@@ -36,7 +36,7 @@ public class Agent : MonoBehaviour
         new Dictionary<string,SteeringPair>();
 	private float _maxAcceleration = 1.0f;
 	private float _maxVelocity = 1.0f;
-	private float _maxAngularVelocity = 1.0f;
+	private float _maxAngularVelocity = 2.0f * Mathf.PI;
 	private uint _health = 100;
 	private KinematicInfo _kinematicInfo;
 	private CharacterController _controller;

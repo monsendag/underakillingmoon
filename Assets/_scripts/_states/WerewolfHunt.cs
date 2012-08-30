@@ -9,6 +9,8 @@ using System;
 
 public class WerewolfHunt : AgentStateMachine
 {
+
+
 	public WerewolfHunt(Agent agent) : base(agent)
 	{
 		// add all substates
@@ -19,13 +21,14 @@ public class WerewolfHunt : AgentStateMachine
 
 	public void InitAction()
 	{
-		// TODO: add relevant behaviours
-		CurrentState = typeof(WerewolfPatrol); 
+		CurrentState = typeof(WerewolfPatrol);
+
 	}
 
 	public void ExitAction()
 	{
-		// TODO: remove relevant behaviours
+        agent.RemoveBehaviour("avoid");
+        agent.RemoveBehaviour("obstacleAvoid");
 	}
 	
 	public override void Update(out Type nextState)
@@ -55,7 +58,8 @@ public class WerewolfHunt : AgentStateMachine
             // close then the old one, start chasing the new one.
 
             if (currentTarget == null || 
-                agent.distanceTo(currentTarget) * 1.5 > agent.distanceTo(target))
+                agent.distanceTo(currentTarget) * 1.5 > agent.distanceTo(target) ||
+                currentTarget.Health < 0)
             {
                 AttackPair.RemoveByAttacker(agent);
                 AttackPair.Add(agent, target);

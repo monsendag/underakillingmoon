@@ -8,6 +8,8 @@ public class WerewolfPatrol : AgentState
 	Agent target;
 	WaypointSteer _waypointSteer;
     LWYGSteer _look = new LWYGSteer();
+    private CollisionAvoidanceSteer _avoid = new CollisionAvoidanceSteer();
+    private ObstacleAvoidSteer _obstacleAvoid = new ObstacleAvoidSteer();
 
 	public void InitAction()
 	{
@@ -18,12 +20,15 @@ public class WerewolfPatrol : AgentState
 			.Select(w => new Vector2(w.transform.position.x, w.transform.position.z))
 			.OrderBy(w => Vector2.Distance(agent.KinematicInfo.Position, w))
 			.ToList();
-		if(waypoints != null){
+		if(waypoints != null)
+        {
 			_waypointSteer = new WaypointSteer(waypoints);
 			_waypointSteer.MaxAcceleration = 16.0f;
-			agent.AddBehaviour("waypoint", _waypointSteer, 0);
-            agent.AddBehaviour("look", _look, 0);
+            agent.AddBehaviour("waypoint", _waypointSteer, 1);
 		}
+        //agent.AddBehaviour("avoid", _avoid, 0);
+        agent.AddBehaviour("obstacleAvoid", _obstacleAvoid, 0);
+        agent.AddBehaviour("look", _look, 0);
 	}
 
 	public void ExitAction()
@@ -33,7 +38,9 @@ public class WerewolfPatrol : AgentState
 		   agent.RemoveBehaviour("waypoint");
         }
         agent.RemoveBehaviour("look");
-	}
+        agent.RemoveBehaviour("avoid");
+        agent.RemoveBehaviour("obstacleAvoid");
+    }
 	
 	public override void Update(out Type nextState)
 	{

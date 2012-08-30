@@ -25,15 +25,15 @@ public class CamperCamp : AgentStateMachine
 		nextState = GetType();
 
 		/// camper is being attacked -> Evade
+        
 		if (AttackPair.IsTarget(agent)) { 
 			Debug.Log("Camper: I'm being attacked. Evade!");
 			nextState = typeof(CamperEvade);
 		}
 
-        if (agent.Health == 0)
+        if (agent.Health <= 0)
         {
             nextState = typeof(CamperDead);
-            Debug.Break();
             return;
         }
 	}
