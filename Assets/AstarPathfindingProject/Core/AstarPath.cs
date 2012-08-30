@@ -697,7 +697,7 @@ public class AstarPath : MonoBehaviour {
 	 * \see Pathfinding::Path::DebugString
 	 */
 	public void LogPathResults (Path p) {
-		
+		return;
 		if (logPathResults == PathLog.None || (logPathResults == PathLog.OnlyErrors && !p.error)) {
 			return;
 		}

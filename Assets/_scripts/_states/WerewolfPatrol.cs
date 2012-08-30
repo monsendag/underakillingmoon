@@ -6,9 +6,9 @@ using UnityEngine;
 public class WerewolfPatrol : AgentState
 {
 	Agent target;
-	WaypointSteer _waypointSteer;
-    LWYGSteer _look = new LWYGSteer();
-
+	WaypointSteer _waypointSteer = new WaypointSteer();
+	LWYGSteer _look = new LWYGSteer();
+	
 	public void InitAction()
 	{
 		target = null;
@@ -19,20 +19,18 @@ public class WerewolfPatrol : AgentState
 			.OrderBy(w => Vector2.Distance(agent.KinematicInfo.Position, w))
 			.ToList();
 		if(waypoints != null){
-			_waypointSteer = new WaypointSteer(waypoints);
+			_waypointSteer.Waypoints = waypoints;
 			_waypointSteer.MaxAcceleration = 16.0f;
 			agent.AddBehaviour("waypoint", _waypointSteer, 0);
-            agent.AddBehaviour("look", _look, 0);
 		}
+		 agent.AddBehaviour("look", _look, 0);
 	}
 
 	public void ExitAction()
 	{
-        if (_waypointSteer != null)
-        {
-		   agent.RemoveBehaviour("waypoint");
-        }
-        agent.RemoveBehaviour("look");
+		if(_waypointSteer != null)
+			agent.RemoveBehaviour("waypoint");
+		 agent.RemoveBehaviour("look");
 	}
 	
 	public override void Update(out Type nextState)
@@ -40,11 +38,14 @@ public class WerewolfPatrol : AgentState
 		nextState = GetType();
 
 		// search for nearby campers
+		target = agent.GetAgentsInArea(Config.DefaultWerewolfVIsionRange) 
+			.Where(c => c is Camper) // we only like Camper meat
+			.OrderBy(a => agent.distanceTo(a)) // order by distance
+			.FirstOrDefault(); // select closest
 
-
-        var target = AttackPair.GetTargetOrNull(agent);
 		// Found a target -> Charge towards it
 		if (target != null) {
+			AttackPair.Add(agent, target);
 			nextState = typeof(WerewolfCharge);
 		}
 	}
