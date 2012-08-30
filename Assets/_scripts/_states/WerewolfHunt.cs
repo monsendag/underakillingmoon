@@ -9,7 +9,7 @@ using System;
 
 public class WerewolfHunt : AgentStateMachine
 {
-
+    bool beingAttacked = false;
 
 	public WerewolfHunt(Agent agent) : base(agent)
 	{
@@ -22,6 +22,7 @@ public class WerewolfHunt : AgentStateMachine
 	public void InitAction()
 	{
 		CurrentState = typeof(WerewolfPatrol);
+        beingAttacked = false;
 
 	}
 
@@ -29,12 +30,18 @@ public class WerewolfHunt : AgentStateMachine
 	{
         agent.RemoveBehaviour("avoid");
         agent.RemoveBehaviour("obstacleAvoid");
+        AttackPair.RemoveByAttacker(agent);
 	}
 	
 	public override void Update(out Type nextState)
 	{
 
 		nextState = GetType();
+        if (beingAttacked)
+        {
+            // We are a cowardly werewolf who runs when shot at.
+            nextState = typeof(WerewolfEvade);
+        }
         var targets = agent.GetAgentsInArea(Config.DefaultWerewolfVisionRange);
         float minDistance = -1.0f;
         Agent target = null;
@@ -68,4 +75,13 @@ public class WerewolfHunt : AgentStateMachine
 
         }
 	}
+
+    /// <summary>
+    /// The werewolf has take a shot.
+    /// </summary>
+    public void TakeHit()
+    {
+        // Swap to evasive state.
+        beingAttacked = true;
+    }
 }

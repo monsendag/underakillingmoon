@@ -49,7 +49,7 @@ class CohesionSteer : ISteeringBehaviour
                 average += PlayerWeight * a.KinematicInfo.Position;
                 velocityAverage += PlayerWeight * a.KinematicInfo.Velocity;
             }
-            else
+            else if (a.GetComponent<Werewolf>() == null) // Make sure we don't flock with werewolves.
             {
                 num++;
                 average += a.KinematicInfo.Position;

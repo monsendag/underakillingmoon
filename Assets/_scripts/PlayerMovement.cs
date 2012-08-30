@@ -72,5 +72,17 @@ public class PlayerMovement : MonoBehaviour
 
 		Vector3 posone = new Vector3(agent.KinematicInfo.Position.x, transform.position.y, agent.KinematicInfo.Position.y);
 		Debug.DrawLine(posone, posone + movementDirection, Color.green);
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+            var agents = MotionUtils.GetAgentsInArea(agent.KinematicInfo.Position, 10.0f);
+            foreach (var a in agents)
+            {
+                if (a.GetComponent<Werewolf>())
+                {
+                    a.StateMachine.PostMessage("TakeHit");
+                }
+            }
+        }
 	}
 }

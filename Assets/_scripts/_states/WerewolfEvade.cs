@@ -3,18 +3,43 @@ using UnityEngine;
 
 public class WerewolfEvade : AgentState
 {
-	Agent attacker;
+	Agent attacker = null;
+    private const float PlayerSearchDistance = 10.0f;
+    private const float CoolDownTime = 5.0f;
+
+    private EvadeSteer _evadeSteer = new EvadeSteer();
+
+    private bool _shouldHunt = false;
+    private float _countdownTime = 0.0f;
 
 	public void InitAction()
 	{
-		ISteeringBehaviour EvadeSteer = new EvadeSteer(agent);
-		agent.AddBehaviour("evadeSteer", EvadeSteer, 0);
-		throw new System.NotImplementedException ();
+        _evadeSteer.LocalTarget = new KinematicInfo();
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        _shouldHunt = false;
+        _countdownTime = 0.0f;
+        attacker = null;
+
+        if (player == null)
+        {
+            _shouldHunt = true;
+            return;
+        }
+
+        attacker = player.GetComponent<Agent>();
+        if (attacker == null)
+        {    
+            _shouldHunt = true;
+            return;
+        }
+
+        agent.AddBehaviour("evade", _evadeSteer, 0);
+        _evadeSteer.LocalTarget = attacker.KinematicInfo;
 	}
 
 	public void ExitAction()
 	{
-		agent.RemoveBehaviour("evadeSteer");
+		agent.RemoveBehaviour("evade");
 	}
 
 	public override void Update(out Type nextState)
@@ -22,15 +47,22 @@ public class WerewolfEvade : AgentState
 		
 		nextState = GetType();
 
-		// TODO: implement not being attacked
-		if (true) {
-			nextState = typeof(WerewolfHunt);
-		}
+        if (_shouldHunt)
+        {
+            nextState = typeof(WerewolfHunt);
+            return;
+        }
 
-		/// camper is being attacked -> Evade
-		if (AttackPair.IsTarget(agent)) { 
-			nextState = typeof(WerewolfEvade);
-		}
+        _countdownTime += Time.deltaTime;
+        if (agent.distanceTo(attacker) < PlayerSearchDistance)
+        {
+            _countdownTime = 0.0f;
+        }
+
+        if (_countdownTime > CoolDownTime)
+        {
+            nextState = typeof(WerewolfHunt);
+        }
 	}
 }
 

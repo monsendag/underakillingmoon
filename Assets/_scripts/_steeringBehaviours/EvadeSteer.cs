@@ -45,7 +45,7 @@ public class EvadeSteer : FleeSteer
 		}
 
 
-		base.Target = LocalTarget;
+		base.Target.Position = LocalTarget.Position;
 		base.Target.Position += LocalTarget.Velocity * prediction;
 
 		return base.CalculateAcceleration(agent);
