@@ -40,25 +40,11 @@ public class WerewolfPatrol : AgentState
 		nextState = GetType();
 
 		// search for nearby campers
-		var targets = agent.GetAgentsInArea(Config.DefaultWerewolfVisionRange);
-        float minDistance = -1.0f;
-        Agent target = null;
-        foreach (var camper in targets)
-        {
-            if (camper.GetComponent<Camper>() != null)
-            {
-                if (minDistance < -1.0f || minDistance < agent.distanceTo(camper) &&
-                    !AttackPair.IsTarget(camper) )
-                {
-                    target = camper;
-                }
-            }
-        }
 
 
+        var target = AttackPair.GetTargetOrNull(agent);
 		// Found a target -> Charge towards it
 		if (target != null) {
-            AttackPair.Add(agent, target);
 			nextState = typeof(WerewolfCharge);
 		}
 	}

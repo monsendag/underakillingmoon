@@ -9,7 +9,6 @@ using System;
 
 public class WerewolfHunt : AgentStateMachine
 {
-
 	public WerewolfHunt(Agent agent) : base(agent)
 	{
 		// add all substates
@@ -31,6 +30,38 @@ public class WerewolfHunt : AgentStateMachine
 	
 	public override void Update(out Type nextState)
 	{
+
 		nextState = GetType();
+        var targets = agent.GetAgentsInArea(Config.DefaultWerewolfVisionRange);
+        float minDistance = -1.0f;
+        Agent target = null;
+        foreach (var camper in targets)
+        {
+            if (camper.GetComponent<Camper>() != null)
+            {
+                if (minDistance < -1.0f || minDistance < agent.distanceTo(camper) &&
+                    !AttackPair.IsTarget(camper))
+                {
+                    target = camper;
+                }
+            }
+        }
+
+        if (target != null)
+        {
+            var currentTarget = AttackPair.GetTargetOrNull(agent);
+
+            // Examine the two distance, if the new camper is significantly
+            // close then the old one, start chasing the new one.
+
+            if (currentTarget == null || 
+                agent.distanceTo(currentTarget) * 1.5 > agent.distanceTo(target))
+            {
+                AttackPair.RemoveByAttacker(agent);
+                AttackPair.Add(agent, target);
+            }
+
+
+        }
 	}
 }

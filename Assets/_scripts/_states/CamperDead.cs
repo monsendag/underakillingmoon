@@ -5,16 +5,20 @@ public class CamperDead : AgentState
 {
     private float _timer = 0.0f;
     private float _respawnTime = 5.0f;
+    private FrictionSteer _frictionSteer = new FrictionSteer();
 	public void InitAction()
 	{
 		Debug.Log("Camper died.");
         agent.ClearBehaviours();
+        _frictionSteer.AngularVelocityFrictionPercentage = 1.0f;
+        _frictionSteer.VelocityFrictionPercentage = 1.0f;
+        agent.AddBehaviour("friction", _frictionSteer, 0);
         AttackPair.RemoveByTarget(agent);
 	}
 
 	public void ExitAction()
 	{
-
+        agent.RemoveBehaviour("friction");
 	}
 	
 	public override void Update(out Type nextState)

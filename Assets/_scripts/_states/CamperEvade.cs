@@ -15,7 +15,9 @@ public class CamperEvade : AgentState
             return;
         }
         _evadeSteer.LocalTarget = attacker.KinematicInfo;
-		agent.AddBehaviour("evadeSteer", _evadeSteer, 0);
+        _evadeSteer.MaxPrediction = 1.0f;
+        _evadeSteer.MaxAcceleration = 2.0f;
+		agent.AddBehaviour("evadeSteer", _evadeSteer, 1);
         agent.AddBehaviour("look",_look, 0);
 	}
 
@@ -29,14 +31,17 @@ public class CamperEvade : AgentState
 	{
 		nextState = GetType();
 
-		// camper is killed -> Dead
 
-		
 		/// camper is not attacked, has no company -> Idle 
 		if (!AttackPair.IsTarget(agent)) {
 			nextState = typeof(CamperCamp);
             return;
 		}
+
+
+        // camper is killed -> Dead
+        attacker = AttackPair.GetAttackerOrNull(agent);
+        _evadeSteer.LocalTarget = attacker.KinematicInfo;
         
         if (agent.Health == 0)
         {
