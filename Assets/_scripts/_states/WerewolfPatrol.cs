@@ -47,7 +47,8 @@ public class WerewolfPatrol : AgentState
         {
             if (camper.GetComponent<Camper>() != null)
             {
-                if (minDistance < -1.0f || minDistance < agent.distanceTo(camper))
+                if (minDistance < -1.0f || minDistance < agent.distanceTo(camper) &&
+                    !AttackPair.IsTarget(camper) )
                 {
                     target = camper;
                 }

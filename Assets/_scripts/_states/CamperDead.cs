@@ -9,6 +9,7 @@ public class CamperDead : AgentState
 	{
 		Debug.Log("Camper died.");
         agent.ClearBehaviours();
+        AttackPair.RemoveByTarget(agent);
 	}
 
 	public void ExitAction()
