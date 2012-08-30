@@ -18,7 +18,6 @@ public class ObstacleAvoidSteer : SeekSteer
 
     override public SteeringOutput CalculateAcceleration(Agent agent)
     {
-
         Vector3 point1 = agent.transform.position;
         Vector2 aheadPoint = agent.KinematicInfo.Velocity.normalized * LookAhead;
         Vector3 direction =  new Vector3(aheadPoint.x,0.0f,aheadPoint.y);
