@@ -6,7 +6,8 @@ using UnityEngine;
 public class WerewolfPatrol : AgentState
 {
 	Agent target;
-	WaypointSteer waypointSteer;
+	WaypointSteer _waypointSteer;
+    LWYGSteer _look = new LWYGSteer();
 
 	public void InitAction()
 	{
@@ -18,16 +19,20 @@ public class WerewolfPatrol : AgentState
 			.OrderBy(w => Vector2.Distance(agent.KinematicInfo.Position, w))
 			.ToList();
 		if(waypoints != null){
-			waypointSteer = new WaypointSteer(waypoints);
-			waypointSteer.MaxAcceleration = 16.0f;
-			agent.AddBehaviour("waypoint", waypointSteer, 0);
+			_waypointSteer = new WaypointSteer(waypoints);
+			_waypointSteer.MaxAcceleration = 16.0f;
+			agent.AddBehaviour("waypoint", _waypointSteer, 0);
+            agent.AddBehaviour("look", _look, 0);
 		}
 	}
 
 	public void ExitAction()
 	{
-		if(waypointSteer != null)
-			agent.RemoveBehaviour("waypoint");
+        if (_waypointSteer != null)
+        {
+		   agent.RemoveBehaviour("waypoint");
+        }
+        agent.RemoveBehaviour("look");
 	}
 	
 	public override void Update(out Type nextState)
@@ -35,14 +40,24 @@ public class WerewolfPatrol : AgentState
 		nextState = GetType();
 
 		// search for nearby campers
-		target = agent.GetAgentsInArea(Config.DefaultWerewolfVIsionRange) 
-			.Where(c => c is Camper) // we only like Camper meat
-			.OrderBy(a => agent.distanceTo(a)) // order by distance
-			.FirstOrDefault(); // select closest
+		var targets = agent.GetAgentsInArea(Config.DefaultWerewolfVisionRange);
+        float minDistance = -1.0f;
+        Agent target = null;
+        foreach (var camper in targets)
+        {
+            if (camper.GetComponent<Camper>() != null)
+            {
+                if (minDistance < -1.0f || minDistance < agent.distanceTo(camper))
+                {
+                    target = camper;
+                }
+            }
+        }
+
 
 		// Found a target -> Charge towards it
 		if (target != null) {
-			AttackPair.Add(agent, target);
+            AttackPair.Add(agent, target);
 			nextState = typeof(WerewolfCharge);
 		}
 	}

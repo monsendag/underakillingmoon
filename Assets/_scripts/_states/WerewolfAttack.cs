@@ -5,14 +5,38 @@ public class WerewolfAttack : AgentState
 {
 	Agent target;
 
+    FrictionSteer _friction = new FrictionSteer();
+    FaceSteer _face = new FaceSteer();
+    PursueSteer _pursue = new PursueSteer();
+
 	public void InitAction()
 	{
-		target = AttackPair.GetTargetOrNull(agent);
+        target = AttackPair.GetTargetOrNull(agent);
+
+        // Set the werewolf to follow it's target.
+        //_seek.Target = target.KinematicInfo;
+        //_seek.MaxAcceleration = 16.0f;
+
+       // agent.AddBehaviour("seek", _seek, 0);
+       // agent.AddBehaviour("look", _look, 0);
+        _friction.VelocityFrictionPercentage = 0.3f;
+        agent.AddBehaviour("friction", _friction, 0);
+        agent.AddBehaviour("face", _face, 0);
+        //agent.AddBehaviour("pursue", _pursue, 0);
+        _face.LocalTarget = target.KinematicInfo;
+       // _pursue.LocalTarget = target.KinematicInfo;
+        //_pursue.MaxAcceleration = 16.0f;
+        //_pursue.MaxPrediction = 0.1f;
+        
 	}
 
 	public void ExitAction()
 	{
-		AttackPair.RemoveByAttacker(agent);
+        agent.RemoveBehaviour("friction");
+        agent.RemoveBehaviour("face");
+        //agent.RemoveBehaviour("pursue");
+        //agent.RemoveBehaviour("seek");
+		//AttackPair.RemoveByAttacker(agent);
 	}
 	
 	public override void Update(out Type nextState)
@@ -27,8 +51,8 @@ public class WerewolfAttack : AgentState
 		}
 
 		//  Has target, but not in range for attack -> Charge
-		else if (target != null && agent.distanceTo(target) > Config.DefaultWerewolfAttackRange) {
-			nextState = typeof(WerewolfCharge);
+		else if (agent.distanceTo(target) > Config.DefaultWerewolfAttackRange) {
+            nextState = typeof(WerewolfCharge);
 		}
 
 		// chew on it

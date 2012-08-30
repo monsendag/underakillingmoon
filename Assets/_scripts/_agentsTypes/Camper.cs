@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Camper : Agent
 {
+    public GameObject WerewolfPrefab;
 	public override void Start()
 	{
 		base.Start();

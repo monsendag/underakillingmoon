@@ -11,6 +11,7 @@ public class Werewolf : Agent
 		StateMachine = new AgentStateMachine(this);
 		StateMachine.SetStates(new WerewolfHunt(this), 
 			          		new WerewolfEvade());
+        base.MaxVelocity = 4.0f;
 	}
 	
 	public override void Update()
