@@ -496,7 +496,6 @@ while the end has not been found and no error has ocurred
 		/** Returns a debug string for this path.
 		 */
 		public virtual string DebugString (PathLog logMode) {
-			
 			if (logMode == PathLog.None || (!error && logMode == PathLog.OnlyErrors)) {
 				return "";
 			}

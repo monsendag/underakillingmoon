@@ -10,38 +10,34 @@ using Pathfinding;
 /// <summary>
 /// The PathSteer behaviour creates the effect of a unit seeking a target.
 /// </summary>
-public class PathSteer : ISteeringBehaviour
+public class PathSteer : SeekSteer
 {
-	public float MaxAcceleration = 1.0f;
-	public float TimeBetweenPathUpdate = 0.25f;
-	public KinematicInfo Target = new KinematicInfo();
+	public int TimeBetweenPathUpdate = 25;
+	public Vector2 LocalTarget;
 	
-	Vector2 _movementDirection;
+	int _nextPathUpdate = 0;
 	
-	float _nextPathUpdate = 0.0f;
-	
-	public PathSteer()
+	public PathSteer() : base()
 	{
-		_nextPathUpdate = Time.time;
+		_nextPathUpdate = System.Environment.TickCount;
 	}
 
-	virtual public SteeringOutput CalculateAcceleration(Agent agent)
+	override public SteeringOutput CalculateAcceleration(Agent agent)
 	{
 		KinematicInfo info = agent.KinematicInfo;
 	
 		if(Time.time > _nextPathUpdate){
-			AStarUtils.GetPath(info.Position, Target.Position, OnPathCalculated);
-			_nextPathUpdate = Time.time + TimeBetweenPathUpdate;
+			AStarUtils.GetPath(info.Position, LocalTarget, OnPathCalculated);
+			_nextPathUpdate = System.Environment.TickCount + TimeBetweenPathUpdate;
 		}
 	
-		SteeringOutput steering = new SteeringOutput();
-		steering.Linear = _movementDirection * MaxAcceleration;
-		return steering;
+		return base.CalculateAcceleration(agent);
 	}
 	
 	void OnPathCalculated(Path p)
 	{
 		List<Vector2> path = AStarUtils.FilterPathAsList(p.vectorPath);
-		_movementDirection = (path.Count > 1)?(path[1] - path[0]).normalized : Vector2.zero;
+		var _movementDirection = (path.Count > 1)?(path[1] - path[0]).normalized : Vector2.zero;
+		Target.Position = _movementDirection;
 	}
 }
