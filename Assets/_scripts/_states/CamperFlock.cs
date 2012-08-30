@@ -17,12 +17,13 @@ public class CamperFlock : AgentState
 		Debug.Log("init CamperFlock state");
 
         _look.TimeToTarget = 1.0f;
-        _friction.VelocityFrictionPercentage = 1.5f;
+        _friction.VelocityFrictionPercentage = 0.0f;
         _avoid.LookAhead = 1.5f;
         _seperation.Threshold = 1.5f;
         _seperation.DecayCoefficient = 3.0f;
-        _cohesionSteer.MaxAcceleration = 7.0f;
-        _cohesionSteer.PlayerWeight = 24;
+        _cohesionSteer.MaxAcceleration = 9.0f;
+        _cohesionSteer.PlayerWeight = 28;
+        _cohesionSteer.Radius = 9.0f;
         _friction.AngularVelocityFrictionPercentage = 0.0f;
 
 		//agent.AddBehaviour("wander", _wander, 3);
