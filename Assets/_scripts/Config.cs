@@ -2,8 +2,8 @@ using System;
 
 public static class Config
 {
-	public const float DefaultWerewolfAttackRange = 5f;
-	public const float DefaultWerewolfVIsionRange = 5f;
+	public const float DefaultWerewolfAttackRange = 0.15f;
+	public const float DefaultWerewolfVisionRange = 5.0f;
 	public const float DefaultCamperFlockRadius = 5f;
 	public const float DefaultMaxRotation = 7.0f;
 	public const float DefaultAlignTargetRadius = 0.25f;

@@ -132,7 +132,8 @@ public class AgentStateMachine : AgentState
 
 		// recurse the message down the state machine tree
 		if (agentState is AgentStateMachine) {
-			(agentState as AgentStateMachine).PostMessage("recursive" + functionName, args);
+			(agentState as AgentStateMachine).PostMessage(functionName, args);
 		}
 	}
+
 }
