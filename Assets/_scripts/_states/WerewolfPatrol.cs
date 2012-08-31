@@ -14,8 +14,11 @@ public class WerewolfPatrol : AgentState
 		target = null;
 		AttackPair.RemoveByAttacker(agent);
 		
+		//Linq queries will grab all game objects with the tag "Campfire"
+		//order them by distance from the player
+		//and return the position as a Vector2
 		List<Vector2> waypoints = GameObject.FindGameObjectsWithTag("Campfire")
-			.Select(w => new Vector2(w.transform.position.x, w.transform.position.z))
+			.Select(w => MotionUtils.To2D(w.transform.position))
 			.OrderBy(w => Vector2.Distance(agent.KinematicInfo.Position, w))
 			.ToList();
 		if(waypoints != null){
@@ -23,7 +26,8 @@ public class WerewolfPatrol : AgentState
 			_waypointSteer.MaxAcceleration = 16.0f;
 			agent.AddBehaviour("waypoint", _waypointSteer, 0);
 		}
-		 agent.AddBehaviour("look", _look, 0);
+		
+		agent.AddBehaviour("look", _look, 0);
 	}
 
 	public void ExitAction()
@@ -38,7 +42,7 @@ public class WerewolfPatrol : AgentState
 		nextState = GetType();
 
 		// search for nearby campers
-		target = agent.GetAgentsInArea(Config.DefaultWerewolfVIsionRange) 
+		target = agent.GetAgentsInArea(Config.DefaultWerewolfVisionRange) 
 			.Where(c => c is Camper) // we only like Camper meat
 			.OrderBy(a => agent.distanceTo(a)) // order by distance
 			.FirstOrDefault(); // select closest

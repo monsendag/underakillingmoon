@@ -31,7 +31,7 @@ public class Pathfinder : MonoBehaviour
 		_look.TimeToTarget = 1.0f;
 		
 		List<Vector2> waypoints = GameObject.FindGameObjectsWithTag("Campfire")
-			.Select(w => MotionUtils.Vec3ToVec2(w.transform.position))
+			.Select(w => MotionUtils.To2D(w.transform.position))
 			.OrderBy(w => Vector2.Distance(_agent.KinematicInfo.Position, w))
 			.ToList();
 		_waypointSteer.Waypoints = waypoints;

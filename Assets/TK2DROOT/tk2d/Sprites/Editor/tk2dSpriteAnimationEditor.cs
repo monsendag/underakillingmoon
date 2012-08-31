@@ -553,8 +553,8 @@ class tk2dSpriteAnimationEditor : Editor
             go.AddComponent<tk2dSpriteAnimation>();
             go.active = false;
 
-            Object p = EditorUtility.CreateEmptyPrefab(path);
-            EditorUtility.ReplacePrefab(go, p, ReplacePrefabOptions.ConnectToPrefab);
+            Object p = PrefabUtility.CreateEmptyPrefab(path);
+            PrefabUtility.ReplacePrefab(go, p, ReplacePrefabOptions.ConnectToPrefab);
 
             GameObject.DestroyImmediate(go);
         }
