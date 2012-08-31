@@ -31,8 +31,8 @@ public class tk2dFontEditor : Editor
 				go.AddComponent<tk2dFontData>();
 				go.active = false;
 				
-				Object p = EditorUtility.CreateEmptyPrefab(bmFontPath);
-				EditorUtility.ReplacePrefab(go, p);
+				Object p = PrefabUtility.CreateEmptyPrefab(bmFontPath);
+				PrefabUtility.ReplacePrefab(go, p);
 				GameObject.DestroyImmediate(go);
 				AssetDatabase.SaveAssets();
 				
@@ -313,8 +313,8 @@ public class tk2dFontEditor : Editor
 			go.AddComponent<tk2dFont>();
 			go.active = false;
 
-			Object p = EditorUtility.CreateEmptyPrefab(path);
-			EditorUtility.ReplacePrefab(go, p, ReplacePrefabOptions.ConnectToPrefab);
+			Object p = PrefabUtility.CreateEmptyPrefab(path);
+			PrefabUtility.ReplacePrefab(go, p, ReplacePrefabOptions.ConnectToPrefab);
 
 			GameObject.DestroyImmediate(go);
 		}

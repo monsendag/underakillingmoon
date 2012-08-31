@@ -792,10 +792,10 @@ public class tk2dSpriteCollectionEditor : Editor
         // Create prefab
 		if (gen.spriteCollection == null)
 		{
-			Object p = EditorUtility.CreateEmptyPrefab(prefabObjectPath);
+			Object p = PrefabUtility.CreateEmptyPrefab(prefabObjectPath);
 			GameObject go = new GameObject();
 			go.AddComponent<tk2dSpriteCollectionData>();
-			EditorUtility.ReplacePrefab(go, p);
+			PrefabUtility.ReplacePrefab(go, p);
 			DestroyImmediate(go);
 			AssetDatabase.SaveAssets();
 
@@ -1083,8 +1083,8 @@ public class tk2dSpriteCollectionEditor : Editor
             go.AddComponent<tk2dSpriteCollection>();
             go.active = false;
 
-            Object p = EditorUtility.CreateEmptyPrefab(path);
-            EditorUtility.ReplacePrefab(go, p, ReplacePrefabOptions.ConnectToPrefab);
+            Object p = PrefabUtility.CreateEmptyPrefab(path);
+            PrefabUtility.ReplacePrefab(go, p, ReplacePrefabOptions.ConnectToPrefab);
 
             GameObject.DestroyImmediate(go);
         }

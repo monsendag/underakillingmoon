@@ -7,11 +7,12 @@ public class WaypointSteer : PathSteer {
 	int _currentWaypoint = 0;
 	List<Vector2>  _waypoints;
 	
-	public List<Vector2> Waypoints{
+	public List<Vector2> Waypoints
+	{
 		get {
 			return _waypoints;
 		}
-		set{
+		set{ //set _waypoints and reset pathfinding
 			_waypoints = value;
 			_currentWaypoint = 0;
 			if(value != null)LocalTarget = _waypoints[0];
@@ -23,6 +24,8 @@ public class WaypointSteer : PathSteer {
 	override public SteeringOutput CalculateAcceleration (Agent agent)
 	{
 		var info = agent.KinematicInfo;
+		//if close enough to the waypoint (defined by ArriveDistance)
+		//move on to next one
 		if(Vector2.Distance(info.Position, Target.Position) < ArriveDistance){
 			_currentWaypoint = (_currentWaypoint < Waypoints.Count - 1)? _currentWaypoint + 1 : 0;
 			Target.Position = Waypoints[_currentWaypoint];

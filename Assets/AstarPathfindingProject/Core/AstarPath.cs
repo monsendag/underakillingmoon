@@ -1,3 +1,5 @@
+#define HIDEPATHRESULTS
+
 //Define optimizations is a A* Pathfinding Project Pro only feature
 //#define ProfileAstar	//Enables profiling of the pathfinding process
 //#define DEBUG			//Enables more debugging messages, enable if this script is behaving weird (crashing or throwing NullReference exceptions or something)
@@ -697,7 +699,7 @@ public class AstarPath : MonoBehaviour {
 	 * \see Pathfinding::Path::DebugString
 	 */
 	public void LogPathResults (Path p) {
-		return;
+#if !HIDEPATHRESULTS
 		if (logPathResults == PathLog.None || (logPathResults == PathLog.OnlyErrors && !p.error)) {
 			return;
 		}
@@ -709,6 +711,9 @@ public class AstarPath : MonoBehaviour {
 		} else {
 			Debug.Log (debug);
 		}
+#else
+		return;
+#endif
 	}
 	
 	

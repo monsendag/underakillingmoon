@@ -6,13 +6,16 @@ using System.Linq;
 
 public static class AStarUtils
 {
+	//have AStarPath calculate the path
+	//optional delegate function for when its complete
 	public static Path GetPath(Vector2 start, Vector2 end, OnPathDelegate pDel = null)
 	{
-		Path p = new Path(MotionUtils.Vec2ToVec3(start), MotionUtils.Vec2ToVec3(end), pDel);
+		Path p = new Path(MotionUtils.To3D(start), MotionUtils.To3D(end), pDel);
 		AstarPath.StartPath(p);
 		return p;
 	}
 	
+	//same as above, but with Vector3 params
 	public static Path GetPath(Vector3 start, Vector3 end, OnPathDelegate pDel = null)
 	{
 		Path p = new Path(start, end, pDel);	
@@ -20,6 +23,8 @@ public static class AStarUtils
 		return p;
 	}	
 	
+	//get rid of multiple points in straight line
+	//then return as list of Vector2's
 	public static List<Vector2> FilterPathAsList(Vector3[] p)
 	{
 		List<Vector3> list = new List<Vector3>();
@@ -35,6 +40,6 @@ public static class AStarUtils
 		
 		list.Add (p[p.Length - 1]);
 		
-		return list.Select(v => MotionUtils.Vec3ToVec2(v)).ToList();
+		return list.Select(v => MotionUtils.To2D(v)).ToList();
 	}
 }
