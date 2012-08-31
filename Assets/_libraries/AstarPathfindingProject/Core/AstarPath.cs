@@ -1,5 +1,5 @@
 #define HIDEPATHRESULTS
-
+#define NoGUI
 //Define optimizations is a A* Pathfinding Project Pro only feature
 //#define ProfileAstar	//Enables profiling of the pathfinding process
 //#define DEBUG			//Enables more debugging messages, enable if this script is behaving weird (crashing or throwing NullReference exceptions or something)

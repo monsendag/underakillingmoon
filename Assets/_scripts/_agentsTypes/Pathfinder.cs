@@ -30,14 +30,14 @@ public class Pathfinder : MonoBehaviour
 		
 		_look.TimeToTarget = 1.0f;
 		
-		List<Vector2> waypoints = GameObject.FindGameObjectsWithTag("Campfire")
-			.Select(w => MotionUtils.To2D(w.transform.position))
-			.OrderBy(w => Vector2.Distance(_agent.KinematicInfo.Position, w))
-			.ToList();
-		_waypointSteer.Waypoints = waypoints;
-		_waypointSteer.MaxAcceleration = 4.0f;
-		
-		_agent.AddBehaviour("waypoint", _waypointSteer, 0);
+//		List<Vector2> waypoints = GameObject.FindGameObjectsWithTag("Campfire")
+//			.Select(w => MotionUtils.To2D(w.transform.position))
+//			.OrderBy(w => Vector2.Distance(_agent.KinematicInfo.Position, w))
+//			.ToList();
+//		_waypointSteer.Waypoints = waypoints;
+//		_waypointSteer.MaxAcceleration = 4.0f;
+//		
+//		_agent.AddBehaviour("waypoint", _waypointSteer, 0);
 //		_agent.AddBehaviour("path", _pathSteer, 0);
 		
 //		_agent.AddBehaviour("look", _look, 0);

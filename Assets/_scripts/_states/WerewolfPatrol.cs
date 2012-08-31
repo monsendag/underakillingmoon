@@ -10,22 +10,26 @@ public class WerewolfPatrol : AgentState
     LWYGSteer _look = new LWYGSteer();
     private CollisionAvoidanceSteer _avoid = new CollisionAvoidanceSteer();
     private ObstacleAvoidSteer _obstacleAvoid = new ObstacleAvoidSteer();
+	static ShuffleBag<Vector2> _waypoints;
 
 	public void InitAction()
 	{
 		target = null;
 		AttackPair.RemoveByAttacker(agent);
 		
-		List<Vector2> waypoints = GameObject.FindGameObjectsWithTag("Campfire")
-			.Select(w => new Vector2(w.transform.position.x, w.transform.position.z))
-			.OrderBy(w => Vector2.Distance(agent.KinematicInfo.Position, w))
-			.ToList();
-		if(waypoints != null)
-        {
-            _waypointSteer.Waypoints = waypoints;
-			_waypointSteer.MaxAcceleration = 16.0f;
-            agent.AddBehaviour("waypoint", _waypointSteer, 1);
+		if(_waypoints == null){
+			_waypoints = new ShuffleBag<Vector2>();
+			List<Vector2> campfires = GameObject.FindGameObjectsWithTag("Campfire")
+				.Select(w => MotionUtils.To2D(w.transform.position))
+				.OrderBy(w => Vector2.Distance(agent.KinematicInfo.Position, w))
+				.ToList();
+			_waypoints.GenerateShuffleBag(campfires);
 		}
+		
+        _waypointSteer.Waypoints = _waypoints;
+		_waypointSteer.MaxAcceleration = 16.0f;
+        agent.AddBehaviour("waypoint", _waypointSteer, 1);
+
         //agent.AddBehaviour("avoid", _avoid, 0);
         agent.AddBehaviour("obstacleAvoid", _obstacleAvoid, 0);
         agent.AddBehaviour("look", _look, 0);
@@ -33,10 +37,7 @@ public class WerewolfPatrol : AgentState
 
 	public void ExitAction()
 	{
-        if (_waypointSteer != null)
-        {
-		   agent.RemoveBehaviour("waypoint");
-        }
+		agent.RemoveBehaviour("waypoint");
         agent.RemoveBehaviour("look");
         agent.RemoveBehaviour("avoid");
         agent.RemoveBehaviour("obstacleAvoid");
