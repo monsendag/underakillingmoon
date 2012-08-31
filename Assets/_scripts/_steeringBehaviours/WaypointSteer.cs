@@ -4,8 +4,7 @@ using System.Collections.Generic;
 
 public class WaypointSteer : PathSteer {
 	public float ArriveDistance = 1.0f;
-	int _currentWaypoint = 0;
-	List<Vector2>  _waypoints;
+	List<Vector2>  _waypoints, _shuffleBag = new List<Vector2>();
 	
 	public List<Vector2> Waypoints
 	{
@@ -14,8 +13,8 @@ public class WaypointSteer : PathSteer {
 		}
 		set{ //set _waypoints and reset pathfinding
 			_waypoints = value;
-			_currentWaypoint = 0;
-			if(value != null)LocalTarget = _waypoints[0];
+			createShuffleBag();
+			if(_shuffleBag.Count != 0)LocalTarget = popShuffleBag();
 		}
 	}
 
@@ -27,9 +26,35 @@ public class WaypointSteer : PathSteer {
 		//if close enough to the waypoint (defined by ArriveDistance)
 		//move on to next one
 		if(Vector2.Distance(info.Position, Target.Position) < ArriveDistance){
-			_currentWaypoint = (_currentWaypoint < Waypoints.Count - 1)? _currentWaypoint + 1 : 0;
-			Target.Position = Waypoints[_currentWaypoint];
+			Target.Position = popShuffleBag();
 		}
 		return base.CalculateAcceleration (agent);
+	}
+	
+	void createShuffleBag(){
+		_shuffleBag.Clear();
+		
+		if(_waypoints == null || _waypoints.Count == 0)
+			return;
+		
+		for(int i = 0; i < _waypoints.Count; ++i){
+			for(int j = i + 1; j > 0; --j){
+				_shuffleBag.Add(_waypoints[i]);	
+			}
+		}
+	}
+	
+	Vector2 popShuffleBag(){
+		if(_shuffleBag.Count == 0)
+			return Vector2.zero;
+		
+		int random = UnityEngine.Random.Range(0, _shuffleBag.Count);
+		Vector2 randomPoint = _shuffleBag[random];
+		_shuffleBag.RemoveAt(random);
+		
+		if(_shuffleBag.Count == 0)
+			createShuffleBag();
+		
+		return randomPoint;
 	}
 }
