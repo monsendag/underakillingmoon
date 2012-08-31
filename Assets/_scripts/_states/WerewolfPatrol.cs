@@ -10,23 +10,26 @@ public class WerewolfPatrol : AgentState
     LWYGSteer _look = new LWYGSteer();
     private CollisionAvoidanceSteer _avoid = new CollisionAvoidanceSteer();
     private ObstacleAvoidSteer _obstacleAvoid = new ObstacleAvoidSteer();
-	static ShuffleBag<Vector2> _waypoints;
+	static List<Vector2> _campfires;
+	static IndexShuffleBag _shuffleBag;
 
 	public void InitAction()
 	{
 		target = null;
 		AttackPair.RemoveByAttacker(agent);
 		
-		if(_waypoints == null){
-			_waypoints = new ShuffleBag<Vector2>();
-			List<Vector2> campfires = GameObject.FindGameObjectsWithTag("Campfire")
+		if(_shuffleBag == null && _campfires == null){
+			_campfires = GameObject.FindGameObjectsWithTag("Campfire")
 				.Select(w => MotionUtils.To2D(w.transform.position))
 				.OrderBy(w => Vector2.Distance(agent.KinematicInfo.Position, w))
 				.ToList();
-			_waypoints.GenerateShuffleBag(campfires);
+			
+			_shuffleBag = new IndexShuffleBag();
+			_shuffleBag.GenerateShuffleBag(_campfires.Count);
 		}
 		
-        _waypointSteer.Waypoints = _waypoints;
+		_waypointSteer.IndexBag = _shuffleBag;
+        _waypointSteer.Waypoints = _campfires;
 		_waypointSteer.MaxAcceleration = 16.0f;
         agent.AddBehaviour("waypoint", _waypointSteer, 1);
 
