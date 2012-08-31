@@ -10,8 +10,8 @@ public class WerewolfPatrol : AgentState
     LWYGSteer _look = new LWYGSteer();
     private CollisionAvoidanceSteer _avoid = new CollisionAvoidanceSteer();
     private ObstacleAvoidSteer _obstacleAvoid = new ObstacleAvoidSteer();
-	static List<Vector2> _campfires;
-	static IndexShuffleBag _shuffleBag;
+	static List<Vector2> _campfires = null;
+	static IndexShuffleBag _shuffleBag = null;
 
 	public void InitAction()
 	{

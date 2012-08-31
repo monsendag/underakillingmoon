@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class WaypointSteer : PathSteer {
-	public float ArriveDistance = 1.0f;
-	IndexShuffleBag _shuffleBag, _fullBag = new IndexShuffleBag();
+	public float ArriveDistance = 2.5f;
+	IndexShuffleBag _shuffleBag = new IndexShuffleBag(), _fullBag = new IndexShuffleBag();
 	List<Vector2> _waypoints;
 	
 	public IndexShuffleBag IndexBag{
@@ -12,7 +12,7 @@ public class WaypointSteer : PathSteer {
 			return _shuffleBag;
 		}
 		set{
-			_shuffleBag = value;
+			_shuffleBag.Copy(value);
 			_fullBag.Copy(_shuffleBag);
 		}
 	}
@@ -24,7 +24,7 @@ public class WaypointSteer : PathSteer {
 		}
 		set{ //set _waypoints and reset pathfinding
 			_waypoints = value;
-			if(!(_shuffleBag == null || _shuffleBag.Bag.Count == 0))
+			if(_shuffleBag.Bag.Count != 0)
 				LocalTarget = _waypoints[_shuffleBag.PopShuffleBagItem()];
 		}
 	}
