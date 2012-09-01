@@ -100,5 +100,11 @@ public class PlayerMovement : MonoBehaviour
                }
             }
         }
+		
+		var campers = GameObject.FindGameObjectsWithTag("Camper");
+		if(campers == null || campers.Length == 0)
+		{
+			Application.LoadLevel("GameOver");
+		}
 	}
 }
