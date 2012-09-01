@@ -25,7 +25,7 @@ public static class AStarUtils
 	
 	//get rid of multiple points in straight line
 	//then return as list of Vector2's
-	public static List<Vector2> FilterPathAsList(Vector3[] p)
+	public static List<Vector3> FilterPath(Vector3[] p)
 	{
 		List<Vector3> list = new List<Vector3>();
 		
@@ -40,6 +40,11 @@ public static class AStarUtils
 		
 		list.Add (p[p.Length - 1]);
 		
-		return list.Select(v => MotionUtils.To2D(v)).ToList();
+		return list.ToList();
+	}
+	
+	public static List<Vector2> PathToList(Vector3[] p)
+	{
+		return p.Select(l => MotionUtils.To2D(l)).ToList();	
 	}
 }

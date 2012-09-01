@@ -38,7 +38,7 @@ public class PathSteer : SeekSteer
 	void OnPathCalculated(Path p)
 	{
 		//get direction from path and update target position
-		List<Vector2> path = AStarUtils.FilterPathAsList(p.vectorPath);
+		List<Vector2> path = AStarUtils.PathToList(p.vectorPath);
 		var _movementDirection = (path.Count > 1)?(path[1] - path[0]).normalized : Vector2.zero;
 		Target.Position = _movementDirection;
 	}

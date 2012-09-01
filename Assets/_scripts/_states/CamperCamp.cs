@@ -37,7 +37,7 @@ public class CamperCamp : AgentStateMachine
             return;
         }
 		
-		if(Physics.Raycast(MotionUtils.To3D(agent.KinematicInfo.Position), -agent.transform.up, Mathf.Infinity) == null)
+		if(Physics.Raycast(MotionUtils.To3D(agent.KinematicInfo.Position), -agent.transform.up, Mathf.Infinity) == false)
 		{
 			GameObject.Destroy(agent.gameObject);
 		}
