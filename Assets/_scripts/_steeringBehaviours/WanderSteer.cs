@@ -17,9 +17,7 @@ public class WanderSteer : FaceSteer
 	public float MinUpdateTime = 0.1f;
 	private float _minUpdateCounter = 0.0f;
 
-	public WanderSteer() : base()
-	{
-	}
+	public WanderSteer() : base() {	}
 
 	override public SteeringOutput CalculateAcceleration(Agent agent)
 	{

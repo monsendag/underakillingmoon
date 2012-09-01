@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections.Generic;
 
 public class MotionUtils
@@ -93,12 +93,12 @@ public class MotionUtils
 		return agentList;
 	}
 	
-	public static Vector2 Vec3ToVec2(Vector3 vec)
+	public static Vector2 To2D(Vector3 vec)
 	{
 		return new Vector2(vec.x, vec.z);
 	}
 	
-	public static Vector3 Vec2ToVec3(Vector2 vec)
+	public static Vector3 To3D(Vector2 vec)
 	{
 		return new Vector3(vec.x, 0, vec.y);
 	}

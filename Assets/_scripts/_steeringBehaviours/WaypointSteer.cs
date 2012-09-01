@@ -4,29 +4,46 @@ using System.Collections.Generic;
 
 public class WaypointSteer : PathSteer {
 	public float ArriveDistance = 1.0f;
-	int _currentWaypoint = 0;
-	List<Vector2>  _waypoints;
+	IndexShuffleBag _shuffleBag, _fullBag = new IndexShuffleBag();
+	List<Vector2> _waypoints;
 	
-	public List<Vector2> Waypoints{
+	public IndexShuffleBag IndexBag{
+		get{
+			return _shuffleBag;
+		}
+		set{
+			_shuffleBag = value;
+			_fullBag.Copy(_shuffleBag);
+		}
+	}
+	
+	public List<Vector2> Waypoints
+	{
 		get {
 			return _waypoints;
 		}
-		set{
+		set{ //set _waypoints and reset pathfinding
 			_waypoints = value;
-			_currentWaypoint = 0;
-			if(value != null)LocalTarget = _waypoints[0];
+			if(!(_shuffleBag == null || _shuffleBag.Bag.Count == 0))
+				LocalTarget = _waypoints[_shuffleBag.PopShuffleBagItem()];
 		}
 	}
+	
 
 	public WaypointSteer() : base(){}
 	
 	override public SteeringOutput CalculateAcceleration (Agent agent)
 	{
 		var info = agent.KinematicInfo;
+		//if close enough to the waypoint (defined by ArriveDistance)
+		//move on to next one
 		if(Vector2.Distance(info.Position, Target.Position) < ArriveDistance){
-			_currentWaypoint = (_currentWaypoint < Waypoints.Count - 1)? _currentWaypoint + 1 : 0;
-			Target.Position = Waypoints[_currentWaypoint];
+			if(_shuffleBag.Bag.Count == 0) _shuffleBag.Copy(_fullBag);
+			LocalTarget = _waypoints[_shuffleBag.PopShuffleBagItem()];
+			Target.Position = LocalTarget;
 		}
 		return base.CalculateAcceleration (agent);
 	}
+	
+	
 }

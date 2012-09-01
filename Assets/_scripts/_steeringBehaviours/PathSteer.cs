@@ -4,7 +4,6 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-//using System.Linq;
 using Pathfinding;
 
 /// <summary>
@@ -19,6 +18,7 @@ public class PathSteer : SeekSteer
 	
 	public PathSteer() : base()
 	{
+		//set the first path update to be now
 		_nextPathUpdate = System.Environment.TickCount;
 	}
 
@@ -26,6 +26,7 @@ public class PathSteer : SeekSteer
 	{
 		KinematicInfo info = agent.KinematicInfo;
 	
+		//after time increment, update path and set next update
 		if(Time.time > _nextPathUpdate){
 			AStarUtils.GetPath(info.Position, LocalTarget, OnPathCalculated);
 			_nextPathUpdate = System.Environment.TickCount + TimeBetweenPathUpdate;
@@ -36,6 +37,7 @@ public class PathSteer : SeekSteer
 	
 	void OnPathCalculated(Path p)
 	{
+		//get direction from path and update target position
 		List<Vector2> path = AStarUtils.FilterPathAsList(p.vectorPath);
 		var _movementDirection = (path.Count > 1)?(path[1] - path[0]).normalized : Vector2.zero;
 		Target.Position = _movementDirection;
