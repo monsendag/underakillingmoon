@@ -24,8 +24,6 @@ public class CamperEvade : AgentState
         agent.AddBehaviour("look", _look, 0);
         //agent.AddBehaviour("avoid", _avoid, 0);
         agent.AddBehaviour("obstacleAvoid", _obstacleAvoid, 0);
-
-
 	}
 
 	public void ExitAction()

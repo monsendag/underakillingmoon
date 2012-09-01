@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class WaypointSteer : PathSteer {
 	public float ArriveDistance = 2.5f;
@@ -39,6 +40,8 @@ public class WaypointSteer : PathSteer {
 		//move on to next one
 		if(Vector2.Distance(info.Position, Target.Position) < ArriveDistance){
 			if(_shuffleBag.Bag.Count == 0) _shuffleBag.Copy(_fullBag);
+			
+			_waypoints = _waypoints.OrderBy(w => Vector2.Distance(w, info.Position)).ToList();
 			LocalTarget = _waypoints[_shuffleBag.PopShuffleBagItem()];
 			Target.Position = LocalTarget;
 		}

@@ -9,11 +9,12 @@ public class CamperDead : AgentState
 	public void InitAction()
 	{
 		Debug.Log("Camper died.");
+		++GameManager.campersLost;
         agent.ClearBehaviours();
         _frictionSteer.AngularVelocityFrictionPercentage = 1.0f;
         _frictionSteer.VelocityFrictionPercentage = 1.0f;
         agent.AddBehaviour("friction", _frictionSteer, 0);
-        AttackPair.RemoveByTarget(agent);
+        if(AttackPair.IsTarget(agent))AttackPair.RemoveByTarget(agent);
 	}
 
 	public void ExitAction()
