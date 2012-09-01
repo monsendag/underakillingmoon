@@ -20,6 +20,12 @@ public class WerewolfEvade : AgentState
         _countdownTime = 0.0f;
         attacker = null;
 
+        var werewolf = agent.GetComponent<Werewolf>();
+        if (werewolf != null)
+        {
+            agent.audio.PlayOneShot(werewolf.SquealSound);
+        }
+
         if (player == null)
         {
             _shouldHunt = true;
@@ -35,6 +41,7 @@ public class WerewolfEvade : AgentState
 
         agent.AddBehaviour("evade", _evadeSteer, 0);
         _evadeSteer.LocalTarget = attacker.KinematicInfo;
+
 	}
 
 	public void ExitAction()

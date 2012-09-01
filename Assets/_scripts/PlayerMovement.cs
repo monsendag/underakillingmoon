@@ -4,6 +4,7 @@ using System.Collections;
 public class PlayerMovement : MonoBehaviour
 {	
 	public float speed = 1.0f;
+    public AudioClip ShotgunSound = null;
 	Agent agent;
 	FaceSteer _face = new FaceSteer();
 	FrictionSteer _frictionSteer = new FrictionSteer();
@@ -73,15 +74,30 @@ public class PlayerMovement : MonoBehaviour
 		Vector3 posone = new Vector3(agent.KinematicInfo.Position.x, transform.position.y, agent.KinematicInfo.Position.y);
 		Debug.DrawLine(posone, posone + movementDirection, Color.green);
 
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Jump"))
         {
+            
+            Vector3 outward = agent.transform.position + 15.0f * agent.transform.forward;
+
+            //var hits = Physics.RaycastAll(agent.transform.position, outward);
+            audio.PlayOneShot(ShotgunSound);
+
             var agents = MotionUtils.GetAgentsInArea(agent.KinematicInfo.Position, 10.0f);
+            // Take the direction of the player, and find the angle.
+
+    
+
             foreach (var a in agents)
             {
-                if (a.GetComponent<Werewolf>())
-                {
-                    a.StateMachine.PostMessage("TakeHit");
-                }
+               Vector2 forward = MotionUtils.GetOrientationAsVector(agent.KinematicInfo.Orientation);
+               Vector2 otherDir = a.KinematicInfo.Position - agent.KinematicInfo.Position;
+               otherDir.Normalize();
+               float angle = Vector2.Angle(forward, otherDir);
+
+               if (a.GetComponent<Werewolf>() && Mathf.Abs(angle) < 20)
+               {
+                  a.StateMachine.PostMessage("TakeHit");
+               }
             }
         }
 		
