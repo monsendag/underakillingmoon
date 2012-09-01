@@ -27,6 +27,10 @@ public class ObstacleAvoidSteer : SeekSteer
         bool foundHit = false;
         foreach (var hit in hits)
         {
+            if (hit.collider.gameObject.GetComponent<Agent>())
+            {
+                continue;
+            }
             if (hit.collider == agent.collider) { continue; }
             nearestHit = hit;
             foundHit = true;

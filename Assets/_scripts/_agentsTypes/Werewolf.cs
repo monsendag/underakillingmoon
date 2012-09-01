@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Werewolf : Agent
 {
+    public AudioClip SquealSound;
 
 	public override void Start()
 	{

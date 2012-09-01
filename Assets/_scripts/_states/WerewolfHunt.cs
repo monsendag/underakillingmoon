@@ -41,6 +41,7 @@ public class WerewolfHunt : AgentStateMachine
         {
             // We are a cowardly werewolf who runs when shot at.
             nextState = typeof(WerewolfEvade);
+            return;
         }
         var targets = agent.GetAgentsInArea(Config.DefaultWerewolfVisionRange);
         float minDistance = -1.0f;
