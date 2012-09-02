@@ -101,6 +101,7 @@ public class AgentStateMachine : AgentState
 		Type nextState;
 		agentState.Update(out nextState); // do the transition 
 		CurrentState = nextState;
+        agentState = States[CurrentState];
 
 		if (agentState is AgentStateMachine) {
 			(agentState as AgentStateMachine).Update();

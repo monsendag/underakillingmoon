@@ -11,26 +11,37 @@ using Pathfinding;
 /// </summary>
 public class PathSteer : SeekSteer
 {
-	public int TimeBetweenPathUpdate = 25;
+	public float TimeBetweenPathUpdate = 0.25f;
 	public Vector2 LocalTarget;
-	
-	int _nextPathUpdate = 0;
+    private List<Vector2> points = null;
+
+    float _timeSinceUpdate = 0;
 	
 	public PathSteer() : base()
 	{
-		//set the first path update to be now
-		_nextPathUpdate = System.Environment.TickCount;
 	}
 
 	override public SteeringOutput CalculateAcceleration(Agent agent)
 	{
 		KinematicInfo info = agent.KinematicInfo;
-	
 		//after time increment, update path and set next update
-		if(Time.time > _nextPathUpdate){
+        _timeSinceUpdate += Time.deltaTime ;
+		if(_timeSinceUpdate >= TimeBetweenPathUpdate){
+            _timeSinceUpdate -= TimeBetweenPathUpdate;
 			AStarUtils.GetPath(info.Position, LocalTarget, OnPathCalculated);
-			_nextPathUpdate = System.Environment.TickCount + TimeBetweenPathUpdate;
+            //Debug.Break();
 		}
+        // Draw the path.
+        if (points != null)
+        {
+            Vector2 prevPoint = MotionUtils.To2D(agent.transform.position);
+            foreach (var point in points)
+            {
+                Debug.DrawLine(MotionUtils.To3D(prevPoint), MotionUtils.To3D(point),
+                   Color.magenta);
+                prevPoint = point;
+            }
+        }
 	
 		return base.CalculateAcceleration(agent);
 	}
@@ -40,6 +51,7 @@ public class PathSteer : SeekSteer
 		//get direction from path and update target position
 		List<Vector2> path = AStarUtils.PathToList(p.vectorPath);
 		var _movementDirection = (path.Count > 1)?(path[1] - path[0]).normalized : Vector2.zero;
-		Target.Position = _movementDirection;
+        points = path;
+		Target.Position = path[1];
 	}
 }

@@ -38,7 +38,7 @@ public class WaypointSteer : PathSteer {
 		var info = agent.KinematicInfo;
 		//if close enough to the waypoint (defined by ArriveDistance)
 		//move on to next one
-		if(Vector2.Distance(info.Position, Target.Position) < ArriveDistance){
+		if(Vector2.Distance(info.Position, LocalTarget) < ArriveDistance){
 			if(_shuffleBag.Bag.Count == 0) _shuffleBag.Copy(_fullBag);
 			
 			_waypoints = _waypoints.OrderBy(w => Vector2.Distance(w, info.Position)).ToList();

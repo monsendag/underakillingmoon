@@ -87,7 +87,8 @@ public class PlayerMovement : MonoBehaviour
 			//_mflash.Play();
 			_mflash.Play (_mflash.clipId);
 
-            var agents = MotionUtils.GetAgentsInArea(agent.KinematicInfo.Position, 10.0f);
+            var agents = MotionUtils.GetAgentsInArea(MotionUtils.To3D(agent.KinematicInfo.Position),
+                10.0f);
             // Take the direction of the player, and find the angle.
 
             foreach (var a in agents)

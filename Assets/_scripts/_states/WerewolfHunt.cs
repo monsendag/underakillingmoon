@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 /// <summary>
 /// Werewolf hunt.
@@ -35,7 +36,7 @@ public class WerewolfHunt : AgentStateMachine
 	
 	public override void Update(out Type nextState)
 	{
-
+        Debug.Log("IN HUNTING STATE");
 		nextState = GetType();
         if (beingAttacked)
         {
@@ -43,6 +44,7 @@ public class WerewolfHunt : AgentStateMachine
             nextState = typeof(WerewolfEvade);
             return;
         }
+
         var targets = agent.GetAgentsInArea(Config.DefaultWerewolfVisionRange);
         float minDistance = -1.0f;
         Agent target = null;
@@ -72,8 +74,6 @@ public class WerewolfHunt : AgentStateMachine
                 AttackPair.RemoveByAttacker(agent);
                 AttackPair.Add(agent, target);
             }
-
-
         }
 	}
 
