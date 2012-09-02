@@ -17,7 +17,7 @@ public class CamperFlock : AgentState
 		Debug.Log("init CamperFlock state");
 
         _look.TimeToTarget = 1.0f;
-        _friction.VelocityFrictionPercentage = 0.5f;
+        _friction.VelocityFrictionPercentage = 0.0f;
         _avoid.LookAhead = 1.0f;
         _seperation.Threshold = 1.0f;
         _seperation.DecayCoefficient = 3.0f;

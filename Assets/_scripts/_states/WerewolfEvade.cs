@@ -8,6 +8,7 @@ public class WerewolfEvade : AgentState
     private const float CoolDownTime = 5.0f;
 
     private EvadeSteer _evadeSteer = new EvadeSteer();
+    private LWYGSteer _look = new LWYGSteer();
 
     private bool _shouldHunt = false;
     private float _countdownTime = 0.0f;
@@ -40,6 +41,7 @@ public class WerewolfEvade : AgentState
         }
 
         agent.AddBehaviour("evade", _evadeSteer, 0);
+        agent.AddBehaviour("look", _look, 0);
         _evadeSteer.LocalTarget = attacker.KinematicInfo;
 
 	}
@@ -47,6 +49,7 @@ public class WerewolfEvade : AgentState
 	public void ExitAction()
 	{
 		agent.RemoveBehaviour("evade");
+        agent.RemoveBehaviour("look");
 	}
 
 	public override void Update(out Type nextState)

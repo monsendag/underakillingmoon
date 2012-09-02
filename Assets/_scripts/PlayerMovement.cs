@@ -84,7 +84,7 @@ public class PlayerMovement : MonoBehaviour
 
             //var hits = Physics.RaycastAll(agent.transform.position, outward);
             audio.PlayOneShot(ShotgunSound);
-			_mflash.Play();
+			//_mflash.Play();
 			_mflash.Play (_mflash.clipId);
 
             var agents = MotionUtils.GetAgentsInArea(agent.KinematicInfo.Position, 10.0f);
