@@ -7,7 +7,6 @@ public class GameOverText : MonoBehaviour {
 	// Use this for initialization
 	void Start () { 
 		GUIText textComp = GetComponent<GUIText>();
-        Debug.Log(GameManager.campersLost + " " + GameManager.campersSaved);
         textComp.text = "Campers Saved: " + GameManager.campersSaved +
             "\n Campers Lost: " + GameManager.campersLost;
 	}

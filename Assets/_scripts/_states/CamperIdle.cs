@@ -24,7 +24,6 @@ public class CamperIdle : AgentState
 		int numAgents = agent.GetAgentsInArea(Config.DefaultCamperFlockRadius).
 			Where(a => a is Camper).Count(); 
 
-		Debug.Log("Camper: nearby campers:" + numAgents);
 		
 		/// camper is close to other campers -> Flock
 		if (numAgents > 0) {

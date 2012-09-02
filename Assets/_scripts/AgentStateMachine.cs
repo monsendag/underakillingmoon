@@ -37,7 +37,7 @@ public class AgentStateMachine : AgentState
 			}
 
 			if (!States.ContainsKey(value)) {
-				Debug.Log("States does not exist: " + value);
+				Debug.LogError("States does not exist: " + value);
 			}
 
 			DebugUtil.Assert(States.ContainsKey(value));

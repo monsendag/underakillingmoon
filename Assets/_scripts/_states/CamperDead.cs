@@ -8,7 +8,6 @@ public class CamperDead : AgentState
     private FrictionSteer _frictionSteer = new FrictionSteer();
 	public void InitAction()
 	{
-		Debug.Log("Camper died.");
 		++GameManager.campersLost;
         agent.ClearBehaviours();
         _frictionSteer.AngularVelocityFrictionPercentage = 1.0f;
@@ -30,8 +29,6 @@ public class CamperDead : AgentState
         if (_timer > _respawnTime)
         {
             Camper camper = agent.GetComponent<Camper>();
-            //Debug.Log("Camper Respawned as werewolf.");
-            //GameObject werewolfPrefab = (GameObject) Resources.Load("Assets/_prefabs/werewolf.prefab");
             GameObject.Instantiate(camper.WerewolfPrefab, agent.transform.position, agent.transform.rotation);
             GameObject.Destroy(agent.gameObject);
         }

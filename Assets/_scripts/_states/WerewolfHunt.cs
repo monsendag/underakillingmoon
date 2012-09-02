@@ -36,7 +36,6 @@ public class WerewolfHunt : AgentStateMachine
 	
 	public override void Update(out Type nextState)
 	{
-        Debug.Log("IN HUNTING STATE");
 		nextState = GetType();
         if (beingAttacked)
         {

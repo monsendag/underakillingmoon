@@ -14,7 +14,6 @@ public class CamperFlock : AgentState
 
 	public void InitAction()
 	{
-		Debug.Log("init CamperFlock state");
 
         _look.TimeToTarget = 1.0f;
         _friction.VelocityFrictionPercentage = 0.0f;
