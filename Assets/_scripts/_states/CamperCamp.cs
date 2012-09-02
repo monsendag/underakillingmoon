@@ -37,8 +37,9 @@ public class CamperCamp : AgentStateMachine
             return;
         }
 		
-		if(Physics.Raycast(MotionUtils.To3D(agent.KinematicInfo.Position), -agent.transform.up, Mathf.Infinity) == false)
+		if(Physics.Raycast(MotionUtils.To3D(agent.KinematicInfo.Position), Vector3.down, Mathf.Infinity) == false)
 		{
+			Debug.Log ("Not over land, destroying");
 			GameObject.Destroy(agent.gameObject);
 		}
 	}
