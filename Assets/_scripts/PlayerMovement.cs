@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
 	FaceSteer _face = new FaceSteer();
 	FrictionSteer _frictionSteer = new FrictionSteer();
 	ArriveSteer _arriveSteer = new ArriveSteer();
+	tk2dAnimatedSprite _mflash;
 	
 	//CharacterController controller;
 	
@@ -34,6 +35,8 @@ public class PlayerMovement : MonoBehaviour
 		_arriveSteer.SlowRadius = 1.5f;
 		_arriveSteer.MaxAcceleration = 8.0f;
 		_arriveSteer.MaxVelocity = 4.0f;
+		
+		_mflash = GetComponentInChildren<tk2dAnimatedSprite>();
   
 		//controller = gameObject.GetComponent<CharacterController>();
 
@@ -81,11 +84,11 @@ public class PlayerMovement : MonoBehaviour
 
             //var hits = Physics.RaycastAll(agent.transform.position, outward);
             audio.PlayOneShot(ShotgunSound);
+			_mflash.Play();
+			_mflash.Play (_mflash.clipId);
 
             var agents = MotionUtils.GetAgentsInArea(agent.KinematicInfo.Position, 10.0f);
             // Take the direction of the player, and find the angle.
-
-    
 
             foreach (var a in agents)
             {
