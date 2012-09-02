@@ -17,7 +17,7 @@ public class CamperFlock : AgentState
 
         _look.TimeToTarget = 1.0f;
         _friction.VelocityFrictionPercentage = 0.0f;
-        _avoid.LookAhead = 1.0f;
+        _avoid.LookAhead = 1.5f;
         _seperation.Threshold = 1.0f;
         _seperation.DecayCoefficient = 3.0f;
         _cohesionSteer.MaxAcceleration = 15.0f;
@@ -25,7 +25,7 @@ public class CamperFlock : AgentState
         _cohesionSteer.Radius = 12.0f;
         _friction.AngularVelocityFrictionPercentage = 0.5f;
 
-		agent.AddBehaviour("wander", _wander, 3);
+		//agent.AddBehaviour("wander", _wander, 3);
 		agent.AddBehaviour("avoid", _avoid, 1);
 		agent.AddBehaviour("seperation", _seperation, 2);
 		agent.AddBehaviour("cohesion", _cohesionSteer, 2);

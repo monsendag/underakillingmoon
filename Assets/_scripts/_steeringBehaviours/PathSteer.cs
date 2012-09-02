@@ -21,6 +21,11 @@ public class PathSteer : SeekSteer
 	{
 	}
 
+    public void UpdatePath()
+    {
+        _timeSinceUpdate = TimeBetweenPathUpdate;
+    }
+
 	override public SteeringOutput CalculateAcceleration(Agent agent)
 	{
 		KinematicInfo info = agent.KinematicInfo;
@@ -50,8 +55,15 @@ public class PathSteer : SeekSteer
 	{
 		//get direction from path and update target position
 		List<Vector2> path = AStarUtils.PathToList(p.vectorPath);
-		var _movementDirection = (path.Count > 1)?(path[1] - path[0]).normalized : Vector2.zero;
         points = path;
-		Target.Position = path[1];
+        if (path.Count > 1)
+        {
+            Target.Position = path[1];
+        }
+        else
+        {
+            Target.Position = path[0];
+        }
+
 	}
 }

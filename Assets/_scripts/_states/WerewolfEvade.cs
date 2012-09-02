@@ -16,6 +16,8 @@ public class WerewolfEvade : AgentState
 	public void InitAction()
 	{
         _evadeSteer.LocalTarget = new KinematicInfo();
+        _evadeSteer.MaxAcceleration = 4.0f;
+        _evadeSteer.MaxPrediction = 1.5f;
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         _shouldHunt = false;
         _countdownTime = 0.0f;
@@ -30,6 +32,7 @@ public class WerewolfEvade : AgentState
         if (player == null)
         {
             _shouldHunt = true;
+            Debug.Break();
             return;
         }
 
@@ -37,6 +40,7 @@ public class WerewolfEvade : AgentState
         if (attacker == null)
         {    
             _shouldHunt = true;
+            Debug.Break();
             return;
         }
 

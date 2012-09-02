@@ -8,7 +8,7 @@ using System.Collections;
 /// Try to keep agents from drifting too far apart by moving them towards the 
 /// center of the group.
 /// </summary>
-class CohesionSteer : ISteeringBehaviour
+class CohesionSteer : PathSteer
 {
 
 	public float LookAhead = 9.0f;
@@ -18,11 +18,16 @@ class CohesionSteer : ISteeringBehaviour
     public bool FollowPlayer = true;
     public int PlayerWeight = 18;
 
+    private Vector2 _lastKnownPlayerPosition = Vector2.zero;
+    private bool _spottedPlayer = false;
+
 	public CohesionSteer()
 	{
+        _spottedPlayer = false;
+        _lastKnownPlayerPosition = Vector2.zero;
 	}
 
-	virtual public SteeringOutput CalculateAcceleration(Agent agent)
+	override public SteeringOutput CalculateAcceleration(Agent agent)
 	{
 		SteeringOutput output = new SteeringOutput();
 		KinematicInfo info = agent.KinematicInfo;
@@ -45,6 +50,8 @@ class CohesionSteer : ISteeringBehaviour
 
             if (a.GetComponent<PlayerMovement>() != null && FollowPlayer)
             {
+                _spottedPlayer = true;
+                _lastKnownPlayerPosition = a.KinematicInfo.Position;
                 num += PlayerWeight;
                 average += PlayerWeight * a.KinematicInfo.Position;
                 velocityAverage += PlayerWeight * a.KinematicInfo.Velocity;
@@ -80,6 +87,39 @@ class CohesionSteer : ISteeringBehaviour
 
 		output.Linear += (positionDif.normalized) * MaxAcceleration;
 		//output.Linear += velocityDif / 2.0f;
+
+        // Check to see if our path is blocked by obstacles. 
+        if (_spottedPlayer)
+        {
+            _lastKnownPlayerPosition =
+                GameObject.FindGameObjectWithTag("Player").GetComponent<Agent>().KinematicInfo.Position;
+
+            Vector3 motion = (MotionUtils.To3D(_lastKnownPlayerPosition) -
+                agent.transform.position);
+            var hits = Physics.RaycastAll(
+                agent.transform.position, motion.normalized, motion.magnitude);
+
+            bool reachable = true;
+
+            foreach (var hit in hits)
+            {
+                if (hit.collider.gameObject.tag == "Obstacle")
+                {
+                    reachable = false;
+                }
+            }
+            if (!reachable)
+            {
+                // We can't reach the target position. Let's delegate to the pathfinding.
+                base.LocalTarget = _lastKnownPlayerPosition;
+                base.UpdatePath();
+
+                output = base.CalculateAcceleration(agent);
+                output.Linear.Normalize();
+                output.Linear *= MaxAcceleration;
+            }
+        }
+
 		return output;
 
 	}
