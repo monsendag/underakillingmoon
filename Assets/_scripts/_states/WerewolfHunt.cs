@@ -51,10 +51,25 @@ public class WerewolfHunt : AgentStateMachine
         {
             if (camper.GetComponent<Camper>() != null)
             {
+                // Perform a raycast check.
+
                 if (minDistance < -1.0f || minDistance < agent.distanceTo(camper) &&
                     !AttackPair.IsTarget(camper))
                 {
-                    target = camper;
+                    Vector3 direction = (camper.transform.position - agent.transform.position).normalized;
+                    var hits =  Physics.RaycastAll(agent.transform.position, direction,Config.DefaultWerewolfVisionRange);
+                    bool visible = true;
+                    foreach (var hit in hits)
+                    {
+                        if (hit.collider.gameObject != agent.gameObject && hit.collider.gameObject != camper.gameObject)
+                        {
+                            visible = false;
+                        }
+                    }
+                    if (visible)
+                    {
+                       target = camper;
+                    }
                 }
             }
         }
