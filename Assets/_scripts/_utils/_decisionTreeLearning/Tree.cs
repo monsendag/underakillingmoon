@@ -7,6 +7,11 @@ public class Tree
 
 
 	}
+
+	public void AddBranch(Tree branch)
+	{
+
+	}
 }
 
 
