@@ -35,7 +35,7 @@ class CameraFollow : MonoBehaviour
         bottomLeft += transform.position;
         Vector3 topRight = mat * new Vector3(1.0f,0.0f,1.0f);
         topRight += transform.position;
-        Debug.Log(topRight);
+//        Debug.Log(topRight);
         motion = Vector3.zero;
 
         if (bottomLeft.x < BottomLeftWorld.x) { motion.x += BottomLeftWorld.x - bottomLeft.x; }
