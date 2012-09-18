@@ -1,101 +1,192 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 
 public class DST
 {
-
-	//private IList<Attribute> attributes = new IList<Attribute>();
-
 	public DST()
 	{
-		//attributes.Add(new Attribute());
-		List<Attribute> attributes = null;
-
 		// parse exampleData
 		List<Example> trainingExamples = parseExamples();
 
 		// draw tree: 
-		draw(CreateDecisionTree(trainingExamples, attributes));
-
+		draw(CreateDecisionTree(trainingExamples));
 	}
 
-	public void draw(Tree tree)
+	void draw(TreeNode tree)
 	{
 
 	}
 
-	public Example[] parseExamples()
+	/// <summary>
+	/// Parses ...
+	/// </summary>
+	/// <returns>
+	/// A list of examples
+	/// </returns>
+	List<Example> parseExamples()
 	{
+		String url = "https://docs.google.com/spreadsheet/fm?id=taiS1sFWQ3oA084dPKjxHOQ.11523487706387223811.3944155610592869218&fmcmd=5&gid=0";
+		String localfile = "test.csv";
+		
+		var client = new WebClient();
+		client.DownloadFile(url, localfile);
+
 		return null;
 	}
 
-	public Tree CreateDecisionTree(List<Attribute> attributes, List<Example> examples)
+
+	/// <summary>
+	/// Decision Tree Learning.
+	/// Implementation follows the pseudo code on page 702 in Russel/Norvigs AI A Modern Approach 3e. 
+	/// 
+	/// </summary>
+	/// <returns>
+	/// A decision tree model to use for making a decision given some example data and their attributes.
+	/// </returns>
+	/// <param name='attributes'>
+	/// Attributes.
+	/// </param>
+	/// <param name='examples'>
+	/// Examples.
+	/// </param>
+	/// <param name='parentExamples'>
+	/// Parent examples.
+	/// </param>
+	TreeNode CreateDecisionTree(List<Example> examples, List<Example> parentExamples)
 	{
-		return DecisionTreeLearning(attributes, examples, null);
-	}
-
-	public Tree DecisionTreeLearning(List<Attribute> attributes, List<Example> examples, List<Example> parentExamples)
-	{
-
-		List<object> classifications = new List<object>(); 
-		// store all classifications in an array
-		foreach (var example in examples) {
-			classifications.Add(example.Classification);
-		}
-
-		// no examples
+		// no examples. Return a leaf with the plurality value of the parent
 		if (examples.Count() == 0) { 
-			return pluralityValue(parentExamples);
+			return PluralityValue(parentExamples);
 		}
-
-		// all examples has the same classification
-		// return a node with that classification
-		else if (classifications.Distinct().Count() == 1) { 
-			return new Tree(classifications [0]);
+		// all examples has the same classification. Return a leaf node with it
+		else if (examples.GroupBy(ex => ex.Classification).Distinct().Count() == 1) { 
+			return new TreeNode(examples.First().Classification);
 		}
-
-		// no attributes
-		else if (attributes.Count() == 0) { 
-			return pluralityValue(examples);
+		// no attributes. Return a leaf node with the plurality value
+		else if (examples.First().GetAttributes().Count() == 0) { 
+			return PluralityValue(examples);
 		} 
-
-		// make a branch
+		// make a new branch
 		else {
-			// clone the list of attributes
-			List<Attribute> branchAttributes = new List<Attribute>(attributes);
-
 			// find most important attribute
-			Attribute important = Argmax(ImportanceInfoGain, attributes, examples); 
-
-			// remove the extracted attribute from branch attribute list
-			branchAttributes.Remove(important);
-
-			// allocate a list of relevant examples
+			Attribute important = SelectAttribute(examples); 
+			// instantiate a branch
+			var tree = new TreeNode(important.Value);  
+			// allocate examples we're gonna use for creating the branch
 			List<Example> branchExamples;
-
-			// instantiate a Tree object
-			var tree = new Tree(important.Label);  
-
+			// loop through the values for the attribute and select matching examples 
 			foreach (var value in important.Values) {
-
-				// instantiate branch examples
-				branchExamples = new List<Example>();
-
 				// copy all examples which has the value of the attribute
-				foreach (Example example in examples) {
-					if (example.Values [important] == value) {
-						branchExamples.Add(example);
-					}
+				branchExamples = examples.Where(ex => ex [important] == value).ToList();
+				// remove the selected attribute from all examples
+				foreach (var ex in branchExamples) {
+					ex.Remove(important);
 				}
-
-				// add the new branch to the tree. Continue recursively
-				tree.AddBranch(DecisionTreeLearning(branchAttributes, branchExamples, examples));
+				// Recursively create branch and add it to the tree
+				tree.AddBranch(CreateDecisionTree(branchExamples, examples));
 			}
 			return tree;
 		}
+	}
+
+	TreeNode CreateDecisionTree(List<Example> examples)
+	{
+		return CreateDecisionTree(examples, null);
+	}
+
+
+	/// <summary>
+	/// Selects the attribute.
+	/// </summary>
+	/// <returns>
+	/// The attribute.
+	/// </returns>
+	/// <param name='examples'>
+	/// Examples.
+	/// </param>
+	Attribute SelectAttribute(List<Example> examples)
+	{
 		return null;
 	}
+
+
+	/// <summary>
+	/// Returns a random im
+	/// </summary>
+	/// <returns>
+	/// The random.
+	/// </returns>
+	/// <param name='examples'>
+	/// Examples.
+	/// </param>
+	double ImportanceRandom(Example[] examples)
+	{
+		return new Random().NextDouble();
+	}
+
+
+	// TODO: figure out how entropy works with variable # of values
+	
+	
+	// the entropy of a random variable V with values Vk, each with probability P(Vk):
+	// The entropy of the attribute:
+	// 
+	double Entropy(double q, int n)
+	{
+		//the entropy of a n-ary random variable that is true with probability q:
+		return -(q * Math.Log(q, n) + (1 - q) * Math.Log(1 - q, n));
+	}
+
+	double Remainder(Attribute attribute, List<Example> examples)
+	{
+		/*
+		 * the sum from k = 1 to d 
+		 * d = # of distinct values dividing the training set into subsets E1 .. Ed
+		 * each subset Ek has examples a various different classifications. pk, nk...
+		 * 
+		 * 
+		SUM( (( #Pk + #Nk + #koko ...) / total # of samples )) * Entropy(pk / #Pk+#Nk+#koko) 
+
+		*/
+
+		double sum = 0;
+		double entropy;
+		foreach (var value in attribute.Values) {
+			//subset
+			List<Example> cis = examples.Where(ex => ex [attribute] == value).ToList(); 
+			entropy = 0;
+
+			foreach (var classification in cis.Select(ex => ex.Classification)) {
+				//TODO FIX
+				//entropy += Entropy(cis [attribute].Where());
+			}
+			sum += cis.Count() / examples.Count() * entropy;
+		}
+		return sum;
+	}
+
+	/*
+	we're looking at how much information an attribute gains.
+	Entropy is a measure of the uncertainty of a random variable; 
+	acquisition of information corresponds to a reduction in entropy
+	*/
+	double ImportanceInfoGain(Attribute attribute, List<Example> examples)
+	{
+		int count;
+		double totalEntropy = 0;
+		foreach (var value in attribute.Values) {
+			// get the number of samples where the attribute has the current value
+			count = examples.Where(ex => ex [attribute] == value).Count();
+			// get the entropy of the values probability
+			totalEntropy += Entropy(count / attribute.Values.Count(), attribute.Values.Count());
+		}
+
+		//The information gain from the attribute test on A is the expected reduction in entropy
+		return (totalEntropy - Remainder(attribute, examples));
+	}
+
 
 	/// <summary>
 	/// Selects the most common classification value among a set of examples
@@ -106,83 +197,12 @@ public class DST
 	/// <param name='examples'>
 	/// Examples.
 	/// </param>
-	public Tree PluralityValue(List<Example> examples)
+	public TreeNode PluralityValue(List<Example> examples)
 	{
 		object value = examples.GroupBy(e => e.Classification).
 						OrderByDescending(gp => gp.Count()).First();
-
-		return new Tree(value);
+		return new TreeNode(value);
 	}
-
-
-	double ImportanceRandom(Attribute[] attributes, Example[] examples)
-	{
-		//	return new Random();
-		return 0;
-	}
-
-
-	double ImportanceInfoGain(Attribute[] attributes, Example[] examples)
-	{
-
-		int numValues = attributes[0].Values.Count();
-
-		// TODO: figure out how entropy works with variable # of values
-		double Entropy = q => 
-			-(q * log2(q) + (1 - q) * log2(1 - q)); 
-
-		var numClassifications = examples, match => 
-			var count = 0;
-
-			foreach(example in examples) {
-				if()
-			examples.forEach(function (ex) {
-				if (ex.classification == match) count++;
-			});
-			return count;
-		}
-
-		var allOnes = numClassifications(examples, 1);
-		var allTwos = numClassifications(examples, 2);
-
-		function Remainder(A) {
-			var sum = 0;
-			A.values.forEach(function(v) {
-				var exs = [];
-				examples.forEach(function (ex) {
-					if (ex.values[A.id] == v) exs.push(ex);
-				});
-
-				if (exs.length == 0) return;
-
-				var pk = numClassifications(exs, 1);
-				var nk = numClassifications(exs, 2);
-
-				sum += ((pk + nk) / (allOnes + allTwos)) * B(pk / (pk + nk));
-			});
-			return sum;
-		}
-		return (Entropy(allOnes / (allOnes + allTwos)) - Remainder(A));
-	
-	}
-
-	object Argmax(Func<object, int> function, object[] parameters, params object[] extra)
-	{
-		object argument; // the argument causing the largest return value
-		int max = int.MinValue; // initi
-		int result;
-		foreach (var parameter in parameters) {
-			result = function(parameter);
-
-			if (result > max) {
-				max = result;
-				argument = parameter;
-			}
-		}
-		
-		return argument;
-	}
-
 
 }
 

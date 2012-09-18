@@ -4,12 +4,12 @@ using System.Collections.Generic;
 public class Attribute
 {
 	public string Label;
-	public Dictionary<Attribute, object> Values = new Dictionary<Attribute, object>();
+	public List<object> Values = new List<object>();
+	public object Value;
 
-
-	public Attribute()
+	public Attribute(String label)
 	{
-
+		Label = label;
 	}
 }
 

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-public class Example
+public class Example : Dictionary<Attribute, object>
 {
 	public object Classification;
 	public List<object> Values;
@@ -22,6 +22,11 @@ public class Example
 		 * */
 
 
+	}
+
+	public List<Attribute> GetAttributes()
+	{
+		return new List<Attribute>(Keys);
 	}
 }
 
