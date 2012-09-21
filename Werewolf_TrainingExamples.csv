@@ -1,0 +1,10 @@
+Classification,MyHealth,TargetHealth,#Werewolves,#Campers,TargetDistance,PlayerDistance,RecentGunfire
+WerewolfAttack,100,20,5,2,20,100,FALSE
+WerewolfAttack,60,20,2,4,20,80,FALSE
+WerewolfAttack,80,20,1,6,20,80,FALSE
+WerewolfEvade,20,20,5,8,40,60,TRUE
+WerewolfEvade,80,20,4,10,60,40,TRUE
+WerewolfCharge,20,20,1,2,60,100,FALSE
+WerewolfCharge,20,20,3,4,80,80,FALSE
+WerewolfPatrol,20,20,2,0,100,80,FALSE
+WerewolfPatrol,20,20,4,2,100,100,FALSE
