@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class MotionUtils
+public static class MotionUtils
 {
 	/// <summary>
 	///     Converts a scalar orientation value into a 2d vector.
@@ -93,12 +93,12 @@ public class MotionUtils
 		return agentList;
 	}
 	
-	public static Vector2 To2D(Vector3 vec)
+	public static Vector2 To2D(this Vector3 vec)
 	{
 		return new Vector2(vec.x, vec.z);
 	}
 	
-	public static Vector3 To3D(Vector2 vec)
+	public static Vector3 To3D(this Vector2 vec)
 	{
 		return new Vector3(vec.x, 0, vec.y);
 	}

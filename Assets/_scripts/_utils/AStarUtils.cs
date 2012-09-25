@@ -10,7 +10,7 @@ public static class AStarUtils
 	//optional delegate function for when its complete
 	public static Path GetPath(Vector2 start, Vector2 end, OnPathDelegate pDel = null)
 	{
-		Path p = new Path(MotionUtils.To3D(start), MotionUtils.To3D(end), pDel);
+		Path p = new Path(start.To3D(), end.To3D(), pDel);
 		AstarPath.StartPath(p);
 		return p;
 	}

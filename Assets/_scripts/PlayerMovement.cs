@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Linq;
 
 public class PlayerMovement : MonoBehaviour
 {	
@@ -87,8 +88,7 @@ public class PlayerMovement : MonoBehaviour
 			//_mflash.Play();
 			_mflash.Play (_mflash.clipId);
 
-            var agents = MotionUtils.GetAgentsInArea(MotionUtils.To3D(agent.KinematicInfo.Position),
-                10.0f);
+            var agents = agent.GetAgentsInArea(10.0f).Where(a => a.GetType() == typeof(Werewolf));
             // Take the direction of the player, and find the angle.
 
             foreach (var a in agents)
@@ -98,7 +98,7 @@ public class PlayerMovement : MonoBehaviour
                otherDir.Normalize();
                float angle = Vector2.Angle(forward, otherDir);
 
-               if (a.GetComponent<Werewolf>() && Mathf.Abs(angle) < 20)
+               if (Mathf.Abs(angle) < 20)
                {
                   a.StateMachine.PostMessage("TakeHit");
                }

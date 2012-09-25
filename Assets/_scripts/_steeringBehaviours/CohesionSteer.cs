@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Collision Avoidance steer
  **/
 using UnityEngine;
@@ -94,8 +94,7 @@ class CohesionSteer : PathSteer
             _lastKnownPlayerPosition =
                 GameObject.FindGameObjectWithTag("Player").GetComponent<Agent>().KinematicInfo.Position;
 
-            Vector3 motion = (MotionUtils.To3D(_lastKnownPlayerPosition) -
-                agent.transform.position);
+            Vector3 motion = _lastKnownPlayerPosition.To3D() - agent.transform.position;
             var hits = Physics.RaycastAll(
                 agent.transform.position, motion.normalized, motion.magnitude);
 

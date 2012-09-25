@@ -39,10 +39,10 @@ public class PathSteer : SeekSteer
         // Draw the path.
         if (points != null)
         {
-            Vector2 prevPoint = MotionUtils.To2D(agent.transform.position);
+            Vector2 prevPoint = agent.transform.position.To2D();
             foreach (var point in points)
             {
-                Debug.DrawLine(MotionUtils.To3D(prevPoint), MotionUtils.To3D(point),
+                Debug.DrawLine(prevPoint.To3D(), point.To3D(),
                    Color.magenta);
                 prevPoint = point;
             }
