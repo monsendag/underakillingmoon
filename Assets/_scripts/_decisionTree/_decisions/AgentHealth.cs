@@ -1,17 +1,13 @@
 using UnityEngine;
 using System.Collections;
 
-public class AgentHealth : IDecision
-{
-	Agent _agent;
-	uint _threshold;
+public class AgentHealth : IValue
+{	
+	AgentHealth(){}
 	
-	AgentHealth(Agent agent, uint threshold){
-		_agent = agent;
-		_threshold = threshold;
-	}
-	
-	public bool Decide(){
-		return _agent.Health < _threshold;
+	public int Decide(Agent agent){
+        int health = Mathf.Clamp((int) agent.Health, 0, 100);
+        health = (int) (agent.Health / 20);
+        return health;
 	}
 }

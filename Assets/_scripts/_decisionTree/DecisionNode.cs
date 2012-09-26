@@ -10,46 +10,49 @@ using System.Text;
 /// </summary>
 class DecisionNode
 {
-    private IDecision _decision;
-    private DecisionNode _leftNode; // Occurs when decision false.
-    private DecisionNode _rightNode; // Occurs when decision true.
+    private IValue _decision;
     private Type _outputType;
+    private Dictionary<int, DecisionNode> _children = 
+        new Dictionary<int, DecisionNode>();
 
-    public IDecision Decision { set { _decision = value; } }
-    public DecisionNode FalseNode { set { _leftNode = value; } }
-    public DecisionNode TrueNode { set { _rightNode = value; } }
+    public IValue Decision { set { _decision = value; } }
     public Type OutputType { set { _outputType = value; }}
 
-    DecisionNode(IDecision decision, DecisionNode leftNode = null, DecisionNode rightNode = null,
+
+    DecisionNode(IValue decision,
         Type outputType = null)
     {
         _decision = decision;
-        _leftNode = leftNode;
-        _rightNode = rightNode;
         _outputType = outputType;
     }
 
-    /* Returns a type to transition the state machine to, or NULL if no 
-     * suggested output type exists.
-     */
-    Type GetDecisionOutput()
+    /// <summary>
+    /// Decides which state an agent should be in.
+    /// </summary>
+    /// <returns> The type of the state the agent should transition to. 
+    /// </returns>
+    Type GetDecisionOutput(Agent agent)
     {
         if (_outputType != null)
         {
             return _outputType;
         }
 
-        if (_decision.Decide())
+        int decision = _decision.Decide(agent);
+        if (_children.Keys.Contains(decision))
         {
-            if (_rightNode == null) { return null; }
-            return _rightNode.GetDecisionOutput();
+            return _children[decision].GetDecisionOutput(agent);
         }
-        else
-        {
-            if (_leftNode == null) { return null; }
-            return _leftNode.GetDecisionOutput();
-        }
+
+        // If this code is reached, it means the decision tree isn't full.
+        DebugUtil.Assert(false); 
+        return null;
 
     }
 
+    void AddChild(int label, DecisionNode decision)
+    {
+        DebugUtil.Assert(decision != null);
+        _children.Add(label, decision);
+    }
 }

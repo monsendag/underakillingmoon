@@ -2,18 +2,17 @@ using UnityEngine;
 using System.Collections;
 using System.Linq;
 
-public class DistanceToTarget : IDecision
+public class DistanceToTarget : IValue
 {
-	Agent _agent;
-	float  _threshold;
 	
-	DistanceToTarget(Agent agent, uint threshold){
-		_agent = agent;
-		_threshold = threshold;
-	}
+	DistanceToTarget(){}
 	
-	public bool Decide(){
-		Agent target = AttackPair.GetTargetOrNull(_agent);
-		return Vector2.Distance(_agent.KinematicInfo.Position, target.KinematicInfo.Position) < _threshold;
+	public int Decide(Agent agent){
+		Agent target = AttackPair.GetTargetOrNull(agent);
+        if (target == null) { return 5; }
+		float dist = Vector2.Distance(agent.KinematicInfo.Position, target.KinematicInfo.Position);
+        dist = Mathf.Clamp(dist, 0.0f, 100.0f);
+        dist /= 20;
+        return (int) dist;
 	}
 }

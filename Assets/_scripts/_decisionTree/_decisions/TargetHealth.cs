@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class TargetHealth : IDecision
+public class TargetHealth : IValue
 {
 	Agent _agent;
 	uint _threshold;
@@ -11,7 +11,13 @@ public class TargetHealth : IDecision
 		_threshold = threshold;
 	}
 	
-	public bool Decide(){
-		return AttackPair.GetTargetOrNull(_agent).Health < _threshold;
+	public int Decide(Agent agent){
+
+		Agent target = AttackPair.GetTargetOrNull(_agent);
+        if (target == null)
+        {
+            return 5;
+        }
+        else return (int) Mathf.Clamp(target.Health, 0, 100) / 20;
 	}
 }
