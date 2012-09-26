@@ -2,12 +2,14 @@ using UnityEngine;
 using System.Collections;
 
 public class AgentHealth : IValue
-{	
+{
+    public static float MaxHealth = 100.0f;
+    public static int OutputNumber = 5;
+
 	AgentHealth(){}
 	
 	public int Decide(Agent agent){
-        int health = Mathf.Clamp((int) agent.Health, 0, 100);
-        health = (int) (agent.Health / 20);
-        return health;
+        float health = Mathf.Clamp(agent.Health, 0, MaxHealth);
+        return (int) Mathf.Round((OutputNumber - 1) * agent.Health / MaxHealth);
 	}
 }
