@@ -20,16 +20,16 @@ public class RecordAgent : MonoBehaviour {
     public int MSBetweenUpdates = 10;
     int _nextUpdate;
     FileStream _csvStream;
-	List<GameObject> _wolves;
+	List<Agent> _wolves;
 
-    IDecision[] _decisions = {
+    IValue[] _decisions = {
         new AgentHealth()//, etc...
     };
 
 	// Use this for initialization
 	void Start () {
         _csvStream = File.Create("./test.csv");
-		_wolves = GameObject.FindGameObjectsWithTag("Werewolf");
+		_wolves = GameObject.FindGameObjectsWithTag("Werewolf").Select(a => a.gameObject.GetComponent<Agent>()).ToList();
         _nextUpdate = System.Environment.TickCount;
 	}
 	
@@ -42,7 +42,7 @@ public class RecordAgent : MonoBehaviour {
 	            line += _decisions[0];
 	            for (int i = 1; i < _decisions.Length; ++i)
 	            {
-	                line += "," + _decisions[i].Decide().ToString();
+	                line += "," + _decisions[i].Decide(_wolves[j]).ToString();
 	            }
 	            _csvStream.AddLine(line);
 			}

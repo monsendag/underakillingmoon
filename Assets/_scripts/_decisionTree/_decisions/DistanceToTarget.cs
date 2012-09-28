@@ -4,9 +4,6 @@ using System.Linq;
 
 public class DistanceToTarget : IValue
 {
-	
-	DistanceToTarget(){}
-	
 	public int Decide(Agent agent){
 		Agent target = AttackPair.GetTargetOrNull(agent);
         if (target == null) { return 5; }

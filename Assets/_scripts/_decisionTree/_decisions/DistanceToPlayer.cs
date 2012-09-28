@@ -4,8 +4,6 @@ using System.Linq;
 
 public class DistanceToPlayer : IValue
 {
-	DistanceToPlayer(){}
-	
 	public int Decide(Agent agent)
     {
         
