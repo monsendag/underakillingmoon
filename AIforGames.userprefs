@@ -1,14 +1,8 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\_scripts\_decisionTree\_decisions\NearbyAllies.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\_scripts\_utils\RecordAgent.cs">
     <Files>
-      <File FileName="Assets\_scripts\Agent.cs" Line="274" Column="21" />
-      <File FileName="Assets\_scripts\_decisionTree\DecisionNode.cs" Line="19" Column="43" />
-      <File FileName="Assets\_scripts\_decisionTree\IDecision.cs" Line="8" Column="1" />
-      <File FileName="Assets\_scripts\_utils\MotionUtils.cs" Line="1" Column="1" />
-      <File FileName="Assets\_scripts\_decisionTree\_decisions\TargetHealth.cs" Line="9" Column="8" />
-      <File FileName="Assets\_scripts\_decisionTree\_decisions\NearbyEnemies.cs" Line="18" Column="84" />
-      <File FileName="Assets\_scripts\_decisionTree\_decisions\NearbyAllies.cs" Line="14" Column="26" />
+      <File FileName="Assets\_scripts\_utils\RecordAgent.cs" Line="48" Column="5" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
