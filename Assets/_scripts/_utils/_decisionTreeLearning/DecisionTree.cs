@@ -1,10 +1,11 @@
 using System;
+using System.Text;
 using System.Linq;
 using System.Collections.Generic;
 
 public class DecisionTree : TreeNode
 {
-	Dictionary<string, DecisionTree> branches = new Dictionary<string,DecisionTree>();
+	Dictionary<Value, DecisionTree> branches = new Dictionary<Value,DecisionTree>();
 
 	// If the tree is a vertice, the attribute defines its label
 	public Attribute Attribute = null;
@@ -23,36 +24,31 @@ public class DecisionTree : TreeNode
 		Attribute = attribute;
 	}
 
-	public void AddBranch(string label, DecisionTree branch)
+	public void AddBranch(Value label, DecisionTree branch)
 	{
 		branches.Add(label, branch);
 	}
 
 	public String GetId()
 	{
-		return GetHashCode().ToString();
+		return GetHashCode().ToString().Trim();
 	}
 
 	public Classification Test(Example example)
 	{
-		// we're done with the recursion.
-		//The test is passed if this leaf node's label equals the test's classification.
+		// if we have a classification, return it
 		if (Classification != null) {
 			return Classification;
 		}
 
-		foreach (var branch in branches) {
-			//if(branch.)
-		}
-		//If Index isn't -1, choose the correct branch and continue the test.
-		return null;
-		//return branches[example.Attributes[].Test(example);
+		// recurse
+		return branches.Where(b => b.Key == example [b.Value.Attribute]).First().Value.Test(example);
 	}
 
 	
-	public static DecisionTree Create(List<Example> examples)
+	public static DecisionTree Create(List<Attribute> attributes, List<Example> examples)
 	{
-		return Create(examples, null);
+		return Create(attributes, examples, null);
 	}
 
 	/// <summary>
@@ -72,78 +68,39 @@ public class DecisionTree : TreeNode
 	/// <param name='parentExamples'>
 	/// Parent examples.
 	/// </param>
-	static DecisionTree Create(List<Example> examples, List<Example> parentExamples)
+	static DecisionTree Create(List<Attribute> attributes, List<Example> examples, List<Example> parentExamples)
 	{
-
 		// no examples. Return a leaf with the plurality value of the parent
 		if (examples.Count() == 0) { 
-			Console.WriteLine("no examples left");
 			return PluralityValue(parentExamples);
 		}
 		// all examples has the same classification. Return a leaf node with it
 		else if (examples.GroupBy(ex => ex.Classification).Distinct().Count() == 1) {
-			Console.WriteLine("all examples has the same classification");
-			Console.WriteLine(examples.GroupBy(ex => ex.Classification).Distinct());
 			return new DecisionTree(examples.First().Classification);
 		}
 		// no attributes. Return a leaf node with the plurality value
-		else if (examples.First().GetAttributes().Count() == 0) { 
-			Console.WriteLine("No attributes left to construct from.");
+		else if (examples.First().GetAttributes().Count() == 0) {
 			return PluralityValue(examples);
 		} 
 		// make a new branch
 		else {
-
-			Console.WriteLine("Construct top node.");
 			// find most important attribute
-			Attribute important = SelectAttribute(examples);
-
-			Console.WriteLine("Selected attribute: " + important);
-
+			var important = attributes.OrderByDescending(a => Importance.Infogain(a, examples)).First();
+			// remove the selected attribute from all branch examples
+			attributes.Remove(important);
 			// instantiate a branch
 			var tree = new DecisionTree(important);  
 			// allocate examples we're gonna use for creating the branch
 			List<Example> branchExamples;
 			// loop through the values for the attribute and select matching examples 
-
-			Console.WriteLine(important.Values);
-
 			foreach (var value in important.Values) {
 				// copy all examples which has the value of the attribute
 				branchExamples = examples.Where(ex => ex [important] == value).ToList();
-
-				// remove the selected attribute from all examples
-				foreach (var ex in branchExamples) {
-					ex.Remove(important);
-				}
 				// Recursively create branch and add it to the tree with the value as edge label
-				tree.AddBranch(value.ToString(), Create(branchExamples, examples));
+				tree.AddBranch(value, Create(attributes, branchExamples, examples));
 			}
 			return tree;
 		}
-	}
-	
-	/// <summary>
-	/// Selects the attribute.
-	/// </summary>
-	/// <returns>
-	/// The attribute.
-	/// </returns>
-	/// <param name='examples'>
-	/// Examples.
-	/// </param>
-	static Attribute SelectAttribute(List<Example> examples)
-	{
-		Attribute important = examples.First().GetAttributes().First();
-		double gain, max = Double.MinValue;
-		
-		foreach (var attribute in examples.First().GetAttributes()) {
-			gain = Importance.Random(attribute, examples);
-			if (gain > max) {
-				important = attribute;
-			}
-		}
-		return important;
 	}
 	
 	/// <summary>
@@ -165,35 +122,57 @@ public class DecisionTree : TreeNode
 
 	public override string ToString()
 	{
-		string str = "";
-		//string str = string.Join(", ", _attributes) + " => " + _classification.ToString();
-		if (Classification != null) {
-			str += Classification;
-		} else {
-			str += Attribute;
-		}
-
-		foreach (var branch in branches) {
-			str += branch;
-		}
-		return str;
+		return GetLabel();
 	}
 
+	/// <returns>
+	/// The treenodes label.
+	/// </returns>
 	public string GetLabel()
 	{
 		return Classification != null ? Classification.ToString() : Attribute.ToString();
 	}
 
+	/// <summary>
+	/// Returns a string representation of all nodes in the tree.
+	/// </summary>
+	public String GetTGFNodes()
+	{
+		return GetId() + " " + GetLabel() + "\n" + String.Join("", branches.Values.Select(b => b.GetTGFNodes() + "").ToArray());
+	}
+
+	/// <summary>
+	/// Returns a string representation of all edges in the tree,
+	/// Separated by a newline character.
+	/// </summary>
+	public String GetTGFEdges()
+	{
+		var branchEdges = String.Join("", branches.Select(p => GetId() + " " + p.Value.GetId() + " " + p.Key + "\n").ToArray());
+		var subEdges = String.Join("", branches.Values.Select(b => b.GetTGFEdges()).ToArray());
+		return branchEdges + subEdges;
+	}
+
+	/// <summary>
+	/// Creates a trivial graph representation of the tree.
+	/// </summary>
+	/// <returns>
+	/// A tgf representation of the tree.
+	/// </returns>
 	public String ToTGF()
 	{
-		string str = String.Format("{0} {1}", GetId(), GetLabel());
+		return "\n" + String.Concat(GetTGFNodes(), "#\n", GetTGFEdges()).TrimEnd();
+	}
 
-		str += "\n#";
-
-		foreach (var branch in branches) {
-			str += String.Format("\n{0} {1} {2}", GetId(), branch.Value.GetId(), branch.Key);
-		}
-		return str;
+	/// <summary>
+	/// Exports a tgf (Trivial Graph Format) file on the desktop.
+	/// Useful for seeing how the resulting tree looks. 
+	/// The file can be viewed in an editor like yEd.
+	/// </summary>
+	public void SaveTGFonDesktop()
+	{
+		var folder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+		var path = System.IO.Path.Combine(folder, "tree.tgf");
+		System.IO.File.WriteAllText(path, ToTGF(), Encoding.Default);
 	}
 }
 
