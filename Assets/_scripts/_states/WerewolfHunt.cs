@@ -1,4 +1,7 @@
 using System;
+using System.IO;
+
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -10,7 +13,41 @@ using UnityEngine;
 
 public class WerewolfHunt : AgentStateMachine
 {
+    static DecisionTree _decisionTree = null;
+
+    public static DecisionTree DecisionTree
+    {
+        get
+        {
+            if (_decisionTree == null)
+            {
+                FileStream stream = new FileStream("./input.csv", FileMode.Open); 
+                var examples = Example.ParseFileStream(stream);
+                List<Attribute> attributes = new List<Attribute>();
+                foreach (var value in _values)
+                {
+                   attributes.Add(Attribute.Get(value.GetPrettyTypeName()));
+                }
+                _decisionTree = DecisionTree.Create(attributes,examples);
+                stream.Close();
+            }
+            DebugUtil.Assert(_decisionTree == null);
+            return _decisionTree;
+        }
+    }
+
     bool beingAttacked = false;
+
+    private static IValue[] _values = 
+    {
+        new AgentHealth(),
+        new TargetHealth(),
+        new NearbyAgents<Werewolf>(),
+        new NearbyAgents<Camper>(),
+        new DistanceToTarget(),
+        new DistanceToPlayer(),
+        new RecentGunfire()
+    };
 
 	public WerewolfHunt(Agent agent) : base(agent)
 	{
@@ -19,7 +56,7 @@ public class WerewolfHunt : AgentStateMachine
 		          new WerewolfCharge(), 
 		          new WerewolfAttack(),
                   new WerewolfDead()
-                  );
+        );
 	}
 
 	public void InitAction()
@@ -44,6 +81,21 @@ public class WerewolfHunt : AgentStateMachine
         {
             CurrentState = typeof(WerewolfDead);
         }
+
+        // Create an example, which we can send to the 
+        Example example = new Example();
+        foreach (var value in _values)
+        {
+            Attribute atr = Attribute.Get(value.GetPrettyTypeName());
+            int val = value.Decide(agent);
+            Pair pair = new Pair(atr, new Value(val) );
+            example.Add(pair);
+        }
+
+        // Ask the decision tree which state we should be in.
+        StateClassification classification = DecisionTree.Test(example) as StateClassification;
+        //CurrentState = classification.State; // Set the current substate.
+
 
         if (beingAttacked)
         {
