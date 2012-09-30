@@ -3,11 +3,13 @@ using System.Collections.Generic;
 
 public class Attribute
 {
+	static Dictionary<string, Attribute> attrs = new Dictionary<string, Attribute>();
+
 	public string Label;
 	// list of possible values
 	public List<Value> Values = new List<Value>();
 
-	public Attribute(String label)
+	Attribute(String label)
 	{
 		Label = label;
 	}
@@ -34,6 +36,15 @@ public class Attribute
 		Value newVal = Value.Parse(value);
 		AddValue(newVal);
 		return newVal;
+	}
+
+	public static Attribute Get(String name)
+	{
+		if (!attrs.ContainsKey(name)) {
+			attrs [name] = new Attribute(name);
+		}
+
+		return attrs [name];
 	}
 }
 

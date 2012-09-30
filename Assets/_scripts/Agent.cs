@@ -290,5 +290,4 @@ public class Agent : MonoBehaviour
         _kinematicInfo.Velocity -= Vector2.Dot(normal, _kinematicInfo.Velocity) * normal;
  
     }
-
 }

@@ -19,4 +19,10 @@ public class DistanceToTarget : IValue
         dist = (OutputNumber - 1) * dist / MaxDistance;
         return (int) dist;
 	}
+    
+    public string GetPrettyTypeName()
+    {
+        return "TargetDistance";
+    }
+
 }

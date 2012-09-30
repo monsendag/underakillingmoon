@@ -6,8 +6,6 @@ public class DistanceToPlayer : IValue
 {
     public static float MaxDistance = 15.0f;
     public static int OutputNumber = 5;
-	DistanceToPlayer(){}
-	
 	public int Decide(Agent agent)
     {
         
@@ -18,5 +16,10 @@ public class DistanceToPlayer : IValue
         dist = (OutputNumber - 1) * dist / MaxDistance;
         
         return (int) Mathf.Round(dist);
+    }
+
+    public string GetPrettyTypeName()
+    {
+        return "PlayerDistance";
     }
 }

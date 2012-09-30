@@ -1,15 +1,12 @@
 using UnityEngine;
 using System.Collections;
 using System.Linq;
+using System;
 
 public class NearbyAgents<T> : IValue
 {
     public static float Radius = 5.0f;
     public static int OutputNumber = 5;
-	
-	NearbyAgents()
-    {
-	}
 	
 	public int Decide(Agent agent)
     {
@@ -17,4 +14,9 @@ public class NearbyAgents<T> : IValue
         agentCount = Mathf.Clamp(agentCount, 0, OutputNumber - 1);
         return agentCount;
 	}
+
+    public string GetPrettyTypeName()
+    {
+       return "Num" + typeof(T).ToString();
+    }
 }

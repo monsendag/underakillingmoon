@@ -12,4 +12,9 @@ public class AgentHealth : IValue
         float health = Mathf.Clamp(agent.Health, 0, MaxHealth);
         return (int) Mathf.Round((OutputNumber - 1) * agent.Health / MaxHealth);
 	}
+
+    public string GetPrettyTypeName()
+    {
+        return "MyHealth";
+    }
 }
