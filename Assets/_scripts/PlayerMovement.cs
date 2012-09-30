@@ -1,18 +1,35 @@
 using UnityEngine;
 using System.Collections;
 using System.Linq;
+using System.Collections.Generic;
 
 public class PlayerMovement : MonoBehaviour
-{	
+{
+    // Used to record when and where the player has shot his/her gun.
+    // This is used to send warnings to the Wolf AI.
+    public struct GunShot
+    {
+        public Vector2 Location;
+        public float TimeStamp;
+    }
+
 	public float speed = 1.0f;
     public AudioClip ShotgunSound = null;
 	Agent agent;
 	FaceSteer _face = new FaceSteer();
 	FrictionSteer _frictionSteer = new FrictionSteer();
 	ArriveSteer _arriveSteer = new ArriveSteer();
+    List<GunShot> _gunShots = new List<GunShot>();
+
+    public System.Collections.ObjectModel.ReadOnlyCollection<GunShot> GunShots
+    {
+        get
+        {
+            return _gunShots.AsReadOnly();
+        }
+    }
+
 	tk2dAnimatedSprite _mflash;
-	
-	//CharacterController controller;
 	
 	void Start()
 	{
@@ -80,7 +97,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetButtonDown("Jump"))
         {
-            
+            AddGunshot();
             Vector3 outward = agent.transform.position + 15.0f * agent.transform.forward;
 
             //var hits = Physics.RaycastAll(agent.transform.position, outward);
@@ -110,5 +127,22 @@ public class PlayerMovement : MonoBehaviour
 		{
 			Application.LoadLevel("GameOver");
 		}
+
+        CleanupGunshots();
 	}
+
+    // Append a gunshot to the gunshot list.
+    private void AddGunshot()
+    {
+        GunShot gunShot;
+        gunShot.Location = agent.transform.position.To2D();
+        gunShot.TimeStamp = Time.time;
+        _gunShots.Add(gunShot);
+    }
+
+    private void CleanupGunshots()
+    {
+        // Remove add gunshots which happened more than four seconds ago.
+        _gunShots.RemoveAll(gunShot => (Time.time - gunShot.TimeStamp) > 10.0f);
+    }
 }

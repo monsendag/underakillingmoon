@@ -10,7 +10,7 @@ public class AgentState
 
 	public AgentState()
 	{
-
+        
 	}
 
 	public AgentState(Agent agent)
@@ -37,5 +37,7 @@ public class AgentState
     {
         return this.GetType().ToString();
     }
+
+    
 }
 

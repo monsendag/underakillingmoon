@@ -4,14 +4,30 @@ using System.Collections;
 // Determines whether the wolf recently heard gunfire.
 public class RecentGunfire : IValue
 {
+    public static float MaxTime = 4.0f;
+    public static int OutputNumber = 5;
+    public static float ReachDistance = 8.0f;
+
     public int Decide(Agent agent)
     {
-        // Find the player object.
-        return 0;
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
 
-        //int health = Mathf.Clamp((int)agent.Health, 0, 100);
-        //health = (int)(agent.Health / 20);
-        //return health;
+        if (player == null) { return 0;}
+        PlayerMovement movement = player.GetComponent<PlayerMovement>();
+        if (movement == null) { return 0; }
+        int largestValue = 0;
+        foreach (var gunshot in movement.GunShots)
+        {
+            if (Vector2.Distance(agent.KinematicInfo.Position, gunshot.Location) > ReachDistance)
+            {
+                continue;
+            }
+
+            int value = (int) ( (OutputNumber - 1)
+                * (MaxTime - (Time.time - gunshot.TimeStamp) ) / MaxTime);
+            largestValue = Mathf.Max(value, largestValue);
+        }
+        return largestValue;
     }
 
     public string GetPrettyTypeName()
