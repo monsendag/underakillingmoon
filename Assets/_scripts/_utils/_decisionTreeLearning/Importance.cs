@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public static class Importance
 {
-
 	/// <summary>
 	/// Returns a random im
 	/// </summary>
@@ -24,31 +23,59 @@ public static class Importance
 	we're looking at how much information an attribute gains.
 	Entropy is a measure of the uncertainty of a random variable; 
 	acquisition of information corresponds to a reduction in entropy
+	So we're basically looking for the attribute with the lowest amount of entropy. 
 	*/
 	public static double Infogain(Attribute attribute, List<Example> examples)
 	{
+		double Px;
 		int count;
+		double valueEntropy;
 		double totalEntropy = 0;
-		foreach (var value in attribute.Values) {
-			// get the number of samples where the attribute has the current value
-			count = examples.Where(ex => ex [attribute] == value).Count();
-			// get the entropy of the values probability
-			totalEntropy += Entropy(count / attribute.Values.Count(), attribute.Values.Count());
-		}
+
+		Console.WriteLine(attribute.ToString());
+
+		// the number of distinct classifications
+		double numClassifications = examples.Select(e => e.Classification).Distinct().Count();
+
 		
+		Console.WriteLine("Total # classifications: " + numClassifications);
+
+		// for each value, figure out how many distinct classifications it creates
+		foreach (var value in attribute.Values) {
+			// the number distinct classifications given with the current value 
+			count = examples.Where(ex => ex [attribute] == value)
+				.Select(e => e.Classification).Distinct().Count();
+
+			// the probability of the value 
+			Px = count / numClassifications;
+
+			// add the entropy of the current values probability
+			totalEntropy += Entropy(Px, attribute.Values.Count());
+		}
+
 		//The information gain from the attribute test on A is the expected reduction in entropy
-		return (totalEntropy - Remainder(attribute, examples));
+		double remainder = Remainder(attribute, examples);
+		double infogain = totalEntropy - remainder;
+		Console.WriteLine(totalEntropy);
+		Console.WriteLine(remainder);
+		Console.WriteLine(infogain);
+		return infogain;
 	}
 
-	// the entropy of a random variable V with values Vk, each with probability P(Vk):
-	// The entropy of the attribute:
-	// 
-	static double Entropy(double q, int n)
+	// the entropy of a n-ary random variable p that is true with probability q
+	static double Entropy(double p, int n)
 	{
-		//the entropy of a n-ary random variable that is true with probability q:
-		return -(q * Math.Log(q, n) + (1 - q) * Math.Log(1 - q, n));
-	}
+		if (p < 2 || n < 2) {
+			return 0;
+		}
 
+
+		var entropy = -(p * Math.Log(p, n) + (1 - p) * Math.Log(1 - p, n)); 
+
+		Console.WriteLine("p n E: {0} {1} {2}", p, n, entropy);
+
+		return entropy;
+	}
 
 	static double Remainder(Attribute attribute, List<Example> examples)
 	{

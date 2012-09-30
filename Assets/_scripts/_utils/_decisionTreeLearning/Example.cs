@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
 
@@ -37,29 +38,39 @@ public class Example : Dictionary<Attribute, Value>
 		var attributes = new List<Attribute>(); 
 
 		foreach (String attributeName in attributeLine.Split(',')) {
+			// the first column is the classification
 			if (!attributeName.Equals("Classification")) {
-				Console.WriteLine(attributeName);
-				attributes.Add(new Attribute(attributeName));
+				attributes.Add(Attribute.Get(attributeName));
 			}
 		}
 
 		// Each of the following lines defines a  training sample
-		var examples = new List<Example>();	
+		var examples = new List<Example>();
 		while (!reader.EndOfStream) {
-			String line = reader.ReadLine();
-			var values = line.Split(',');
 			var example = new Example();
-			Attribute[] attributeArr = attributes.ToArray();
 
-			example.Classification = Classification.Parse(values [0]);
+			String[] line = reader.ReadLine().Split(',');
+
+			// parse and store classification
+			example.Classification = Classification.Parse(line.First());
+			// split values into separate list
+			var values = line.Skip(1).ToArray();
+
+			if (values.Count() != attributes.Count()) {
+				throw new Exception("unequal length:" + values.Count());
+			}
+
+			Attribute[] attributeArr = attributes.ToArray();
 
 			Value value;
 			Attribute attribute;
-			for (var i=0; i<attributeArr.Length; i++) {
+			for (var i=0; i<values.Length; i++) {
+
 				attribute = attributeArr [i];
 				value = attribute.GetValue(values [i]);
 				example.Add(attribute, value);
 			}
+
 			examples.Add(example);
 		}
 

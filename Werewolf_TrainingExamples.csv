@@ -1,4 +1,4 @@
-Classification,MyHealth,TargetHealth,#Werewolves,#Campers,TargetDistance,PlayerDistance,RecentGunfire
+Classification,MyHealth,TargetHealth,Werewolves,Campers,TargetDistance,PlayerDistance,RecentGunfire
 WerewolfAttack,100,20,5,2,20,100,FALSE
 WerewolfAttack,60,20,2,4,20,80,FALSE
 WerewolfAttack,80,20,1,6,20,80,FALSE

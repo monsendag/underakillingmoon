@@ -8,17 +8,13 @@ public class DSLTest
 	public DSLTest()
 	{
 		var examples = Example.ParseResource(@"Werewolf_TrainingExamples.csv");
+		var attributes = examples.First().GetAttributes();
+		DecisionTree tree = DecisionTree.Create(attributes, examples);
 
+		Console.WriteLine(tree.GetLabel());
 
-		var attr = examples.First().GetAttributes().Skip(1).First();
-
-		Console.WriteLine(attr);
-		Console.WriteLine(string.Join(", ", attr.Values));
-
-
-		DecisionTree tree = DecisionTree.Create(examples);
-
-		Console.Write(tree.ToTGF());
+	
+		//tree.SaveTGFonDesktop();
 	}
 
 	public static void Main(string[] args)
