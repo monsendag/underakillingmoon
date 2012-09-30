@@ -61,7 +61,7 @@ public class WerewolfEvade : AgentState
 		
 		nextState = GetType();
 
-        if (_shouldHunt)
+        if (_shouldHunt || agent.Health <= 0)
         {
             nextState = typeof(WerewolfHunt);
             return;

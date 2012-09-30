@@ -117,6 +117,7 @@ public class PlayerMovement : MonoBehaviour
 
                if (Mathf.Abs(angle) < 20)
                {
+                   a.Health -= 15;
                   a.StateMachine.PostMessage("TakeHit");
                }
             }

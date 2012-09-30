@@ -17,7 +17,9 @@ public class WerewolfHunt : AgentStateMachine
 		// add all substates
 		AddStates(new WerewolfPatrol(), 
 		          new WerewolfCharge(), 
-		          new WerewolfAttack());
+		          new WerewolfAttack(),
+                  new WerewolfDead()
+                  );
 	}
 
 	public void InitAction()
@@ -37,6 +39,12 @@ public class WerewolfHunt : AgentStateMachine
 	public override void Update(out Type nextState)
 	{
 		nextState = GetType();
+    
+        if (agent.Health <= 0) 
+        {
+            CurrentState = typeof(WerewolfDead);
+        }
+
         if (beingAttacked)
         {
             // We are a cowardly werewolf who runs when shot at.

@@ -37,7 +37,7 @@ public class Agent : MonoBehaviour
 	private float _maxAcceleration = 1.0f;
 	private float _maxVelocity = 1.0f;
 	private float _maxAngularVelocity = 2.0f * Mathf.PI;
-	private uint _health = 100;
+	private int _health = 100;
 	private KinematicInfo _kinematicInfo;
 	private CharacterController _controller;
 	public AgentStateMachine StateMachine;
@@ -58,11 +58,10 @@ public class Agent : MonoBehaviour
 		set { _maxAngularVelocity = value; }
 	}
 
-	public uint Health {
+	public int Health {
 		get { return _health; }
-		set { 
-			DebugUtil.Assert(value >= 0);
-			_health = value;
+		set {
+			_health = Mathf.Max(0,value);
 		}
 	}
 
