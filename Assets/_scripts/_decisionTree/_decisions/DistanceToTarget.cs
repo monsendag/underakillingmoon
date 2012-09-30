@@ -6,8 +6,6 @@ public class DistanceToTarget : IValue
 {
     public static float MaxDistance = 15.0f;
     public static int OutputNumber = 5;
-
-	DistanceToTarget(){}
 	
 	public int Decide(Agent agent){
 		Agent target = AttackPair.GetTargetOrNull(agent);

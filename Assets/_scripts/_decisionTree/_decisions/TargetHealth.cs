@@ -5,12 +5,9 @@ public class TargetHealth : IValue
 {	
     public static int OutputNumber = 5;
     public static float MaxHealth = 100;
-	TargetHealth()
-    {
-	}
 	
-	public int Decide(Agent agent){
-		Agent target = AttackPair.GetTargetOrNull(agent);
+	public int Decide(Agent agent)
+    {
 		Agent target = AttackPair.GetTargetOrNull(agent);
         if (target == null)
         {

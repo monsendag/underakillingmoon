@@ -5,8 +5,6 @@ public class AgentHealth : IValue
 {
     public static float MaxHealth = 100.0f;
     public static int OutputNumber = 5;
-
-	AgentHealth(){}
 	
 	public int Decide(Agent agent){
         float health = Mathf.Clamp(agent.Health, 0, MaxHealth);
