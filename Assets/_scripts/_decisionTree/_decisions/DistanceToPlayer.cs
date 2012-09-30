@@ -13,4 +13,9 @@ public class DistanceToPlayer : IValue
         dist /= 20;
         return (int) dist;
     }
+
+    public string GetPrettyTypeName()
+    {
+        return "PlayerDistance";
+    }
 }

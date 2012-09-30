@@ -108,6 +108,12 @@ public class AgentStateMachine : AgentState
 		}
 	}
 
+    public override string GetPrettyTypeName()
+    {
+        AgentState agentState = States[CurrentState];
+        return agentState.GetPrettyTypeName();
+    }
+
 	/// <summary>
 	/// Posts a message to the current states in the hierarchy.
 	/// </summary>

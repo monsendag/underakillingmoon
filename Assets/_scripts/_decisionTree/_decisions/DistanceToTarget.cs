@@ -12,4 +12,10 @@ public class DistanceToTarget : IValue
         dist /= 20;
         return (int) dist;
 	}
+    
+    public string GetPrettyTypeName()
+    {
+        return "TargetDistance";
+    }
+
 }

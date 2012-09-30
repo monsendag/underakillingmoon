@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Linq;
+using System;
 
 public class NearbyAgents<T> : IValue
 {
@@ -12,4 +13,9 @@ public class NearbyAgents<T> : IValue
         agentCount = Mathf.Clamp(agentCount, 0, 5);
         return agentCount;
 	}
+
+    public string GetPrettyTypeName()
+    {
+       return "Num" + typeof(T).ToString();
+    }
 }

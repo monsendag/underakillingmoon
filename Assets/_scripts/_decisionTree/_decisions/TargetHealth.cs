@@ -11,4 +11,9 @@ public class TargetHealth : IValue
         }
         else return (int) Mathf.Clamp(target.Health, 0, 100) / 20;
 	}
+
+    public string GetPrettyTypeName()
+    {
+        return "TargetHealth";
+    }
 }

@@ -29,5 +29,13 @@ public class AgentState
 		state = null;
 	}
 
+    /// <summary>
+    /// Get a pretty version of the type name, appropriate for printing.
+    /// </summary>
+    /// <returns> A pretty version of the type name.</returns>
+    public virtual string GetPrettyTypeName()
+    {
+        return this.GetType().ToString();
+    }
 }
 

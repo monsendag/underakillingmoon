@@ -17,32 +17,52 @@ public static class FSExtension
 }
 
 public class RecordAgent : MonoBehaviour {
-    public int MSBetweenUpdates = 10;
+    public int MSBetweenUpdates = 500;
     int _nextUpdate;
     FileStream _csvStream;
-	List<Agent> _wolves;
+	List<Werewolf> _wolves = new List<Werewolf>();
 
-    IValue[] _decisions = {
-        new AgentHealth()//, etc...
+    IValue[] _decisions = 
+    {
+        new AgentHealth(),
+        new TargetHealth(),
+        new NearbyAgents<Werewolf>(),
+        new NearbyAgents<Camper>(),
+        new DistanceToTarget(),
+        new DistanceToTarget(),
+        new RecentGunfire()
     };
 
 	// Use this for initialization
 	void Start () {
         _csvStream = File.Create("./test.csv");
-		_wolves = GameObject.FindGameObjectsWithTag("Werewolf").Select(a => a.gameObject.GetComponent<Agent>()).ToList();
+        // Generate a list of all the current werewolves in the scene.
+		_wolves = GameObject.FindGameObjectsWithTag("Werewolf").Select(a => a.gameObject.GetComponent<Werewolf>()).ToList();
+        // Output the headers.
+        var line = "Classification";
+        foreach (var decision in _decisions)
+        {
+            line += "," + decision.GetPrettyTypeName();
+        }
+
+        _csvStream.AddLine(line);
+
         _nextUpdate = System.Environment.TickCount;
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update () 
+    {
+        if (_decisions.Length == 0) { return; }
         if (System.Environment.TickCount > _nextUpdate)
         {
-            for(int j = 0; j < _wolves.Count; ++j){
-				string line = "";
-	            line += _decisions[0];
-	            for (int i = 1; i < _decisions.Length; ++i)
+            foreach (var wolf in _wolves)
+            {
+
+				string line = wolf.StateMachine.GetPrettyTypeName();
+	            for (int i = 0; i < _decisions.Length; ++i)
 	            {
-	                line += "," + _decisions[i].Decide(_wolves[j]).ToString();
+	                line += "," + (_decisions[i].Decide(wolf)).ToString();
 	            }
 	            _csvStream.AddLine(line);
 			}
