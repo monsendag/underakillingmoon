@@ -3,7 +3,7 @@ using System.Text;
 using System.Linq;
 using System.Collections.Generic;
 
-public class DecisionTree : TreeNode
+public class DecisionTree
 {
 	Dictionary<Value, DecisionTree> branches = new Dictionary<Value,DecisionTree>();
 
@@ -85,7 +85,7 @@ public class DecisionTree : TreeNode
 		// make a new branch
 		else {
 			// find most important attribute
-			var important = attributes.OrderByDescending(a => Importance.Infogain(a, examples)).First();
+			var important = attributes.OrderByDescending(a => a.Importance(examples)).First();
 			// remove the selected attribute from all branch examples
 			attributes.Remove(important);
 			// instantiate a branch
