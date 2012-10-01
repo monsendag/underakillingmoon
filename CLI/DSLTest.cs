@@ -11,7 +11,6 @@ public class DSLTest
 		var attributes = examples.First().GetAttributes();
 		//DecisionTree tree = DecisionTree.Create(attributes, examples);
 
-		double infoGain = Attribute.Get("MyHealth").Infogain(examples);
 	
 		//tree.SaveTGFonDesktop();
 	}
