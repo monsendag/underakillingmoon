@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public interface IDecision 
+public interface IDecision
 {
-    bool Decide();
+	bool Decide();
 }
