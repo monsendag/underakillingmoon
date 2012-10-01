@@ -9,10 +9,9 @@ public class DSLTest
 	{
 		var examples = Example.ParseResource(@"Werewolf_TrainingExamples.csv");
 		var attributes = examples.First().GetAttributes();
-		DecisionTree tree = DecisionTree.Create(attributes, examples);
+		//DecisionTree tree = DecisionTree.Create(attributes, examples);
 
-		Console.WriteLine(tree.GetLabel());
-
+		double infoGain = Attribute.Get("MyHealth").Infogain(examples);
 	
 		//tree.SaveTGFonDesktop();
 	}
