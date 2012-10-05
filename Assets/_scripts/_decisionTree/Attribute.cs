@@ -30,8 +30,6 @@ public class Attribute
 	{
 		foreach (var val in Values) {
 			if (val.ToString().Equals(value)) {
-
-				//Console.WriteLine("value exist " + value + " " + val);
 				return val;
 			}
 		}
@@ -53,7 +51,7 @@ public class Attribute
 	{
 		//return First(examples);
 		//return Infogain(examples);
-		return Random(examples);
+		return Infogain(examples);
 	}
 
 	/// <summary>
@@ -82,8 +80,6 @@ public class Attribute
 		double Px;
 		int count;
 		double totalEntropy = 0;
-		
-		Console.WriteLine(ToString());
 		
 		// the number of distinct classifications
 		double numClassifications = examples.Select(e => e.Classification).Distinct().Count();
@@ -116,16 +112,13 @@ public class Attribute
 	// the entropy of a n-ary random variable p that is true with probability q
 	double Entropy(double p, int n)
 	{
-		
-		Console.WriteLine("p n: {0} {1} ", p, n);
 
 		if (p == 0 || n < 2) {
 			return 0;
 		}
 		
 		var entropy = -(p * Math.Log(p, n) + (1 - p) * Math.Log(1 - p, n)); 
-
-		
+		Console.WriteLine("entropy:" + entropy);
 		return entropy;
 	}
 	

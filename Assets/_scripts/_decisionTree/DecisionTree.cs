@@ -79,7 +79,7 @@ public class DecisionTree
 			return new DecisionTree(examples.First().Classification);
 		}
 		// no attributes. Return a leaf node with the plurality value
-		else if (examples.First().GetAttributes().Count() == 0) {
+		else if (attributes.Count() == 0) {
 			return PluralityValue(examples);
 		} 
 		// make a new branch

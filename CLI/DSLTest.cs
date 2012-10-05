@@ -7,12 +7,17 @@ public class DSLTest
 {
 	public DSLTest()
 	{
-		var examples = Example.ParseResource(@"Werewolf_TrainingExamples.csv");
+		var examples = Example.ParseResource(@"test.csv");
 		var attributes = examples.First().GetAttributes();
-		//DecisionTree tree = DecisionTree.Create(attributes, examples);
 
-	
-		//tree.SaveTGFonDesktop();
+		foreach (var a in attributes) {
+			Console.WriteLine("" + a + ": " + a.Importance(examples));
+		}
+
+		var tree = DecisionTree.Create(attributes, examples);
+
+		tree.SaveTGFonDesktop();
+
 	}
 
 	public static void Main(string[] args)
