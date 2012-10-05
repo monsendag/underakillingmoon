@@ -39,7 +39,6 @@ public class WerewolfHunt : AgentStateMachine
         new AgentHealth(),
         new TargetHealth(),
         new NearbyAgents<Werewolf>(),
-        new NearbyAgents<Camper>(),
         new DistanceToTarget(),
         new DistanceToPlayer(),
         new RecentGunfire()

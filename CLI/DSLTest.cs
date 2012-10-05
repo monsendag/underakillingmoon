@@ -7,10 +7,8 @@ public class DSLTest
 {
 	public DSLTest()
 	{
-		var examples = Example.ParseResource(@"Werewolf_TrainingExamples.csv");
+		var examples = Example.ParseResource(@"test1.csv");
 		var attributes = examples.First().GetAttributes();
-
-
 
 		foreach (var a in attributes) {
 			//if (a.ToString().Equals("RecentGunfire")) {
@@ -18,11 +16,9 @@ public class DSLTest
 			//}
 		}
 
-
 		var tree = DecisionTree.Create(attributes, examples);
 
 		tree.SaveTGFonDesktop();
-
 	}
 
 	public static void Main(string[] args)

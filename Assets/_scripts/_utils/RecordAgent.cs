@@ -28,7 +28,6 @@ public class RecordAgent : MonoBehaviour
         new AgentHealth(),
         new TargetHealth(),
         new NearbyAgents<Werewolf>(),
-        new NearbyAgents<Camper>(),
         new DistanceToTarget(),
         new DistanceToPlayer(),
         new RecentGunfire()
@@ -37,7 +36,7 @@ public class RecordAgent : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-		_csvStream = File.Create("./test.csv");
+		_csvStream = File.Create("./test2.csv");
 		// Generate a list of all the current werewolves in the scene.
 		_wolves = GameObject.FindGameObjectsWithTag("Werewolf").Select(a => a.gameObject.GetComponent<Werewolf>()).ToList();
 		// Output the headers.
