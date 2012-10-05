@@ -52,7 +52,8 @@ public class WerewolfHunt : AgentStateMachine
 		AddStates(new WerewolfPatrol(), 
 		          new WerewolfCharge(), 
 		          new WerewolfAttack(),
-                  new WerewolfDead()
+                  new WerewolfDead(),
+                  new WerewolfEvade()
 		);
 	}
 
