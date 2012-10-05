@@ -17,17 +17,19 @@ public class WerewolfHunt : AgentStateMachine
 
 	public static DecisionTree DecisionTree {
 		get {
-			if (_decisionTree == null) {
-				FileStream stream = new FileStream("./input.csv", FileMode.Open); 
+			if (_decisionTree == null) 
+            {
+				FileStream stream = new FileStream("./test1.csv", FileMode.Open); 
 				var examples = Example.ParseFileStream(stream);
 				List<Attribute> attributes = new List<Attribute>();
 				foreach (var value in _values) {
 					attributes.Add(Attribute.Get(value.GetPrettyTypeName()));
 				}
 				_decisionTree = DecisionTree.Create(attributes, examples);
+
 				stream.Close();
 			}
-			DebugUtil.Assert(_decisionTree == null);
+			DebugUtil.Assert(_decisionTree != null);
 			return _decisionTree;
 		}
 	}
@@ -67,72 +69,86 @@ public class WerewolfHunt : AgentStateMachine
 		agent.RemoveBehaviour("obstacleAvoid");
 		AttackPair.RemoveByAttacker(agent);
 	}
-	
-	public override void Update(out Type nextState)
-	{
-		nextState = GetType();
-    
-		if (agent.Health <= 0) {
-			CurrentState = typeof(WerewolfDead);
-		}
 
-		// Create an example, which we can send to the 
-		Example example = new Example();
-		foreach (var value in _values) {
-			Attribute atr = Attribute.Get(value.GetPrettyTypeName());
-			int val = value.Get(agent);
-			example.Add(atr, new Value(val));
-		}
+    public override void Update(out Type nextState)
+    {
+        nextState = GetType();
 
-		// Ask the decision tree which state we should be in.
-		//StateClassification classification = DecisionTree.Test(example) as StateClassification;
-		//CurrentState = classification.State; // Set the current substate.
+        if (agent.Health <= 0)
+        {
+            CurrentState = typeof(WerewolfDead);
+        }
 
+        // Create an example, which we can send to the 
+        Example example = new Example();
+        foreach (var value in _values)
+        {
+            Attribute atr = Attribute.Get(value.GetPrettyTypeName());
+            int val = value.Get(agent);
+            example.Add(atr, new Value(val));
+        }
 
-		if (beingAttacked) {
-			// We are a cowardly werewolf who runs when shot at.
-			nextState = typeof(WerewolfEvade);
-			return;
-		}
+        // Ask the decision tree which state we should be in.
+        if (Config.UseDecisionTree)
+        {
+            StateClassification classification = DecisionTree.Test(example) as StateClassification;
+            CurrentState = classification.State; // Set the current substate.
+        }
+        else
+        {
 
-		var targets = agent.GetAgentsInArea(Config.DefaultWerewolfVisionRange);
-		float minDistance = -1.0f;
-		Agent target = null;
-		foreach (var camper in targets) {
-			if (camper.GetComponent<Camper>() != null) {
-				// Perform a raycast check.
+            if (beingAttacked)
+            {
+                // We are a cowardly werewolf who runs when shot at.
+                nextState = typeof(WerewolfEvade);
+                return;
+            }
 
-				if (minDistance < -1.0f || minDistance < agent.distanceTo(camper) &&
-					!AttackPair.IsTarget(camper)) {
-					Vector3 direction = (camper.transform.position - agent.transform.position).normalized;
-					var hits = Physics.RaycastAll(agent.transform.position, direction, Config.DefaultWerewolfVisionRange);
-					bool visible = true;
-					foreach (var hit in hits) {
-						if (hit.collider.gameObject != agent.gameObject && hit.collider.gameObject != camper.gameObject) {
-							visible = false;
-						}
-					}
-					if (visible) {
-						target = camper;
-					}
-				}
-			}
-		}
+            var targets = agent.GetAgentsInArea(Config.DefaultWerewolfVisionRange);
+            float minDistance = -1.0f;
+            Agent target = null;
+            foreach (var camper in targets)
+            {
+                if (camper.GetComponent<Camper>() != null)
+                {
+                    // Perform a raycast check.
 
-		if (target != null) {
-			var currentTarget = AttackPair.GetTargetOrNull(agent);
+                    if (minDistance < -1.0f || minDistance < agent.distanceTo(camper) &&
+                       !AttackPair.IsTarget(camper))
+                    {
+                        Vector3 direction = (camper.transform.position - agent.transform.position).normalized;
+                        var hits = Physics.RaycastAll(agent.transform.position, direction, Config.DefaultWerewolfVisionRange);
+                        bool visible = true;
+                        foreach (var hit in hits)
+                        {
+                            if (hit.collider.gameObject != agent.gameObject && hit.collider.gameObject != camper.gameObject)
+                            {
+                                visible = false;
+                            }
+                        }
+                        if (visible)
+                        {
+                            target = camper;
+                        }
+                    }
+                }
+            }
 
-			// Examine the two distance, if the new camper is significantly
-			// close then the old one, start chasing the new one.
-
-			if (currentTarget == null || 
-				agent.distanceTo(currentTarget) * 1.5 > agent.distanceTo(target) ||
-				currentTarget.Health < 0) {
-				AttackPair.RemoveByAttacker(agent);
-				AttackPair.Add(agent, target);
-			}
-		}
-	}
+            if (target != null)
+            {
+                var currentTarget = AttackPair.GetTargetOrNull(agent);
+                // Examine the two distance, if the new camper is significantly
+                // close then the old one, start chasing the new one.
+                if (currentTarget == null ||
+                    agent.distanceTo(currentTarget) * 1.5 > agent.distanceTo(target) ||
+                    currentTarget.Health < 0)
+                {
+                    AttackPair.RemoveByAttacker(agent);
+                    AttackPair.Add(agent, target);
+                }
+            }
+        }
+    }
 
 	/// <summary>
 	/// The werewolf has take a shot.

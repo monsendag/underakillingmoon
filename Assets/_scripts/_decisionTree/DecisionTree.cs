@@ -42,10 +42,12 @@ public class DecisionTree
 		}
 
 
-		var branch = branches.Where(b => b.Key == example [b.Value.Attribute]).FirstOrDefault();
+		var branch = branches.Where(b => b.Key == example [b.Value.Attribute]).Select(
+            b => (KeyValuePair<Value,DecisionTree>?) b).FirstOrDefault();
 		// found a branch, recurse
-		if (branch != null) {
-			return branch.Value.Test(example);
+		if (branch != null)
+        {
+			return branch.Value.Value.Test(example);
 		}
 
 		return branches.Where(b => b.Value.Classification != null)
