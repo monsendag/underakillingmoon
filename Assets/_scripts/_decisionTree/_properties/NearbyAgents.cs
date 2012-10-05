@@ -6,7 +6,7 @@ using System;
 public class NearbyAgents<T> : IProperty
 {
 	public static float Radius = 5.0f;
-	public static int OutputNumber = 5;
+	public static int OutputNumber = 3;
 	
 	public int Get(Agent agent)
 	{

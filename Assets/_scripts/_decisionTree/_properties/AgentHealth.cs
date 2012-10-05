@@ -4,7 +4,7 @@ using System.Collections;
 public class AgentHealth : IProperty
 {
 	public static float MaxHealth = 100.0f;
-	public static int OutputNumber = 5;
+	public static int OutputNumber = 3;
 	
 	public int Get(Agent agent)
 	{

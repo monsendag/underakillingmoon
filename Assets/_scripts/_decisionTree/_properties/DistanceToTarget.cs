@@ -5,7 +5,7 @@ using System.Linq;
 public class DistanceToTarget : IProperty
 {
 	public static float MaxDistance = 15.0f;
-	public static int OutputNumber = 5;
+	public static int OutputNumber = 3;
 	
 	public int Get(Agent agent)
 	{

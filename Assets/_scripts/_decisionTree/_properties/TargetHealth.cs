@@ -3,7 +3,7 @@ using System.Collections;
 
 public class TargetHealth : IProperty
 {	
-	public static int OutputNumber = 5;
+	public static int OutputNumber = 3;
 	public static float MaxHealth = 100;
 	
 	public int Get(Agent agent)
