@@ -15,7 +15,7 @@ public class RecentGunfire : IProperty
 		if (player == null) {
 			return 0;
 		}
-		PlayerMovement movement = player.GetComponent<PlayerMovement>();
+		PlayerBehaviour movement = player.GetComponent<PlayerBehaviour>();
 		if (movement == null) {
 			return 0;
 		}

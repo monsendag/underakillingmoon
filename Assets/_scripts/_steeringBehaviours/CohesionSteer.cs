@@ -48,7 +48,7 @@ class CohesionSteer : PathSteer
 				continue;
 			}
 
-            if (a.GetComponent<PlayerMovement>() != null && FollowPlayer)
+            if (a.GetComponent<PlayerBehaviour>() != null && FollowPlayer)
             {
                 _spottedPlayer = true;
                 _lastKnownPlayerPosition = a.KinematicInfo.Position;
