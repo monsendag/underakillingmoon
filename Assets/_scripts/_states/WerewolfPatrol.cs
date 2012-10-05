@@ -52,12 +52,15 @@ public class WerewolfPatrol : AgentState
 
 		// search for nearby campers
 
-
-        var target = AttackPair.GetTargetOrNull(agent);
-		// Found a target -> Charge towards it
-		if (target != null) {
-			nextState = typeof(WerewolfCharge);
-		}
+        if (!Config.UseDecisionTree)
+        {
+            var target = AttackPair.GetTargetOrNull(agent);
+            // Found a target -> Charge towards it
+            if (target != null)
+            {
+                nextState = typeof(WerewolfCharge);
+            }
+        }
 	}
 }
 

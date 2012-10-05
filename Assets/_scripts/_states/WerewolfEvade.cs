@@ -29,6 +29,7 @@ public class WerewolfEvade : AgentState
             agent.audio.PlayOneShot(werewolf.SquealSound);
         }
 
+        if (Config.UseDecisionTree) { return; }
         if (player == null)
         {
             _shouldHunt = true;
