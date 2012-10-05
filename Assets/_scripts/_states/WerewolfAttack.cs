@@ -52,19 +52,23 @@ public class WerewolfAttack : AgentState
 		target = AttackPair.GetTargetOrNull(agent);
 
 		// has no target -> Patrol
-		if (target == null) {
-			nextState = typeof(WerewolfPatrol);
-		}
-
-		//  Has target, but not in range for attack -> Charge
-		else if (agent.distanceTo(target) > Config.DefaultWerewolfAttackRange) {
-            nextState = typeof(WerewolfCharge);
-		}
-
-		// chew on it
-		// TODO: Throttle this action
-		else {
-			target.Health -= 1;
-		}
+        if (!Config.UseDecisionTree)
+        {
+            if (target == null)
+            {
+                nextState = typeof(WerewolfPatrol);
+            }
+            //  Has target, but not in range for attack -> Charge
+            else if (agent.distanceTo(target) > Config.DefaultWerewolfAttackRange)
+            {
+                nextState = typeof(WerewolfCharge);
+            }
+            // chew on it
+            // TODO: Throttle this action
+            else
+            {
+                target.Health -= 1;
+            }
+        }
 	}
 }
