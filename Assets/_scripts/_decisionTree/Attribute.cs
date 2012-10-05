@@ -77,77 +77,59 @@ public class Attribute
 	*/
 	double Infogain(List<Example> examples)
 	{
-		double Px;
-		int count;
-		double totalEntropy = 0;
-		
+
 		// the number of distinct classifications
 		double numClassifications = examples.Select(e => e.Classification).Distinct().Count();
-		
-		
+		// the number of each classification
+		int count; 
+		// the probability of each classification
+		List<double> probabilities = new List<double>();
+
 		// for each value, figure out how many distinct classifications it creates
 		foreach (var value in Values) {
 			// the number distinct classifications given with the current value 
 			count = examples.Where(ex => ex [this] == value)
 				.Select(e => e.Classification).Distinct().Count();
-			
-			// the probability of the value 
-			Px = count / numClassifications;
-			
-			// add the entropy of the current values probability
-			totalEntropy += Entropy(Px, Values.Count());
+			// add the probability of the classification given the current value
+			probabilities.Add(count / numClassifications);
 		}
-		
-		double remainder = Remainder(examples);
-		//The information gain from the attribute test on A is the expected reduction in entropy
-		double infogain = totalEntropy - remainder;
-		
-		//Console.WriteLine("Total # classifications: " + numClassifications);
-		//Console.WriteLine("Total entropy: " + totalEntropy);
-		//Console.WriteLine("Remainder: " + remainder);
-		//Console.WriteLine("InfoGain: " + infogain);
-		return infogain;
-	}
-	
-	// the entropy of a n-ary random variable p that is true with probability q
-	double Entropy(double p, int n)
-	{
-
-		if (p == 0 || n < 2) {
-			return 0;
-		}
-		
-		var entropy = -(p * Math.Log(p, n) + (1 - p) * Math.Log(1 - p, n)); 
-		Console.WriteLine("entropy:" + entropy);
-		return entropy;
+		//The information gain is the expected reduction in entropy
+		return Entropy(probabilities) - Remainder(examples);
 	}
 	
 	double Remainder(List<Example> examples)
 	{
-		/*
-		 * the sum from k = 1 to d 
-		 * d = # of distinct values dividing the training set into subsets E1 .. Ed
-		 * each subset Ek has examples a various different classifications. pk, nk...
-		 * 
-		 * 
-		SUM( (( #Pk + #Nk + #koko ...) / total # of samples )) * Entropy(pk / #Pk+#Nk+#koko) 
 
-		*/
-		
+		double P;
 		double sum = 0;
-		double entropy;
+		int count;
+		List<double> cs;
+		List<Example> examplesWithValue;
 		foreach (var value in Values) {
 			//subset
-			List<Example> cis = examples.Where(ex => ex [this] == value).ToList(); 
-			entropy = 0;
-			
-			foreach (var classification in cis.Select(ex => ex.Classification)) {
-				//TODO FIX
-				//entropy += Entropy(cis [attribute].Where());
-			}
-			sum += cis.Count() / examples.Count() * entropy;
+			examplesWithValue = examples.Where(ex => ex [this] == value).ToList(); 
+
+			P = (examplesWithValue.Count() / examples.Count());
+
+			count = examples.Where(ex => ex [this] == value)
+				.Select(e => e.Classification).Distinct().Count();
+
+			cs = examples.Where(ex => ex [this] == value)
+				.GroupBy(e => e.Classification)
+					.Select(x => ((double)x.Count()) / count).ToList();
+
+			sum += P * Entropy(cs);
 		}
 		return sum;
+	}
+
+	double Entropy(List<double> probabilities)
+	{
+		double entropy = 0;
+		foreach (double p in probabilities) {
+			entropy += p == 0 ? 0 : p * Math.Log(p, 2);
+		}
+		return -entropy;
 	}
 
 }
