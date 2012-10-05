@@ -41,10 +41,17 @@ public class DecisionTree
 			return Classification;
 		}
 
-		// recurse
-		return branches.Where(b => b.Key == example [b.Value.Attribute]).First().Value.Test(example);
-	}
 
+		var branch = branches.Where(b => b.Key == example [b.Value.Attribute]).FirstOrDefault();
+		// found a branch, recurse
+		if (branch != null) {
+			return branch.Value.Test(example);
+		}
+
+		return branches.Where(b => b.Value.Classification != null)
+			.GroupBy(e => e.Value.Classification)
+			.OrderByDescending(gp => gp.Count()).First().Key;
+	}
 	
 	public static DecisionTree Create(List<Attribute> attributes, List<Example> examples)
 	{
@@ -118,7 +125,6 @@ public class DecisionTree
 			OrderByDescending(gp => gp.Count()).First().Key;
 		return new DecisionTree(classification);
 	}
-
 
 	public override string ToString()
 	{
