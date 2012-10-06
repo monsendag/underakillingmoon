@@ -29,11 +29,9 @@ public class WerewolfEvade : AgentState
             agent.audio.PlayOneShot(werewolf.SquealSound);
         }
 
-        if (Config.UseDecisionTree) { return; }
         if (player == null)
         {
             _shouldHunt = true;
-            Debug.Break();
             return;
         }
 
@@ -41,9 +39,9 @@ public class WerewolfEvade : AgentState
         if (attacker == null)
         {    
             _shouldHunt = true;
-            Debug.Break();
             return;
         }
+
 
         agent.AddBehaviour("evade", _evadeSteer, 0);
         agent.AddBehaviour("look", _look, 0);
@@ -61,6 +59,10 @@ public class WerewolfEvade : AgentState
 	{
 		
 		nextState = GetType();
+        if (Config.UseDecisionTree)
+        {
+            return;
+        }
 
         if (_shouldHunt || agent.Health <= 0)
         {

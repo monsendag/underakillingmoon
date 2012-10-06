@@ -115,8 +115,10 @@ public class DecisionTree
 						foreach (var value in important.Values) {
 								// copy all examples which has the value of the attribute
 								branchExamples = examples.Where (ex => ex [important] == value).ToList ();
+                                // Have to send a copy of attributes to the child nodes.
+                                var newAttributes = new List<Attribute>(attributes);
 								// Recursively create branch and add it to the tree with the value as edge label
-								tree.AddBranch (value, Create (attributes, branchExamples, examples));
+								tree.AddBranch (value, Create (newAttributes, branchExamples, examples));
 						}
 						return tree;
 				}

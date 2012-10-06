@@ -18,7 +18,7 @@ public class Classification
 		// parse classification as werewolf state
 		Type[] werewolfStates = {typeof(WerewolfHunt), typeof(WerewolfPatrol), typeof(WerewolfCharge), 
 								typeof(WerewolfAttack), typeof(WerewolfEvade)};
-
+        UnityEngine.Debug.Log(str);
 		Type state = werewolfStates.Single(s => s.ToString() == str);
 
 		// matched state
