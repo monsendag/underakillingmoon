@@ -2,6 +2,7 @@ using System;
 using System.IO;
 
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -19,20 +20,16 @@ public class WerewolfHunt : AgentStateMachine
 		get {
 			if (_decisionTree == null) 
             {
-				FileStream stream = new FileStream("./input.csv", FileMode.Open); 
-				var examples = Example.ParseFileStream(stream);
-
+                FileStream stream = new FileStream("./input.csv", FileMode.Open);
+                var examples = Example.ParseFileStream(stream);
                 stream.Close();
                 stream.Dispose();
-				List<Attribute> attributes = new List<Attribute>();
-				foreach (var value in _values) 
-                {
-					attributes.Add(Attribute.Get(value.GetPrettyTypeName()));
-				}
 
-				_decisionTree = DecisionTree.Create(attributes, examples);
+                var attributes = examples.First().GetAttributes();
 
-
+                _decisionTree = DecisionTree.Create(attributes, examples);
+                _decisionTree.SaveTGFonDesktop();
+   
 			}
 			DebugUtil.Assert(_decisionTree != null);
 			return _decisionTree;
@@ -99,6 +96,10 @@ public class WerewolfHunt : AgentStateMachine
         {
             StateClassification classification = DecisionTree.Test(example) as StateClassification;
             CurrentState = classification.State; // Set the current substate.
+            //if (CurrentState == typeof(WerewolfEvade))
+            //{
+            //    Debug.Break();
+            //}
         }
         else
         {

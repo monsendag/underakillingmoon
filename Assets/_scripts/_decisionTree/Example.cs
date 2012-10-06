@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class Example : Dictionary<Attribute, Value>
 {
@@ -64,6 +65,7 @@ public class Example : Dictionary<Attribute, Value>
 
 			Value value;
 			Attribute attribute;
+
 			for (var i=0; i<values.Length; i++) {
 
 				attribute = attributeArr [i];

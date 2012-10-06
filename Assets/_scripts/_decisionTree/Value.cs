@@ -10,6 +10,11 @@ public class Value
 		Val = val;
 	}
 
+    public bool Equals(object other)
+    {
+        return Val == other;
+    }
+
 	public override string ToString()
 	{
 		return Val.ToString();

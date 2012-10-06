@@ -41,6 +41,7 @@ public class Agent : MonoBehaviour
 	private KinematicInfo _kinematicInfo;
 	private CharacterController _controller;
 	public AgentStateMachine StateMachine;
+    public string CurrentStateName;
 	
 	#region varaccess
 	public float MaxAcceleration {
@@ -160,7 +161,10 @@ public class Agent : MonoBehaviour
 		// Allow the agent state to update.
 		if (StateMachine != null) {
 			StateMachine.Update();
+            CurrentStateName = StateMachine.GetPrettyTypeName();
 		}
+
+
 			
 		// We keep two sets of priority counts, so we can find an average of
 		// the blended behaviours.

@@ -19,17 +19,14 @@ public class RecentGunfire : IProperty
 		if (movement == null) {
 			return 0;
 		}
-		int largestValue = 0;
+
 		foreach (var gunshot in movement.GunShots) {
 			if (Vector2.Distance(agent.KinematicInfo.Position, gunshot.Location) > ReachDistance) {
 				continue;
 			}
-
-			int value = (int)((OutputNumber - 1)
-				* (MaxTime - (Time.time - gunshot.TimeStamp)) / MaxTime);
-			largestValue = Mathf.Max(value, largestValue);
+            return 1;
 		}
-		return largestValue;
+		return 0;
 	}
 
 	public string GetPrettyTypeName()

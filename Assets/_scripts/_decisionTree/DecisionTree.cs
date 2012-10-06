@@ -42,7 +42,7 @@ public class DecisionTree
 
 				// if we have a classification, return it
 				if (Classification != null) {
-						Debug.Log ("returning.. " + Classification);
+						//Debug.Log ("returning.. " + Classification);
 						return Classification;
 				}
 
@@ -52,10 +52,8 @@ public class DecisionTree
 						Debug.Log (String.Format ("Key = {0}, Value = {1}, Attribute = {2}, Classification: {3} ", kvp.Key, kvp.Value, kvp.Value.Attribute, kvp.Value.Classification));
 				}*/
 
-				var branch = branches
-			.Where (b => b.Value.Attribute != null &&
-						b.Key == example [b.Value.Attribute])
-				.FirstOrDefault ();
+				var branch = branches.Where (b => 
+                    b.Key.ToString() == example[Attribute].ToString() ).FirstOrDefault ();
 
 				// found a branch, recurse
 				if (branch.Key != null) {
