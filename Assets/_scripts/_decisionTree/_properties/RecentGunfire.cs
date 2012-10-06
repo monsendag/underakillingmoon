@@ -24,7 +24,10 @@ public class RecentGunfire : IProperty
 			if (Vector2.Distance(agent.KinematicInfo.Position, gunshot.Location) > ReachDistance) {
 				continue;
 			}
-            return 1;
+            if (Time.time - gunshot.TimeStamp < MaxTime)
+            {
+                return 1;
+            }
 		}
 		return 0;
 	}

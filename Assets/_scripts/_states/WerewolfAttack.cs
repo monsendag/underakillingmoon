@@ -63,12 +63,7 @@ public class WerewolfAttack : AgentState
             {
                 nextState = typeof(WerewolfCharge);
             }
-            // chew on it
-            // TODO: Throttle this action
-            else
-            {
-                target.Health -= 1;
-            }
         }
+        target.Health -= 1;
 	}
 }

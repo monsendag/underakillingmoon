@@ -108,9 +108,15 @@ public class WerewolfHunt : AgentStateMachine
            return;
          }
 
+        var target = AttackPair.GetTargetOrNull(agent);
+        if (target != null && target.distanceTo(agent) > 10.0)
+        {
+            AttackPair.RemoveByAttacker(agent);
+        }
+
          var targets = agent.GetAgentsInArea(Config.DefaultWerewolfVisionRange);
          float minDistance = -1.0f;
-         Agent target = null;
+         target = null;
          foreach (var camper in targets)
          {
             if (camper.GetComponent<Camper>() != null)
