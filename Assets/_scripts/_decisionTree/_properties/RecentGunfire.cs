@@ -5,7 +5,7 @@ using System.Collections;
 public class RecentGunfire : IProperty
 {
 	public static float MaxTime = 4.0f;
-	public static int OutputNumber = 3;
+	public static int OutputNumber = 2;
 	public static float ReachDistance = 8.0f;
 
 	public int Get(Agent agent)

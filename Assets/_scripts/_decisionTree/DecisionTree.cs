@@ -38,7 +38,7 @@ public class DecisionTree
 		public Classification Test (Example example)
 		{
 
-				Debug.Log (String.Format ("Classification: {0}, Attribute: {1}", Classification, Attribute));
+				//Debug.Log (String.Format ("Classification: {0}, Attribute: {1}", Classification, Attribute));
 
 				// if we have a classification, return it
 				if (Classification != null) {
@@ -46,11 +46,11 @@ public class DecisionTree
 						return Classification;
 				}
 
-				Debug.Log (branches.Count.ToString ());
+				//Debug.Log (branches.Count.ToString ());
 
-				foreach (KeyValuePair<Value, DecisionTree> kvp in branches) {
+				/*foreach (KeyValuePair<Value, DecisionTree> kvp in branches) {
 						Debug.Log (String.Format ("Key = {0}, Value = {1}, Attribute = {2}, Classification: {3} ", kvp.Key, kvp.Value, kvp.Value.Attribute, kvp.Value.Classification));
-				}
+				}*/
 
 				var branch = branches
 			.Where (b => b.Value.Attribute != null &&

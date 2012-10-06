@@ -12,6 +12,6 @@ public static class Config
 	public const float DefaultMaxAcceleration = 4.0f;
 	public const float DefaultMaxVelocity = 4.0f;
 	public const float DefaultTargetRadius = 0.25f;
-    public const bool UseDecisionTree = false;
+    public const bool UseDecisionTree = true;
 }
 

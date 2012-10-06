@@ -19,15 +19,20 @@ public class WerewolfHunt : AgentStateMachine
 		get {
 			if (_decisionTree == null) 
             {
-				FileStream stream = new FileStream("./test1.csv", FileMode.Open); 
+				FileStream stream = new FileStream("./input.csv", FileMode.Open); 
 				var examples = Example.ParseFileStream(stream);
+
+                stream.Close();
+                stream.Dispose();
 				List<Attribute> attributes = new List<Attribute>();
-				foreach (var value in _values) {
+				foreach (var value in _values) 
+                {
 					attributes.Add(Attribute.Get(value.GetPrettyTypeName()));
 				}
+
 				_decisionTree = DecisionTree.Create(attributes, examples);
 
-				stream.Close();
+
 			}
 			DebugUtil.Assert(_decisionTree != null);
 			return _decisionTree;
