@@ -101,60 +101,56 @@ public class WerewolfHunt : AgentStateMachine
             //    Debug.Break();
             //}
         }
-        else
+        else if (beingAttacked)
         {
+           // We are a cowardly werewolf who runs when shot at.
+           nextState = typeof(WerewolfEvade);
+           return;
+         }
 
-            if (beingAttacked)
+         var targets = agent.GetAgentsInArea(Config.DefaultWerewolfVisionRange);
+         float minDistance = -1.0f;
+         Agent target = null;
+         foreach (var camper in targets)
+         {
+            if (camper.GetComponent<Camper>() != null)
             {
-                // We are a cowardly werewolf who runs when shot at.
-                nextState = typeof(WerewolfEvade);
-                return;
-            }
+               // Perform a raycast check.
 
-            var targets = agent.GetAgentsInArea(Config.DefaultWerewolfVisionRange);
-            float minDistance = -1.0f;
-            Agent target = null;
-            foreach (var camper in targets)
+               if (minDistance < -1.0f || minDistance < agent.distanceTo(camper) &&
+                  !AttackPair.IsTarget(camper))
+               {
+                  Vector3 direction = (camper.transform.position - agent.transform.position).normalized;
+                  var hits = Physics.RaycastAll(agent.transform.position, direction, Config.DefaultWerewolfVisionRange);
+                  bool visible = true;
+                  foreach (var hit in hits)
+                  {
+                     if (hit.collider.gameObject != agent.gameObject && hit.collider.gameObject != camper.gameObject)
+                     {
+                        visible = false;
+                     }
+                  }
+                  if (visible)
+                  {
+                     target = camper;
+                  }
+               }
+            }
+         }
+
+         if (target != null)
+         {
+            var currentTarget = AttackPair.GetTargetOrNull(agent);
+            // Examine the two distance, if the new camper is significantly
+            // close then the old one, start chasing the new one.
+            if (currentTarget == null ||
+              agent.distanceTo(currentTarget) * 1.5 > agent.distanceTo(target) ||
+              currentTarget.Health < 0)
             {
-                if (camper.GetComponent<Camper>() != null)
-                {
-                    // Perform a raycast check.
-
-                    if (minDistance < -1.0f || minDistance < agent.distanceTo(camper) &&
-                       !AttackPair.IsTarget(camper))
-                    {
-                        Vector3 direction = (camper.transform.position - agent.transform.position).normalized;
-                        var hits = Physics.RaycastAll(agent.transform.position, direction, Config.DefaultWerewolfVisionRange);
-                        bool visible = true;
-                        foreach (var hit in hits)
-                        {
-                            if (hit.collider.gameObject != agent.gameObject && hit.collider.gameObject != camper.gameObject)
-                            {
-                                visible = false;
-                            }
-                        }
-                        if (visible)
-                        {
-                            target = camper;
-                        }
-                    }
-                }
+              AttackPair.RemoveByAttacker(agent);
+              AttackPair.Add(agent, target);
             }
-
-            if (target != null)
-            {
-                var currentTarget = AttackPair.GetTargetOrNull(agent);
-                // Examine the two distance, if the new camper is significantly
-                // close then the old one, start chasing the new one.
-                if (currentTarget == null ||
-                    agent.distanceTo(currentTarget) * 1.5 > agent.distanceTo(target) ||
-                    currentTarget.Health < 0)
-                {
-                    AttackPair.RemoveByAttacker(agent);
-                    AttackPair.Add(agent, target);
-                }
-            }
-        }
+         }
     }
 
 	/// <summary>
