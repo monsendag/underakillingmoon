@@ -24,7 +24,7 @@ public class WerewolfEvade : AgentState
         attacker = null;
 
         var werewolf = agent.GetComponent<Werewolf>();
-        if (werewolf != null)
+        if (werewolf != null && !Config.UseDecisionTree)
         {
             agent.audio.PlayOneShot(werewolf.SquealSound);
         }

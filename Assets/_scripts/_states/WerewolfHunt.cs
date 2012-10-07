@@ -15,6 +15,8 @@ using UnityEngine;
 public class WerewolfHunt : AgentStateMachine
 {
 	static DecisionTree _decisionTree = null;
+    private float _reevaluateTime = 0.0f;
+    static public float ReevaluationTime = 0.5f;
 
 	public static DecisionTree DecisionTree {
 		get {
@@ -94,8 +96,13 @@ public class WerewolfHunt : AgentStateMachine
         // Ask the decision tree which state we should be in.
         if (Config.UseDecisionTree)
         {
-            StateClassification classification = DecisionTree.Test(example) as StateClassification;
-            CurrentState = classification.State; // Set the current substate.
+            _reevaluateTime -= Time.deltaTime;
+            if (_reevaluateTime < 0)
+            {
+                _reevaluateTime = ReevaluationTime;
+                StateClassification classification = DecisionTree.Test(example) as StateClassification;
+                CurrentState = classification.State; // Set the current substate.
+            }
             //if (CurrentState == typeof(WerewolfEvade))
             //{
             //    Debug.Break();
